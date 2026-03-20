@@ -15,6 +15,8 @@ const STORAGE_KEYS = {
 
 let authState = loadAuthState();
 let selectedSpecialistIndex = 0;
+let selectedLoginRole = null;
+let pendingAuthMessage = '';
 
 function loadAuthState() {
     try {
@@ -86,23 +88,57 @@ function renderSiteShell() {
                                     </div>
                                 </a>
                                 <div class="nav-pills text-sm font-bold text-gray-500">
-                                    <a href="${ROUTES.specialists}" class="nav-link hover:text-gray-900" id="nav-specialists">Speciālisti</a>
-                                    <a href="${ROUTES.guide}" class="nav-link hover:text-gray-900" id="nav-guide">Ko darīt tālāk?</a>
-                                    <a href="${ROUTES.community}" class="nav-link hover:text-gray-900" id="nav-community">Kopiena</a>
-                                    <a href="${ROUTES.faq}" class="nav-link hover:text-gray-900" id="nav-faq">BUJ</a>
-                                    <a href="${ROUTES['specialist-dashboard']}" class="nav-link hover:text-gray-900 hidden text-brand" id="navSpecDashboard">Mans panelis</a>
+                                    <a href="${ROUTES.specialists}" class="nav-link hover:text-gray-900" data-nav="specialists" id="nav-specialists">Speciālisti</a>
+                                    <a href="${ROUTES.guide}" class="nav-link hover:text-gray-900" data-nav="guide" id="nav-guide">Ko darīt tālāk?</a>
+                                    <a href="${ROUTES.community}" class="nav-link hover:text-gray-900" data-nav="community" id="nav-community">Kopiena</a>
+                                    <a href="${ROUTES.faq}" class="nav-link hover:text-gray-900" data-nav="faq" id="nav-faq">BUJ</a>
+                                    <a href="${ROUTES['specialist-dashboard']}" class="nav-link hover:text-gray-900 hidden text-brand" data-nav="dashboard" id="navSpecDashboard">Mans panelis</a>
                                 </div>
                             </div>
                             <div class="nav-right">
                                 <div class="theme-switch flex bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200" role="group" aria-label="Tēmas pārslēgšana">
-                                    <button onclick="changeTheme('default')" class="theme-btn p-2 text-sm" title="Gaišais" id="btnLight" aria-label="Gaišā tēma" aria-pressed="true">☀️</button>
-                                    <button onclick="changeTheme('dark')" class="theme-btn p-2 text-sm" title="Tumšais" id="btnDark" aria-label="Tumšā tēma" aria-pressed="false">🌙</button>
+                                    <button onclick="changeTheme('default')" class="theme-btn p-2 text-sm" title="Gaišais" data-theme-button data-theme-value="default" aria-label="Gaišā tēma" aria-pressed="true">☀️</button>
+                                    <button onclick="changeTheme('dark')" class="theme-btn p-2 text-sm" title="Tumšais" data-theme-button data-theme-value="dark" aria-label="Tumšā tēma" aria-pressed="false">🌙</button>
                                 </div>
-                                <button id="loginBtn" onclick="showModal('authModal')" class="btn-cta px-5 py-2 rounded-xl font-bold text-sm hover:opacity-90 transition shadow">Pieteikties</button>
-                                <button id="userMenu" class="hidden items-center gap-2 bg-brand-light px-4 py-2 rounded-xl font-bold text-sm text-brand">
-                                    <span>👤</span> <span id="userName">Vita</span>
-                                    <span onclick="doLogout()" class="ml-2 text-xs opacity-50 hover:opacity-100 cursor-pointer">✕</span>
+                                <div class="auth-entry">
+                                    <button id="loginBtn" onclick="toggleLoginDropdown(event)" class="btn-cta px-5 py-2 rounded-xl font-bold text-sm hover:opacity-90 transition shadow" aria-haspopup="menu" aria-expanded="false">
+                                        <span>Pieteikties</span>
+                                        <span class="auth-entry-caret" aria-hidden="true">▾</span>
+                                    </button>
+                                    <div id="loginDropdown" class="login-dropdown hidden" role="menu" aria-label="Pieteikšanās izvēlne">
+                                        <button type="button" onclick="startDirectLogin('parent')" class="login-dropdown-item" role="menuitem">
+                                            <span class="login-dropdown-title">Esmu vecāks</span>
+                                            <span class="login-dropdown-copy">Meklēju speciālistu bērnam</span>
+                                        </button>
+                                        <button type="button" onclick="startDirectLogin('specialist')" class="login-dropdown-item" role="menuitem">
+                                            <span class="login-dropdown-title">Esmu speciālists</span>
+                                            <span class="login-dropdown-copy">Pārvaldu savu profilu un pierakstus</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="userMenu" class="hidden items-center gap-2 bg-brand-light px-4 py-2 rounded-xl font-bold text-sm text-brand">
+                                    <span aria-hidden="true">👤</span>
+                                    <span id="userName">Vita</span>
+                                    <button type="button" id="logoutBtn" class="user-logout-btn" aria-label="Izrakstīties">Izrakstīties</button>
+                                </div>
+                                <button type="button" id="mobileNavToggle" onclick="toggleMobileNav(event)" class="mobile-nav-toggle" aria-label="Atvērt izvēlni" aria-controls="mobileNavPanel" aria-expanded="false">
+                                    <span class="mobile-nav-glyph mobile-nav-glyph-menu" aria-hidden="true">☰</span>
+                                    <span class="mobile-nav-glyph mobile-nav-glyph-close" aria-hidden="true">✕</span>
                                 </button>
+                            </div>
+                        </div>
+                        <div id="mobileNavPanel" class="mobile-nav-panel hidden">
+                            <a href="${ROUTES.specialists}" class="mobile-nav-link" data-nav="specialists" onclick="closeMobileNav()">Speciālisti</a>
+                            <a href="${ROUTES.guide}" class="mobile-nav-link" data-nav="guide" onclick="closeMobileNav()">Ko darīt tālāk?</a>
+                            <a href="${ROUTES.community}" class="mobile-nav-link" data-nav="community" onclick="closeMobileNav()">Kopiena</a>
+                            <a href="${ROUTES.faq}" class="mobile-nav-link" data-nav="faq" onclick="closeMobileNav()">BUJ</a>
+                            <a href="${ROUTES['specialist-dashboard']}" class="mobile-nav-link hidden text-brand" data-nav="dashboard" id="navSpecDashboardMobile" onclick="closeMobileNav()">Mans panelis</a>
+                            <div class="mobile-theme-row">
+                                <span class="mobile-theme-label">Izskats</span>
+                                <div class="theme-switch flex bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200" role="group" aria-label="Tēmas pārslēgšana">
+                                    <button onclick="changeTheme('default')" class="theme-btn p-2 text-sm" title="Gaišais" data-theme-button data-theme-value="default" aria-label="Gaišā tēma" aria-pressed="true">☀️</button>
+                                    <button onclick="changeTheme('dark')" class="theme-btn p-2 text-sm" title="Tumšais" data-theme-button data-theme-value="dark" aria-label="Tumšā tēma" aria-pressed="false">🌙</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -136,19 +172,23 @@ function renderSiteShell() {
             <div id="authModal" class="fixed inset-0 modal-bg hidden z-[100] flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-label="Pieteikšanās">
                 <div class="bg-white rounded-3xl p-8 max-w-md w-full relative shadow-2xl fade-in">
                     <button onclick="closeModal('authModal')" class="absolute top-4 right-5 text-2xl text-gray-300 hover:text-gray-600 transition" aria-label="Aizvērt">✕</button>
-                    <h2 class="text-xl font-black text-center mb-2">Pieteikties</h2>
-                    <p id="authMessage" class="text-sm text-gray-400 text-center mb-6">Lai pieteiktos vizītei vai rakstītu kopienā</p>
+                    <div class="text-center mb-6">
+                        <p id="authRoleLabel" class="text-xs font-bold uppercase tracking-[0.22em] text-brand mb-2">Vecāks</p>
+                        <h2 id="authTitle" class="text-xl font-black text-center mb-2">Pieteikties kā vecākam</h2>
+                        <p id="authMessage" class="text-sm text-gray-400 text-center">Lai pieteiktos vizītei vai rakstītu kopienā</p>
+                    </div>
                     <div class="space-y-3">
                         <button onclick="doLogin('smart-id')" class="w-full p-4 border-2 border-gray-100 rounded-xl hover:border-brand hover:bg-brand-light transition font-bold text-left flex justify-between items-center">Smart-ID <span>→</span></button>
                         <button onclick="doLogin('e-paraksts')" class="w-full p-4 border-2 border-gray-100 rounded-xl hover:border-brand hover:bg-brand-light transition font-bold text-left flex justify-between items-center">e-Paraksts <span>→</span></button>
                         <button onclick="doLogin('password')" class="w-full p-4 border-2 border-gray-100 rounded-xl hover:border-brand hover:bg-brand-light transition font-bold text-left flex justify-between items-center">E-pasts un parole <span>→</span></button>
                     </div>
+                    <button type="button" id="authBackBtn" onclick="backToRoleSelection()" class="w-full mt-4 text-sm font-bold text-gray-400 hover:text-brand transition">← Mainīt lomu</button>
                     <p class="text-xs text-gray-300 text-center mt-6">Pieslēdzoties, jūs piekrītat <a href="${ROUTES.faq}" class="underline">lietošanas noteikumiem</a> un <a href="${ROUTES.faq}" class="underline">privātuma politikai</a>.</p>
                 </div>
             </div>
 
             <div id="profileModal" class="fixed inset-0 modal-bg hidden z-[100] flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-label="Speciālista profils">
-                <div class="bg-white rounded-3xl p-8 max-w-lg w-full relative shadow-2xl fade-in">
+                <div class="modal-card modal-card-md bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full relative shadow-2xl fade-in">
                     <button onclick="closeModal('profileModal')" class="absolute top-4 right-5 text-2xl text-gray-300 hover:text-gray-600 transition" aria-label="Aizvērt">✕</button>
                     <div class="flex items-center gap-4 mb-5">
                         <div id="profileAvatar" class="w-14 h-14 bg-brand rounded-2xl flex items-center justify-center text-white text-xl font-black">LB</div>
@@ -162,7 +202,7 @@ function renderSiteShell() {
                             <p class="text-xs font-bold text-gray-500 mb-1">Par speciālistu</p>
                             <p id="profileSummary" class="text-sm text-gray-600">Strādā ar bērniem vecumā no 2 līdz 10 gadiem. Galvenās darba jomas: AST, uzvedības traucējumi.</p>
                         </div>
-                        <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                             <div class="p-3 bg-gray-50 rounded-xl"><span class="text-xs text-gray-400 block">Vieta</span><span id="profileCity" class="font-bold">Rīga</span></div>
                             <div class="p-3 bg-gray-50 rounded-xl"><span class="text-xs text-gray-400 block">Vizītes</span><span id="profileVisitType" class="font-bold">Klātienē & tiešsaistē</span></div>
                             <div class="p-3 bg-gray-50 rounded-xl"><span class="text-xs text-gray-400 block">Diagnozes</span><span id="profileFocus" class="font-bold">AST, uzvedības traucējumi</span></div>
@@ -179,11 +219,13 @@ function renderSiteShell() {
             </div>
 
             <div id="calendarModal" class="fixed inset-0 modal-bg hidden z-[100] flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-label="Vizītes pieteikšana">
-                <div class="bg-white rounded-3xl p-8 max-w-3xl w-full relative shadow-2xl fade-in">
+                <div class="modal-card modal-card-lg bg-white rounded-3xl p-6 sm:p-8 max-w-3xl w-full relative shadow-2xl fade-in">
                     <button onclick="closeModal('calendarModal')" class="absolute top-4 right-5 text-2xl text-gray-300 hover:text-gray-600 transition" aria-label="Aizvērt">✕</button>
                     <h2 id="calendarTitle" class="text-2xl font-black mb-1">Izvēlieties laiku</h2>
                     <p id="calendarSubtitle" class="text-sm text-gray-400 mb-6">Līga Bērziņa - ABA terapeite, Rīga</p>
-                    <div class="grid grid-cols-7 gap-2 mb-6" id="calendarGrid"></div>
+                    <div class="modal-calendar-shell mb-6">
+                        <div class="grid grid-cols-7 gap-2 min-w-[34rem]" id="calendarGrid"></div>
+                    </div>
                     <div class="bg-gray-50 rounded-xl p-4">
                         <p class="text-xs font-bold text-gray-500 mb-2">Pieteikuma forma</p>
                         <div class="grid md:grid-cols-2 gap-3">
@@ -199,15 +241,15 @@ function renderSiteShell() {
             <div id="roleModal" class="fixed inset-0 modal-bg hidden z-[100] flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-label="Lomas izvēle">
                 <div class="bg-white rounded-3xl p-8 max-w-lg w-full relative shadow-2xl fade-in">
                     <button onclick="closeModal('roleModal')" class="absolute top-4 right-5 text-2xl text-gray-300 hover:text-gray-600 transition" aria-label="Aizvērt">✕</button>
-                    <h2 class="text-xl font-black text-center mb-2">Kā jūs lietosiet sistēmu?</h2>
-                    <p class="text-sm text-gray-400 text-center mb-8">Izvēlieties savu lomu</p>
+                    <h2 class="text-xl font-black text-center mb-2">Kas jūs esat?</h2>
+                    <p class="text-sm text-gray-400 text-center mb-8">Izvēlieties, kā vēlaties turpināt pieteikšanos</p>
                     <div class="grid grid-cols-2 gap-4">
-                        <button onclick="completeLogin('parent')" class="group p-8 bg-gray-50 rounded-2xl border-2 border-gray-100 hover:border-brand hover:bg-brand-light transition text-center">
+                        <button onclick="beginLoginFlow('parent')" class="group p-8 bg-gray-50 rounded-2xl border-2 border-gray-100 hover:border-brand hover:bg-brand-light transition text-center">
                             <div class="text-5xl mb-4 group-hover:scale-110 transition">🏡</div>
                             <div class="font-black text-lg">Esmu vecāks</div>
                             <div class="text-gray-400 mt-1 text-xs">Meklēju speciālistu bērnam</div>
                         </button>
-                        <button onclick="completeLogin('specialist')" class="group p-8 bg-gray-50 rounded-2xl border-2 border-gray-100 hover:border-brand hover:bg-brand-light transition text-center">
+                        <button onclick="beginLoginFlow('specialist')" class="group p-8 bg-gray-50 rounded-2xl border-2 border-gray-100 hover:border-brand hover:bg-brand-light transition text-center">
                             <div class="text-5xl mb-4 group-hover:scale-110 transition">🎓</div>
                             <div class="font-black text-lg">Esmu speciālists</div>
                             <div class="text-gray-400 mt-1 text-xs">Piedāvāju pakalpojumus</div>
@@ -252,36 +294,110 @@ function initBackToTop() {
     window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
 }
 
+function getRoleConfig(role) {
+    if (role === 'specialist') {
+        return {
+            label: 'Speciālists',
+            loginTitle: 'Pieteikties kā speciālistam',
+            defaultMessage: 'Lai piekļūtu panelim un pārvaldītu savu profilu.'
+        };
+    }
+    return {
+        label: 'Vecāks',
+        loginTitle: 'Pieteikties kā vecākam',
+        defaultMessage: 'Lai pieteiktos vizītei vai rakstītu kopienā.'
+    };
+}
+
+function updateAuthModalContent() {
+    const authRoleLabel = document.getElementById('authRoleLabel');
+    const authTitle = document.getElementById('authTitle');
+    const authMessage = document.getElementById('authMessage');
+    const config = getRoleConfig(selectedLoginRole);
+
+    if (authRoleLabel) authRoleLabel.textContent = config.label;
+    if (authTitle) authTitle.textContent = config.loginTitle;
+    if (authMessage) authMessage.textContent = pendingAuthMessage || config.defaultMessage;
+}
+
+function bindShellActions() {
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn && !logoutBtn.dataset.bound) {
+        logoutBtn.addEventListener('click', doLogout);
+        logoutBtn.dataset.bound = 'true';
+    }
+}
+
+function closeLoginDropdown() {
+    const loginBtn = document.getElementById('loginBtn');
+    const loginDropdown = document.getElementById('loginDropdown');
+    if (!loginBtn || !loginDropdown) return;
+    loginDropdown.classList.add('hidden');
+    loginBtn.setAttribute('aria-expanded', 'false');
+}
+
+function toggleLoginDropdown(event) {
+    if (event) event.stopPropagation();
+    const loginBtn = document.getElementById('loginBtn');
+    const loginDropdown = document.getElementById('loginDropdown');
+    if (!loginBtn || !loginDropdown) return;
+    const willOpen = loginDropdown.classList.contains('hidden');
+    closeLoginDropdown();
+    if (willOpen) {
+        loginDropdown.classList.remove('hidden');
+        loginBtn.setAttribute('aria-expanded', 'true');
+    }
+}
+
+function closeMobileNav() {
+    const toggle = document.getElementById('mobileNavToggle');
+    const panel = document.getElementById('mobileNavPanel');
+    if (!toggle || !panel) return;
+    panel.classList.add('hidden');
+    toggle.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+}
+
+function toggleMobileNav(event) {
+    if (event) event.stopPropagation();
+    const toggle = document.getElementById('mobileNavToggle');
+    const panel = document.getElementById('mobileNavPanel');
+    if (!toggle || !panel) return;
+    const willOpen = panel.classList.contains('hidden');
+    closeLoginDropdown();
+    if (willOpen) {
+        panel.classList.remove('hidden');
+        toggle.classList.add('is-open');
+        toggle.setAttribute('aria-expanded', 'true');
+    } else {
+        closeMobileNav();
+    }
+}
+
 function updateActiveNavigation() {
-    document.querySelectorAll('.nav-link').forEach(function(link) {
+    document.querySelectorAll('[data-nav]').forEach(function(link) {
         link.classList.remove('active');
     });
 
     const currentPage = getCurrentPage();
-    const navId = {
-        specialists: 'nav-specialists',
-        guide: 'nav-guide',
-        community: 'nav-community',
-        faq: 'nav-faq',
-        dashboard: 'navSpecDashboard'
-    }[currentPage];
-
-    if (navId) {
-        const activeLink = document.getElementById(navId);
-        if (activeLink) activeLink.classList.add('active');
-    }
+    document.querySelectorAll('[data-nav="' + currentPage + '"]').forEach(function(link) {
+        link.classList.add('active');
+    });
 }
 
 function updateAuthUI() {
     const loginBtn = document.getElementById('loginBtn');
+    const loginDropdown = document.getElementById('loginDropdown');
     const userMenu = document.getElementById('userMenu');
     const userName = document.getElementById('userName');
     const dashboardLink = document.getElementById('navSpecDashboard');
+    const dashboardLinkMobile = document.getElementById('navSpecDashboardMobile');
 
     if (!loginBtn || !userMenu || !userName || !dashboardLink) return;
 
     if (authState.isLoggedIn) {
         loginBtn.classList.add('hidden');
+        if (loginDropdown) loginDropdown.classList.add('hidden');
         userMenu.classList.remove('hidden');
         userMenu.classList.add('flex');
         userName.textContent = authState.userName || (authState.role === 'specialist' ? 'Ieva' : 'Vita');
@@ -291,10 +407,12 @@ function updateAuthUI() {
         userMenu.classList.remove('flex');
     }
 
-    if (authState.isLoggedIn && authState.role === 'specialist') {
+    if (authState.isLoggedIn) {
         dashboardLink.classList.remove('hidden');
+        if (dashboardLinkMobile) dashboardLinkMobile.classList.remove('hidden');
     } else {
         dashboardLink.classList.add('hidden');
+        if (dashboardLinkMobile) dashboardLinkMobile.classList.add('hidden');
     }
 
     updateActiveNavigation();
@@ -302,23 +420,20 @@ function updateAuthUI() {
 
 function applyTheme(theme) {
     const body = document.getElementById('appBody');
-    const btnLight = document.getElementById('btnLight');
-    const btnDark = document.getElementById('btnDark');
-    if (!body || !btnLight || !btnDark) return;
+    const themeButtons = Array.prototype.slice.call(document.querySelectorAll('[data-theme-button]'));
+    if (!body || !themeButtons.length) return;
 
     if (theme === 'dark') {
         body.classList.add('dark');
-        btnDark.classList.add('active-theme');
-        btnLight.classList.remove('active-theme');
-        btnDark.setAttribute('aria-pressed', 'true');
-        btnLight.setAttribute('aria-pressed', 'false');
     } else {
         body.classList.remove('dark');
-        btnLight.classList.add('active-theme');
-        btnDark.classList.remove('active-theme');
-        btnLight.setAttribute('aria-pressed', 'true');
-        btnDark.setAttribute('aria-pressed', 'false');
     }
+
+    themeButtons.forEach(function(button) {
+        const isActive = button.dataset.themeValue === (theme === 'dark' ? 'dark' : 'default');
+        button.classList.toggle('active-theme', isActive);
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
 }
 
 function changeTheme(theme) {
@@ -341,26 +456,46 @@ function closeModal(id) {
     document.body.style.overflow = '';
 }
 
+function openRoleSelection(modalToOpen, message) {
+    pendingAuthMessage = message || '';
+    setPendingAction(modalToOpen || '');
+    closeLoginDropdown();
+    showModal('roleModal');
+}
+
 function requireLogin(modalToOpen, message) {
     if (authState.isLoggedIn) {
         if (modalToOpen) showModal(modalToOpen);
         return;
     }
 
-    setPendingAction(modalToOpen || '');
-
-    const authMessage = document.getElementById('authMessage');
-    if (authMessage) {
-        authMessage.textContent = message || 'Lai pieteiktos vizītei, lūdzu piesakieties.';
-    }
-    showModal('authModal');
+    openRoleSelection(modalToOpen, message || 'Lai turpinātu, lūdzu izvēlieties savu lomu.');
 }
 
 function doLogin(method) {
     closeModal('authModal');
     window.setTimeout(function() {
-        showModal('roleModal');
+        completeLogin(selectedLoginRole || 'parent');
     }, 160);
+}
+
+function startDirectLogin(role) {
+    pendingAuthMessage = '';
+    setPendingAction('');
+    beginLoginFlow(role);
+}
+
+function beginLoginFlow(role) {
+    selectedLoginRole = role === 'specialist' ? 'specialist' : 'parent';
+    updateAuthModalContent();
+    closeLoginDropdown();
+    closeModal('roleModal');
+    showModal('authModal');
+}
+
+function backToRoleSelection() {
+    closeModal('authModal');
+    showModal('roleModal');
 }
 
 function handlePendingAction() {
@@ -379,8 +514,10 @@ function completeLogin(role) {
     authState.onboardingComplete = role === 'specialist' ? false : true;
     saveAuthState();
 
+    closeModal('authModal');
     closeModal('roleModal');
     updateAuthUI();
+    pendingAuthMessage = '';
 
     if (role === 'specialist') {
         window.setTimeout(function() {
@@ -404,7 +541,16 @@ function processOnboarding() {
     }, 1200);
 }
 
-function doLogout() {
+function doLogout(event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    if (!window.confirm('Vai tiešām vēlaties izrakstīties?')) {
+        return;
+    }
+
     authState = {
         isLoggedIn: false,
         role: null,
@@ -413,6 +559,10 @@ function doLogout() {
     };
     saveAuthState();
     setPendingAction('');
+    selectedLoginRole = null;
+    pendingAuthMessage = '';
+    closeLoginDropdown();
+    closeMobileNav();
     updateAuthUI();
 
     if (getCurrentPage() === 'dashboard') {
@@ -541,7 +691,7 @@ function getAgeBucketsForSpecialist(raw) {
     const min = Number(match[1]);
     const max = Number(match[2]);
     return AGE_BUCKETS.filter(function(bucket) {
-        return max >= bucket.min && min <= bucket.max;
+        return min <= bucket.min && max >= bucket.max;
     }).map(function(bucket) {
         return bucket.label;
     });
@@ -593,15 +743,15 @@ function buildSpecialistCard(specialist, index) {
     const availabilityClasses = getAvailabilityClasses(specialist.nextAvailable);
 
     return '' +
-        '<div class="specialist-card bg-white p-6 rounded-2xl shadow-sm card-hover flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-gray-100" ' +
+        '<div class="specialist-card bg-white p-5 sm:p-6 rounded-2xl shadow-sm card-hover flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border border-gray-100" ' +
             'data-city="' + escapeHtml(specialist.city) + '" ' +
             'data-type="' + escapeHtml(specialist.type) + '" ' +
             'data-diagnoses="' + escapeHtml(diagnoses.join('|')) + '" ' +
             'data-ages="' + escapeHtml(ages.join('|')) + '" ' +
             'data-visits="' + escapeHtml(visitMeta.modes.join('|')) + '">' +
-            '<div class="flex items-center gap-5 cursor-pointer" onclick="openSpecialistProfile(' + index + ')">' +
-                '<div class="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-black ' + colorClasses.avatar + '">' + escapeHtml(specialist.initials) + '</div>' +
-                '<div>' +
+            '<div class="specialist-card-main flex items-start sm:items-center gap-4 sm:gap-5 cursor-pointer" onclick="openSpecialistProfile(' + index + ')">' +
+                '<div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full flex-shrink-0 flex items-center justify-center text-xl sm:text-2xl font-black ' + colorClasses.avatar + '">' + escapeHtml(specialist.initials) + '</div>' +
+                '<div class="min-w-0">' +
                     '<h4 class="text-xl font-black">' + escapeHtml(specialist.name) + '</h4>' +
                     '<div class="flex flex-wrap gap-2 mt-1">' +
                         '<span class="' + colorClasses.badge + ' px-3 py-0.5 rounded-full text-xs font-bold">' + escapeHtml(specialist.type) + '</span>' +
@@ -612,9 +762,9 @@ function buildSpecialistCard(specialist, index) {
                     '<p class="text-[11px] text-gray-400 mt-1"><span class="font-semibold text-gray-500">Formāts:</span> ' + escapeHtml(visitSummary) + (visitMeta.note ? '<span class="text-gray-300"> · ' + escapeHtml(visitMeta.note) + '</span>' : '') + '</p>' +
                 '</div>' +
             '</div>' +
-            '<div class="flex items-center gap-3 md:flex-col md:items-end">' +
-                '<span class="text-xs font-bold px-3 py-1 rounded-full ' + availabilityClasses + '">Tuvākais: ' + escapeHtml(specialist.nextAvailable) + '</span>' +
-                '<button onclick="startSpecialistBooking(' + index + ')" class="btn-cta px-6 py-2.5 rounded-xl font-bold text-sm hover:opacity-90 transition shadow">Pieteikties vizītei</button>' +
+            '<div class="specialist-card-actions flex w-full lg:w-auto items-stretch sm:items-center gap-3 flex-col sm:flex-row lg:flex-col lg:items-end">' +
+                '<span class="text-xs font-bold px-3 py-1 rounded-full text-center lg:text-left ' + availabilityClasses + '">Tuvākais: ' + escapeHtml(specialist.nextAvailable) + '</span>' +
+                '<button onclick="startSpecialistBooking(' + index + ')" class="btn-cta specialist-card-button w-full sm:w-auto px-6 py-2.5 rounded-xl font-bold text-sm hover:opacity-90 transition shadow">Pieteikties vizītei</button>' +
             '</div>' +
         '</div>';
 }
@@ -981,23 +1131,41 @@ function buildSpecCalendar() {
 }
 
 function initDashboardPage() {
-    const dashboardSection = document.getElementById('sec-specialist-dashboard');
+    const dashboardSection = document.getElementById('sec-dashboard');
+    const parentView = document.getElementById('parentDashboardView');
+    const specialistView = document.getElementById('specialistDashboardView');
+    const title = document.getElementById('dashboardTitle');
+    const subtitle = document.getElementById('dashboardSubtitle');
     if (!dashboardSection) return;
 
-    if (!authState.isLoggedIn || authState.role !== 'specialist') {
+    if (!authState.isLoggedIn) {
         dashboardSection.innerHTML = `
             <div class="max-w-2xl mx-auto bg-white p-8 rounded-3xl shadow-sm border border-gray-100 text-center">
                 <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-brand-light text-brand flex items-center justify-center text-2xl font-black">🔒</div>
-                <h2 class="text-2xl font-black tracking-tight mb-2">Speciālista panelis ir pieejams tikai reģistrētiem speciālistiem</h2>
-                <p class="text-gray-500 mb-6">Lai piekļūtu savam panelim, piesakieties kā speciālists un pabeidziet reģistrāciju.</p>
+                <h2 class="text-2xl font-black tracking-tight mb-2">Mans panelis ir pieejams tikai reģistrētiem lietotājiem</h2>
+                <p class="text-gray-500 mb-6">Piesakieties kā vecāks vai speciālists, lai redzētu savus pierakstus, kontaktus un nākamos soļus.</p>
                 <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                    <button onclick="showModal('authModal')" class="btn-cta px-5 py-3 rounded-xl font-bold text-sm shadow">Pieteikties</button>
+                    <button onclick="startDirectLogin('parent')" class="btn-cta px-5 py-3 rounded-xl font-bold text-sm shadow">Pieteikties kā vecākam</button>
+                    <button onclick="startDirectLogin('specialist')" class="px-5 py-3 rounded-xl font-bold text-sm border border-gray-200 text-gray-600 hover:border-brand hover:text-brand transition">Pieteikties kā speciālistam</button>
                     <a href="${ROUTES.home}" class="px-5 py-3 rounded-xl font-bold text-sm border border-gray-200 text-gray-600 hover:border-brand hover:text-brand transition">Atgriezties sākumlapā</a>
                 </div>
             </div>
         `;
         return;
     }
+
+    if (authState.role === 'parent') {
+        if (title) title.textContent = 'Mans panelis';
+        if (subtitle) subtitle.textContent = 'Jūsu ģimenes pieraksti, speciālisti un iepriekšējās vizītes';
+        if (parentView) parentView.classList.remove('hidden');
+        if (specialistView) specialistView.classList.add('hidden');
+        return;
+    }
+
+    if (title) title.textContent = 'Mans panelis';
+    if (subtitle) subtitle.textContent = 'Speciālista vadības panelis';
+    if (parentView) parentView.classList.add('hidden');
+    if (specialistView) specialistView.classList.remove('hidden');
 
     buildSpecCalendar();
 
@@ -1011,6 +1179,8 @@ function initDashboardPage() {
 function initGlobalKeyboardHandlers() {
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
+            closeLoginDropdown();
+            closeMobileNav();
             ['authModal', 'profileModal', 'calendarModal', 'roleModal', 'onboardingModal'].forEach(function(id) {
                 const modal = document.getElementById(id);
                 if (modal && !modal.classList.contains('hidden')) {
@@ -1019,10 +1189,26 @@ function initGlobalKeyboardHandlers() {
             });
         }
     });
+
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.auth-entry')) {
+            closeLoginDropdown();
+        }
+        if (!event.target.closest('.mobile-nav-toggle') && !event.target.closest('#mobileNavPanel')) {
+            closeMobileNav();
+        }
+    });
+
+    window.addEventListener('resize', function() {
+        if (window.innerWidth >= 768) {
+            closeMobileNav();
+        }
+    });
 }
 
 function initSite() {
     renderSiteShell();
+    bindShellActions();
     applyTheme(localStorage.getItem(STORAGE_KEYS.theme) || 'default');
     updateAuthUI();
     initBackToTop();

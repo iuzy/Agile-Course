@@ -14,111 +14,227 @@
     <div id="site-header"></div>
 
     <main id="main-content">
-        <section id="sec-specialist-dashboard" class="section-panel fade-in max-w-6xl mx-auto px-6 py-10">
+        <section id="sec-dashboard" class="section-panel fade-in max-w-6xl mx-auto px-6 py-10">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
                 <div>
-                    <h2 class="text-3xl font-black tracking-tight">Mans panelis</h2>
-                    <p class="text-gray-400 font-medium mt-1">Speciālista vadības panelis</p>
+                    <h2 id="dashboardTitle" class="text-3xl font-black tracking-tight">Mans panelis</h2>
+                    <p id="dashboardSubtitle" class="text-gray-400 font-medium mt-1">Jūsu konta pārskats</p>
                 </div>
             </div>
 
-            <div class="grid md:grid-cols-12 gap-6">
-                <div class="md:col-span-4 space-y-6">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Mans profils</h3>
-                        <p class="text-sm text-gray-400 mb-4">Galvenie profila iestatījumi vienuviet, lai tos var ātri pārskatīt un labot.</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="dashboard-field">
-                                <label>Pamatnozare</label>
-                                <select>
-                                    <option>ABA terapeits</option>
-                                    <option>Logopēds</option>
-                                    <option>Speciālais pedagogs</option>
-                                    <option>Ergoterapeits</option>
-                                    <option>Bērnu psihiatrs</option>
-                                    <option>Klīniskais psihologs</option>
-                                </select>
+            <div id="parentDashboardView" class="hidden">
+                <div class="grid md:grid-cols-12 gap-6">
+                    <div class="md:col-span-4 space-y-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                            <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Bērna profils</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-14 h-14 rounded-2xl bg-brand-light text-brand flex items-center justify-center text-xl font-black">EK</div>
+                                    <div>
+                                        <div class="font-black text-lg">Emīls Kalniņš</div>
+                                        <div class="text-sm text-gray-400">5 gadi · AST</div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-3 text-sm">
+                                    <div class="bg-gray-50 rounded-xl p-3">
+                                        <span class="text-xs text-gray-400 block">Primārais ārsts</span>
+                                        <span class="font-bold">Dr. Māra Vītola</span>
+                                    </div>
+                                    <div class="bg-gray-50 rounded-xl p-3">
+                                        <span class="text-xs text-gray-400 block">Aktīvs plāns</span>
+                                        <span class="font-bold">3 speciālisti</span>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-500">Šeit varēsiet redzēt bērna speciālistus, iepriekšējās vizītes un nākamos pierakstus vienuviet.</p>
                             </div>
-                            <div class="dashboard-field">
-                                <label>Pilsēta</label>
-                                <input type="text" value="Rīga">
-                            </div>
-                            <div class="dashboard-field">
-                                <label>Vizītes veids</label>
-                                <select>
-                                    <option>Klātienē & tiešsaistē</option>
-                                    <option>Tikai klātienē</option>
-                                    <option>Tikai tiešsaistē</option>
-                                </select>
-                            </div>
-                            <div class="dashboard-field">
-                                <label>Cena (EUR / sesija)</label>
-                                <input type="text" value="40 - 60">
+                        </div>
+
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                            <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Kopsavilkums</h3>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="bg-green-50 p-4 rounded-xl text-center">
+                                    <div class="text-2xl font-black text-green-700">2</div>
+                                    <div class="text-xs text-gray-500">Tuvākās vizītes</div>
+                                </div>
+                                <div class="bg-blue-50 p-4 rounded-xl text-center">
+                                    <div class="text-2xl font-black text-blue-600">6</div>
+                                    <div class="text-xs text-gray-500">Apmeklējumi kopā</div>
+                                </div>
+                                <div class="bg-brand-light p-4 rounded-xl text-center">
+                                    <div class="text-2xl font-black text-brand">3</div>
+                                    <div class="text-xs text-gray-500">Saglabātie speciālisti</div>
+                                </div>
+                                <div class="bg-amber-50 p-4 rounded-xl text-center">
+                                    <div class="text-2xl font-black text-amber-600">1</div>
+                                    <div class="text-xs text-gray-500">Nepabeigta anketa</div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Statistika</h3>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div class="bg-green-50 p-4 rounded-xl text-center">
-                                <div class="text-2xl font-black text-green-700">12</div>
-                                <div class="text-xs text-gray-500">Pieraksti šomēnes</div>
+                    <div class="md:col-span-8 space-y-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                            <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Tuvākās vizītes</h3>
+                            <div class="space-y-3">
+                                <div class="dashboard-upcoming-item flex items-center justify-between bg-green-50 p-4 rounded-xl">
+                                    <div>
+                                        <div class="font-bold text-sm">Logopēdijas sesija ar Anna Kalniņu</div>
+                                        <div class="text-xs text-gray-500 mt-1">24. marts · 10:00 · Tiešsaistē</div>
+                                    </div>
+                                    <div class="text-xs font-bold text-green-700">Apstiprināta</div>
+                                </div>
+                                <div class="dashboard-upcoming-item flex items-center justify-between bg-brand-light p-4 rounded-xl">
+                                    <div>
+                                        <div class="font-bold text-sm">Kontroles vizīte pie Dr. Māras Vītolas</div>
+                                        <div class="text-xs text-gray-500 mt-1">8. aprīlis · 15:30 · Rīga</div>
+                                    </div>
+                                    <div class="text-xs font-bold text-brand">Jāaizpilda anketa</div>
+                                </div>
                             </div>
-                            <div class="bg-brand-light p-4 rounded-xl text-center">
-                                <div class="text-2xl font-black text-brand">4.8</div>
-                                <div class="text-xs text-gray-500">Vidējais vērtējums</div>
+                        </div>
+
+                        <div class="grid lg:grid-cols-2 gap-6">
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                                <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Iepriekšējās vizītes</h3>
+                                <div class="space-y-3">
+                                    <div class="bg-gray-50 p-4 rounded-xl">
+                                        <div class="font-bold text-sm">ABA sesija ar Līga Bērziņa</div>
+                                        <div class="text-xs text-gray-500 mt-1">18. marts · 10:00</div>
+                                        <div class="text-xs text-gray-400 mt-2">Piezīme: nākamajā reizē turpināt komunikācijas uzdevumus.</div>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-xl">
+                                        <div class="font-bold text-sm">Ergoterapija ar Irina Pavlova</div>
+                                        <div class="text-xs text-gray-500 mt-1">11. marts · 14:30</div>
+                                        <div class="text-xs text-gray-400 mt-2">Saņemts mājas uzdevumu saraksts un rekomendācijas.</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="bg-blue-50 p-4 rounded-xl text-center">
-                                <div class="text-2xl font-black text-blue-600">23</div>
-                                <div class="text-xs text-gray-500">Atsauksmes</div>
-                            </div>
-                            <div class="bg-amber-50 p-4 rounded-xl text-center">
-                                <div class="text-2xl font-black text-amber-600">2</div>
-                                <div class="text-xs text-gray-500">Gaidīšanas sarakstā</div>
+
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                                <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Mani speciālisti</h3>
+                                <div class="space-y-3">
+                                    <div class="bg-gray-50 p-4 rounded-xl">
+                                        <div class="font-bold text-sm">Anna Kalniņa</div>
+                                        <div class="text-xs text-gray-500 mt-1">Logopēds · Tiešsaistē & klātienē</div>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-xl">
+                                        <div class="font-bold text-sm">Dr. Māra Vītola</div>
+                                        <div class="text-xs text-gray-500 mt-1">Bērnu neirologs · Rīga</div>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-xl">
+                                        <div class="font-bold text-sm">Līga Bērziņa</div>
+                                        <div class="text-xs text-gray-500 mt-1">ABA terapeits · Rīga</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="md:col-span-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="font-black text-lg">Vizīšu kalendārs - Marts 2026</h3>
-                    </div>
-                    <div class="grid grid-cols-7 gap-2 mb-4">
-                        <div class="text-center text-xs font-bold text-gray-300 py-1">Pr</div>
-                        <div class="text-center text-xs font-bold text-gray-300 py-1">Ot</div>
-                        <div class="text-center text-xs font-bold text-gray-300 py-1">Tr</div>
-                        <div class="text-center text-xs font-bold text-gray-300 py-1">Ce</div>
-                        <div class="text-center text-xs font-bold text-gray-300 py-1">Pk</div>
-                        <div class="text-center text-xs font-bold text-gray-300 py-1">Se</div>
-                        <div class="text-center text-xs font-bold text-gray-300 py-1">Sv</div>
-                    </div>
-                    <div class="grid grid-cols-7 gap-2" id="specCalendar"></div>
+            <div id="specialistDashboardView">
+                <div class="grid md:grid-cols-12 gap-6">
+                    <div class="md:col-span-4 space-y-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                            <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Mans profils</h3>
+                            <p class="text-sm text-gray-400 mb-4">Galvenie profila iestatījumi vienuviet, lai tos var ātri pārskatīt un labot.</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="dashboard-field">
+                                    <label>Pamatnozare</label>
+                                    <select>
+                                        <option>ABA terapeits</option>
+                                        <option>Logopēds</option>
+                                        <option>Speciālais pedagogs</option>
+                                        <option>Ergoterapeits</option>
+                                        <option>Bērnu psihiatrs</option>
+                                        <option>Klīniskais psihologs</option>
+                                    </select>
+                                </div>
+                                <div class="dashboard-field">
+                                    <label>Pilsēta</label>
+                                    <input type="text" value="Rīga">
+                                </div>
+                                <div class="dashboard-field">
+                                    <label>Vizītes veids</label>
+                                    <select>
+                                        <option>Klātienē & tiešsaistē</option>
+                                        <option>Tikai klātienē</option>
+                                        <option>Tikai tiešsaistē</option>
+                                    </select>
+                                </div>
+                                <div class="dashboard-field">
+                                    <label>Cena (EUR / sesija)</label>
+                                    <input type="text" value="40 - 60">
+                                </div>
+                            </div>
+                        </div>
 
-                    <div class="mt-6 border-t border-gray-100 pt-4">
-                        <h4 class="font-bold text-sm mb-3">Tuvākās vizītes</h4>
-                        <div class="space-y-2">
-                            <div class="flex items-center justify-between bg-green-50 p-3 rounded-xl">
-                                <div>
-                                    <span class="font-bold text-sm">Mārtiņš K.</span>
-                                    <span class="text-xs text-gray-500 ml-2">5 gadi, AST</span>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                            <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Statistika</h3>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="bg-green-50 p-4 rounded-xl text-center">
+                                    <div class="text-2xl font-black text-green-700">12</div>
+                                    <div class="text-xs text-gray-500">Pieraksti šomēnes</div>
                                 </div>
-                                <div class="text-xs font-bold text-green-700">18. marts, 10:00</div>
+                                <div class="bg-brand-light p-4 rounded-xl text-center">
+                                    <div class="text-2xl font-black text-brand">4.8</div>
+                                    <div class="text-xs text-gray-500">Vidējais vērtējums</div>
+                                </div>
+                                <div class="bg-blue-50 p-4 rounded-xl text-center">
+                                    <div class="text-2xl font-black text-blue-600">23</div>
+                                    <div class="text-xs text-gray-500">Atsauksmes</div>
+                                </div>
+                                <div class="bg-amber-50 p-4 rounded-xl text-center">
+                                    <div class="text-2xl font-black text-amber-600">2</div>
+                                    <div class="text-xs text-gray-500">Gaidīšanas sarakstā</div>
+                                </div>
                             </div>
-                            <div class="flex items-center justify-between bg-green-50 p-3 rounded-xl">
-                                <div>
-                                    <span class="font-bold text-sm">Anna L.</span>
-                                    <span class="text-xs text-gray-500 ml-2">7 gadi, UDHS</span>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-black text-lg">Vizīšu kalendārs - Marts 2026</h3>
+                        </div>
+                        <div class="dashboard-calendar-shell">
+                            <div class="dashboard-calendar-min">
+                                <div class="grid grid-cols-7 gap-2 mb-4">
+                                    <div class="text-center text-xs font-bold text-gray-300 py-1">Pr</div>
+                                    <div class="text-center text-xs font-bold text-gray-300 py-1">Ot</div>
+                                    <div class="text-center text-xs font-bold text-gray-300 py-1">Tr</div>
+                                    <div class="text-center text-xs font-bold text-gray-300 py-1">Ce</div>
+                                    <div class="text-center text-xs font-bold text-gray-300 py-1">Pk</div>
+                                    <div class="text-center text-xs font-bold text-gray-300 py-1">Se</div>
+                                    <div class="text-center text-xs font-bold text-gray-300 py-1">Sv</div>
                                 </div>
-                                <div class="text-xs font-bold text-green-700">18. marts, 14:00</div>
+                                <div class="grid grid-cols-7 gap-2" id="specCalendar"></div>
                             </div>
-                            <div class="flex items-center justify-between bg-amber-50 p-3 rounded-xl">
-                                <div>
-                                    <span class="font-bold text-sm">Emīls B.</span>
-                                    <span class="text-xs text-gray-500 ml-2">3 gadi, runas aizture</span>
+                        </div>
+
+                        <div class="mt-6 border-t border-gray-100 pt-4">
+                            <h4 class="font-bold text-sm mb-3">Tuvākās vizītes</h4>
+                            <div class="space-y-2">
+                                <div class="dashboard-upcoming-item flex items-center justify-between bg-green-50 p-3 rounded-xl">
+                                    <div>
+                                        <span class="font-bold text-sm">Mārtiņš K.</span>
+                                        <span class="text-xs text-gray-500 ml-2">5 gadi, AST</span>
+                                    </div>
+                                    <div class="text-xs font-bold text-green-700">18. marts, 10:00</div>
                                 </div>
-                                <div class="text-xs font-bold text-amber-600">19. marts, 10:00</div>
+                                <div class="dashboard-upcoming-item flex items-center justify-between bg-green-50 p-3 rounded-xl">
+                                    <div>
+                                        <span class="font-bold text-sm">Anna L.</span>
+                                        <span class="text-xs text-gray-500 ml-2">7 gadi, UDHS</span>
+                                    </div>
+                                    <div class="text-xs font-bold text-green-700">18. marts, 14:00</div>
+                                </div>
+                                <div class="dashboard-upcoming-item flex items-center justify-between bg-amber-50 p-3 rounded-xl">
+                                    <div>
+                                        <span class="font-bold text-sm">Emīls B.</span>
+                                        <span class="text-xs text-gray-500 ml-2">3 gadi, runas aizture</span>
+                                    </div>
+                                    <div class="text-xs font-bold text-amber-600">19. marts, 10:00</div>
+                                </div>
                             </div>
                         </div>
                     </div>
