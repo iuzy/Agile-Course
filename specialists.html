@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>augt.lv - Speciālistu katalogs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/site.css">
+    <script defer src="assets/app.js"></script>
+</head>
+<body class="text-gray-800" id="appBody" data-page="specialists" style="background-color: var(--bg-body);">
+    <a href="#main-content" class="skip-link">Pāriet uz saturu</a>
+    <div id="site-header"></div>
+
+    <main id="main-content">
+        <section id="sec-specialists" class="fade-in max-w-6xl mx-auto px-6 py-10">
+            <div class="catalog-layout">
+                <div class="catalog-header mb-8">
+                    <div>
+                        <h2 class="text-3xl font-black tracking-tight">Speciālistu katalogs</h2>
+                        <p class="text-gray-400 font-medium mt-1" id="specialistCount">Pieejami speciālisti</p>
+                    </div>
+                    <div class="catalog-toolbar">
+                        <div class="catalog-filter filter-city">
+                            <div class="custom-select" data-select data-default="Visas pilsētas" data-filter-label="Pilsēta">
+                                <input type="hidden" name="filterCity" value="Visas pilsētas">
+                                <button type="button" class="select-trigger" aria-haspopup="listbox">Visas pilsētas</button>
+                                <ul class="select-menu" role="listbox"></ul>
+                            </div>
+                        </div>
+                        <div class="catalog-filter filter-type">
+                            <div class="custom-select" data-select data-default="Visi speciālisti" data-filter-label="Speciālists">
+                                <input type="hidden" name="filterType" value="Visi speciālisti">
+                                <button type="button" class="select-trigger" aria-haspopup="listbox">Visi speciālisti</button>
+                                <ul class="select-menu" role="listbox"></ul>
+                            </div>
+                        </div>
+                        <div class="catalog-filter filter-diagnosis">
+                            <div class="custom-select" data-select data-default="Visas diagnozes" data-filter-label="Diagnoze">
+                                <input type="hidden" name="filterDiag" value="Visas diagnozes">
+                                <button type="button" class="select-trigger" aria-haspopup="listbox">Visas diagnozes</button>
+                                <ul class="select-menu" role="listbox"></ul>
+                            </div>
+                        </div>
+                        <div class="catalog-filter filter-age">
+                            <div class="custom-select" data-select data-default="Jebkurš vecums" data-filter-label="Vecums">
+                                <input type="hidden" name="filterAge" value="Jebkurš vecums">
+                                <button type="button" class="select-trigger" aria-haspopup="listbox">Jebkurš vecums</button>
+                                <ul class="select-menu" role="listbox"></ul>
+                            </div>
+                        </div>
+                        <div class="catalog-filter filter-visit">
+                            <div class="custom-select" data-select data-default="Jebkurš formāts" data-filter-label="Formāts">
+                                <input type="hidden" name="filterVisit" value="Jebkurš formāts">
+                                <button type="button" class="select-trigger" aria-haspopup="listbox">Jebkurš formāts</button>
+                                <ul class="select-menu" role="listbox"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="catalog-actions">
+                        <button type="button" class="catalog-clear-btn" onclick="clearCatalogFilters()">Notīrīt filtrus</button>
+                    </div>
+                </div>
+
+                <div class="grid gap-4">
+                    <div id="specialistEmptyState" class="hidden bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center text-gray-500 font-medium">
+                        Neviens speciālists pēc šādiem kritērijiem netika atrasts
+                    </div>
+                    <div id="specialistList" class="grid gap-4"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="site-footer"></div>
+    <div id="site-modals"></div>
+</body>
+</html>

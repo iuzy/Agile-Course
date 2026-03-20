@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>augt.lv - Ko darīt tālāk</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/site.css">
+    <script defer src="assets/app.js"></script>
+</head>
+<body class="text-gray-800" id="appBody" data-page="guide" style="background-color: var(--bg-body);">
+    <a href="#main-content" class="skip-link">Pāriet uz saturu</a>
+    <div id="site-header"></div>
+
+    <main id="main-content">
+        <section id="sec-guide" class="section-panel fade-in max-w-4xl mx-auto px-6 py-10">
+            <h2 class="text-3xl font-black tracking-tight mb-2">Ko darīt tālāk?</h2>
+            <p class="text-gray-400 mb-10">Izvēlieties savu situāciju, lai redzētu konkrētus nākamos soļus.</p>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
+                <button data-guide="concerns" onclick="showGuide('concerns', event)" class="guide-btn p-4 bg-white rounded-xl border-2 border-gray-100 hover:border-brand transition text-center card-hover">
+                    <div class="guide-index mb-2" aria-hidden="true">01</div>
+                    <div class="text-xs font-bold">Pirmās bažas</div>
+                </button>
+                <button data-guide="waiting" onclick="showGuide('waiting', event)" class="guide-btn p-4 bg-white rounded-xl border-2 border-gray-100 hover:border-brand transition text-center card-hover">
+                    <div class="guide-index mb-2" aria-hidden="true">02</div>
+                    <div class="text-xs font-bold">Gaidu diagnozi</div>
+                </button>
+                <button data-guide="diagnosis" onclick="showGuide('diagnosis', event)" class="guide-btn p-4 bg-white rounded-xl border-2 border-gray-100 hover:border-brand transition text-center card-hover">
+                    <div class="guide-index mb-2" aria-hidden="true">03</div>
+                    <div class="text-xs font-bold">Ir diagnoze</div>
+                </button>
+                <button data-guide="education" onclick="showGuide('education', event)" class="guide-btn p-4 bg-white rounded-xl border-2 border-gray-100 hover:border-brand transition text-center card-hover">
+                    <div class="guide-index mb-2" aria-hidden="true">04</div>
+                    <div class="text-xs font-bold">Izglītības atbalsts</div>
+                </button>
+            </div>
+
+            <div id="guide-concerns" class="hidden fade-in">
+                <div class="bg-brand-light rounded-2xl p-6 mb-6">
+                    <h3 class="font-black text-lg text-brand mb-1">Pirmās bažas par bērna attīstību</h3>
+                    <p class="text-sm text-gray-500">Jūs esat pamanījuši, ka bērns attīstās citādi nekā vienaudži. Šeit ir konkrēti soļi.</p>
+                </div>
+                <div class="space-y-6">
+                    <div class="step-line">
+                        <div class="step-dot bg-brand">1</div>
+                        <h4 class="font-black text-base mb-1">Vērsieties pie ģimenes ārsta</h4>
+                        <p class="text-sm text-gray-500">Aprakstiet, kas jūs satrauc. Lūdziet nosūtījumu pie bērnu psihiatra vai neirologa. Ja ārsts iesaka "pagaidīt" - jums ir tiesības uzstāt uz nosūtījumu.</p>
+                    </div>
+                    <div class="step-line">
+                        <div class="step-dot bg-brand">2</div>
+                        <h4 class="font-black text-base mb-1">Paralēli pierakstieties rindā pie speciālistiem</h4>
+                        <p class="text-sm text-gray-500">Rindas ir garas - reģistrējieties vairākās iestādēs vienlaicīgi. <a href="specialists.html" class="text-brand font-bold underline">Meklēt speciālistus →</a></p>
+                    </div>
+                    <div class="step-line">
+                        <div class="step-dot bg-brand">3</div>
+                        <h4 class="font-black text-base mb-1">Sāciet funkcionālo speciālistu nodarbības</h4>
+                        <p class="text-sm text-gray-500">Kamēr gaidāt diagnozi, var sākt logopēda, ergoterapeita vai speciālā pedagoga nodarbības - tām diagnoze nav nepieciešama.</p>
+                    </div>
+                    <div class="step-line">
+                        <div class="step-dot bg-brand">4</div>
+                        <h4 class="font-black text-base mb-1">Dokumentējiet bērna uzvedību</h4>
+                        <p class="text-sm text-gray-500">Pierakstiet situācijas, kas jūs satrauc - tas palīdzēs speciālistam saprast ainu ātrāk.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="guide-waiting" class="hidden fade-in">
+                <div class="bg-amber-50 rounded-2xl p-6 mb-6">
+                    <h3 class="font-black text-lg text-amber-700 mb-1">Gaidīšanas periods pirms diagnozes</h3>
+                    <p class="text-sm text-gray-500">Šis laiks nav "tukšs" - ir daudz, ko var darīt, kamēr gaidāt.</p>
+                </div>
+                <div class="space-y-6">
+                    <div class="step-line">
+                        <div class="step-dot bg-amber-500">1</div>
+                        <h4 class="font-black text-base mb-1">Izmantojiet ambulatoros pakalpojumus</h4>
+                        <p class="text-sm text-gray-500">Logopēda, ergoterapeita un speciālā pedagoga nodarbības ir pieejamas arī bez diagnozes.</p>
+                    </div>
+                    <div class="step-line">
+                        <div class="step-dot bg-amber-500">2</div>
+                        <h4 class="font-black text-base mb-1">Apmeklējiet vecāku izglītojošās programmas</h4>
+                        <p class="text-sm text-gray-500">BKUS, Autisma apvienība un citas organizācijas piedāvā bezmaksas apmācības vecākiem.</p>
+                    </div>
+                    <div class="step-line">
+                        <div class="step-dot bg-amber-500">3</div>
+                        <h4 class="font-black text-base mb-1">Sazinieties ar gadījumu vadītāju</h4>
+                        <p class="text-sm text-gray-500">Latvijas Autisma apvienības gadījumu vadītāji palīdz orientēties sistēmā - bezmaksas.</p>
+                    </div>
+                    <div class="step-line">
+                        <div class="step-dot bg-amber-500">4</div>
+                        <h4 class="font-black text-base mb-1">Atrodiet atbalsta grupu</h4>
+                        <p class="text-sm text-gray-500">Saruna ar citiem vecākiem līdzīgā situācijā ir viena no vērtīgākajām atbalsta formām.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="guide-diagnosis" class="hidden fade-in">
+                <div class="bg-green-50 rounded-2xl p-6 mb-6">
+                    <h3 class="font-black text-lg text-green-700 mb-1">Diagnoze ir apstiprināta</h3>
+                    <p class="text-sm text-gray-500">Tagad ir skaidrs ceļš uz valsts apmaksātiem pakalpojumiem un atbalstu.</p>
+                </div>
+                <div class="space-y-6">
+                    <div class="step-line">
+                        <div class="step-dot bg-green-600">1</div>
+                        <h4 class="font-black text-base mb-1">Pieteikties valsts apmaksātiem pakalpojumiem</h4>
+                        <p class="text-sm text-gray-500">Ar diagnozi jūs varat pieteikties rehabilitācijai, agrīnajai intervencei un speciālistu konsultācijām caur NVD.</p>
+                    </div>
+                    <div class="step-line">
+                        <div class="step-dot bg-green-600">2</div>
+                        <h4 class="font-black text-base mb-1">Noformēt invaliditātes statusu</h4>
+                        <p class="text-sm text-gray-500">Tas atver papildu pabalstus, asistenta pakalpojumu un citus valsts atbalsta veidus.</p>
+                    </div>
+                    <div class="step-line">
+                        <div class="step-dot bg-green-600">3</div>
+                        <h4 class="font-black text-base mb-1">Sākt regulāras terapijas</h4>
+                        <p class="text-sm text-gray-500">Balstoties uz rehabilitācijas plānu, sāciet terapijas - ABA, logopēdija, ergoterapija vai citas. <a href="specialists.html" class="text-brand font-bold underline">Meklēt speciālistus →</a></p>
+                    </div>
+                    <div class="step-line">
+                        <div class="step-dot bg-green-600">4</div>
+                        <h4 class="font-black text-base mb-1">Sazināties ar skolu / bērnudārzu</h4>
+                        <p class="text-sm text-gray-500">Informējiet izglītības iestādi par diagnozi un nepieciešamo atbalstu. Pieprasiet pedagoģiski medicīniskās komisijas izvērtējumu.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="guide-education" class="hidden fade-in">
+                <div class="bg-blue-50 rounded-2xl p-6 mb-6">
+                    <h3 class="font-black text-lg text-blue-700 mb-1">Izglītības atbalsts</h3>
+                    <p class="text-sm text-gray-500">Kā nodrošināt, lai bērns saņem piemērotu izglītību un atbalstu skolā.</p>
+                </div>
+                <div class="space-y-6">
+                    <div class="step-line">
+                        <div class="step-dot bg-blue-600">1</div>
+                        <h4 class="font-black text-base mb-1">Pedagoģiski medicīniskā komisija (PMK)</h4>
+                        <p class="text-sm text-gray-500">PMK izvērtē bērna vajadzības un piešķir izglītības programmas kodu, kas ļauj saņemt atbalstu skolā.</p>
+                    </div>
+                    <div class="step-line">
+                        <div class="step-dot bg-blue-600">2</div>
+                        <h4 class="font-black text-base mb-1">Pieprasīt asistentu</h4>
+                        <p class="text-sm text-gray-500">Ar atbilstošu PMK kodu bērns var saņemt asistenta pakalpojumu skolā.</p>
+                    </div>
+                    <div class="step-line">
+                        <div class="step-dot bg-blue-600">3</div>
+                        <h4 class="font-black text-base mb-1">Individuālais izglītības plāns</h4>
+                        <p class="text-sm text-gray-500">Sadarbojieties ar skolu, lai izveidotu plānu, kas pielāgots bērna vajadzībām.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="site-footer"></div>
+    <div id="site-modals"></div>
+</body>
+</html>
