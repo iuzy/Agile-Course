@@ -1,0 +1,2003 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>augt.lv - Palīdzam augt</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { font-family: 'Poppins', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Roboto', sans-serif; }
+        :root {
+            /* Brand palette from brand_identity.jpeg */
+            --brand: #197E80;
+            --brand-hover: #155f61;
+            --brand-light: #d7efef;
+            --brand-soft: #e6f3f3;
+            --accent: #FDE7D7; /* warm peach for gentle highlights */
+            --accent-hover: #f6d0b6;
+            --cta: #f18b3a;
+            --cta-hover: #e2741f;
+            --blue: #8FABAF;   /* muted teal-gray for secondary tags */
+            --blue-light: #edf3f3;
+            --green: #197E80;
+            --green-light: #d7efef;
+            --bg-body: #FBF1E8;   /* warm cream background */
+            --bg-card: #FFFFFF;
+            --bg-nav: #FFFFFF;
+            --bg-input: #f6eee4;
+            --bg-footer: #FBF1E8;
+            --text-primary: #2c3737;
+            --text-secondary: #4b5858;
+            --text-muted: #7a8787;
+            --border-color: #E9DBCF;
+            --border-card: #E9DBCF;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-hover: 0 12px 40px rgba(0,0,0,0.08);
+            --modal-bg: rgba(0,0,0,0.5);
+        }
+        body.dark {
+            --brand-light: #133c3d;
+            --brand-soft: #1b4a4b;
+            --blue-light: #1c2b2c;
+            --bg-body: #0f1414;
+            --bg-card: #161c1c;
+            --bg-nav: #121818;
+            --bg-input: #1c2222;
+            --bg-footer: #121818;
+            --text-primary: #f2f5f5;
+            --text-secondary: #c5d0d0;
+            --text-muted: #95a3a3;
+            --border-color: #223131;
+            --border-card: #223131;
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-hover: 0 12px 40px rgba(0,0,0,0.4);
+            --modal-bg: rgba(0,0,0,0.75);
+        }
+        /* Dark mode Tailwind overrides */
+        body.dark .bg-white { background-color: var(--bg-card) !important; }
+        body.dark .bg-gray-50 { background-color: var(--bg-input) !important; }
+        body.dark .bg-gray-100 { background-color: #22252e !important; }
+        body.dark .border-gray-100, body.dark .border-gray-200 { border-color: var(--border-color) !important; }
+        body.dark .text-gray-800, body.dark .text-gray-900, body.dark.text-gray-800 { color: var(--text-primary) !important; }
+        body.dark .text-gray-500, body.dark .text-gray-600 { color: var(--text-secondary) !important; }
+        body.dark .text-gray-400, body.dark .text-gray-300 { color: var(--text-muted) !important; }
+        body.dark .shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important; }
+        body.dark .shadow-lg, body.dark .shadow-2xl { box-shadow: 0 8px 30px rgba(0,0,0,0.4) !important; }
+        body.dark nav { background-color: var(--bg-nav) !important; border-color: var(--border-color) !important; }
+        body.dark footer { background-color: var(--bg-footer) !important; border-color: var(--border-color) !important; }
+        body.dark select, body.dark input, body.dark textarea { background-color: var(--bg-input) !important; border-color: var(--border-color) !important; color: var(--text-primary) !important; }
+        body.dark details { background-color: var(--bg-card) !important; border-color: var(--border-color) !important; }
+        body.dark details summary { color: var(--text-primary) !important; }
+        body.dark details div { color: var(--text-secondary) !important; }
+        body.dark .bg-brand-light { background-color: var(--brand-light) !important; }
+        body.dark .bg-brand-soft { background-color: var(--brand-soft) !important; }
+        body.dark .bg-teal-50, body.dark .bg-green-50 { background-color: #14261e !important; }
+        body.dark .bg-blue-50 { background-color: #141a26 !important; }
+        body.dark .bg-amber-50, body.dark .bg-orange-50 { background-color: #26201a !important; }
+        body.dark .bg-purple-50 { background-color: #1e1426 !important; }
+        body.dark .bg-pink-100 { background-color: #261418 !important; }
+        body.dark .bg-blue-100 { background-color: #141a26 !important; }
+        body.dark .bg-green-100 { background-color: #14261e !important; }
+        body.dark .text-teal-700, body.dark .text-green-700 { color: #5eead4 !important; }
+        body.dark .text-amber-700, body.dark .text-amber-600 { color: #fbbf24 !important; }
+        body.dark .text-blue-700, body.dark .text-blue-600 { color: #60a5fa !important; }
+        body.dark .text-orange-800 { color: #fb923c !important; }
+        body.dark .modal-bg { background: var(--modal-bg); }
+        body.dark .border-l-4 { border-left-color: inherit; }
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
+            background-image:
+                radial-gradient(circle at 0% 0%, rgba(25,126,128,0.12) 0, rgba(25,126,128,0) 32%),
+                radial-gradient(circle at 100% 18%, rgba(241,139,58,0.10) 0, rgba(241,139,58,0) 26%),
+                linear-gradient(180deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0) 28%);
+        }
+        main {
+            flex: 1 0 auto;
+            width: 100%;
+        }
+        .bg-brand { background-color: var(--brand); }
+        .text-brand { color: var(--brand); }
+        .border-brand { border-color: var(--brand); }
+        .bg-brand-light { background-color: var(--brand-light); }
+        .bg-brand-soft { background-color: var(--brand-soft); }
+        .bg-accent { background-color: var(--accent); }
+        .text-accent { color: var(--accent); }
+        .modal-bg { background: var(--modal-bg); backdrop-filter: blur(4px); }
+
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.35s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .nav-link { position: relative; padding-bottom: 2px; }
+        .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--brand); transition: width 0.25s; }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .card-hover { transition: all 0.25s; }
+        .card-hover:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+        .step-line { position: relative; padding-left: 2.5rem; }
+        .step-line::before { content: ''; position: absolute; left: 0.9rem; top: 2rem; bottom: 0; width: 2px; background: var(--border-color); }
+        .step-line:last-child::before { display: none; }
+        .step-dot { width: 1.8rem; height: 1.8rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75rem; color: white; position: absolute; left: 0; top: 0.15rem; }
+        select, input, textarea { font-family: 'Poppins', sans-serif; }
+        .theme-btn { transition: all 0.2s; }
+        .theme-btn.active-theme { background-color: var(--brand); color: white; border-radius: 0.5rem; }
+        *:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; border-radius: 4px; }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+        /* Modern select styling */
+        .select-modern {
+            appearance: none;
+            -webkit-appearance: none;
+            background-color: var(--bg-card);
+            border: 1.5px solid var(--border-card);
+            padding: 0.7rem 2.8rem 0.7rem 1rem;
+            border-radius: 16px;
+            overflow: hidden;
+            background-clip: padding-box;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-card);
+            background-image: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%23197E80' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.9rem center;
+            background-size: 16px;
+            transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+        }
+        .select-modern:hover { border-color: var(--brand); }
+        .select-modern:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(25,126,128,0.18); outline: none; }
+        body.dark .select-modern {
+            background-color: var(--bg-input);
+            border-color: var(--border-color);
+            color: var(--text-primary);
+            box-shadow: none;
+        }
+        .select-modern { width: 100%; min-width: 0; }
+        .select-modern option { border-radius: 12px; }
+        /* Custom select dropdown */
+        .custom-select { position: relative; width: 100%; }
+        .custom-select button.select-trigger {
+            width: 100%;
+            border: 1.5px solid var(--border-card);
+            border-radius: 16px;
+            padding: 0.7rem 2.8rem 0.7rem 1rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            background: var(--bg-card) url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%23197E80' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 0.9rem center;
+            box-shadow: var(--shadow-card);
+            text-align: left;
+            transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+        }
+        .custom-select button.select-trigger:hover { border-color: var(--brand); }
+        .custom-select.open button.select-trigger { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(25,126,128,0.18); }
+        .custom-select .select-menu {
+            position: absolute;
+            top: 105%;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 18px;
+            box-shadow: 0 16px 45px rgba(0,0,0,0.12);
+            padding: 0.35rem;
+            max-height: none;
+            overflow-y: visible;
+            display: none;
+            z-index: 50;
+        }
+        .custom-select.open .select-menu { display: block; }
+        .custom-select .select-menu li {
+            list-style: none;
+            padding: 0.55rem 0.75rem;
+            border-radius: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+        .custom-select .select-menu li:hover {
+            background: var(--brand-soft);
+            color: var(--brand);
+        }
+        body.dark .custom-select button.select-trigger,
+        body.dark .custom-select .select-menu {
+            background: var(--bg-input);
+            border-color: var(--border-color);
+            color: var(--text-primary);
+            box-shadow: none;
+        }
+        body.dark .custom-select .select-menu li:hover {
+            background: rgba(25,126,128,0.2);
+        }
+        .dashboard-field {
+            border: 1px solid var(--border-card);
+            border-radius: 20px;
+            padding: 1rem;
+            background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(246,238,228,0.96) 100%);
+        }
+        .dashboard-field label {
+            display: block;
+            margin-bottom: 0.65rem;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .dashboard-field select,
+        .dashboard-field input {
+            width: 100%;
+            min-height: 48px;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            background: rgba(255,255,255,0.88);
+            padding: 0.8rem 0.95rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .dashboard-field select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%23197E80' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.9rem center;
+            background-size: 16px;
+            padding-right: 2.8rem;
+        }
+        .dashboard-field select:focus,
+        .dashboard-field input:focus {
+            outline: none;
+            border-color: var(--brand);
+            box-shadow: 0 0 0 3px rgba(25,126,128,0.14);
+        }
+        body.dark .dashboard-field {
+            background: linear-gradient(180deg, rgba(28,34,34,0.96) 0%, rgba(22,28,28,0.96) 100%);
+            border-color: var(--border-color);
+        }
+        body.dark .dashboard-field select,
+        body.dark .dashboard-field input {
+            background-color: var(--bg-input);
+            border-color: var(--border-color);
+            color: var(--text-primary);
+        }
+        .catalog-header {
+            display: grid;
+            grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+            gap: 1.5rem;
+            align-items: end;
+        }
+        .catalog-layout {
+            display: block;
+        }
+        .catalog-toolbar {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 0.75rem;
+        }
+        .catalog-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 0.75rem;
+        }
+        .catalog-clear-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 0.55rem 0.9rem;
+            border-radius: 10px;
+            border: 1px solid rgba(44,55,55,0.12);
+            background: rgba(255,255,255,0.65);
+            color: var(--text-secondary);
+            font-size: 0.84rem;
+            font-weight: 600;
+            transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+        }
+        .catalog-clear-btn:hover {
+            border-color: rgba(44,55,55,0.18);
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.9);
+        }
+        .catalog-filter {
+            position: relative;
+            min-width: 0;
+            z-index: 0;
+            transition: box-shadow 0.18s ease;
+        }
+        .catalog-filter.is-open {
+            z-index: 30;
+        }
+        .catalog-toolbar .custom-select {
+            width: 100%;
+        }
+        .catalog-toolbar .custom-select button.select-trigger {
+            min-height: 56px;
+            padding: 0.75rem 2.5rem 0.75rem 0.95rem;
+            border-radius: 12px;
+            border: 1px solid rgba(44,55,55,0.12);
+            box-shadow: 0 1px 1px rgba(0,0,0,0.03);
+            background-color: rgba(255,255,255,0.88);
+            background-position: right 0.9rem center;
+            background-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            overflow: hidden;
+        }
+        .catalog-toolbar .custom-select button.select-trigger:hover,
+        .catalog-toolbar .custom-select.open button.select-trigger {
+            border-color: rgba(44,55,55,0.18);
+            box-shadow: 0 0 0 2px rgba(44,55,55,0.04);
+        }
+        .catalog-filter.is-active {
+            box-shadow: none;
+        }
+        .catalog-trigger-prefix {
+            flex-shrink: 0;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .catalog-trigger-value {
+            min-width: 0;
+            display: inline-flex;
+            align-items: center;
+            max-width: 100%;
+            padding: 0.22rem 0.7rem;
+            border-radius: 999px;
+            background: rgba(25,126,128,0.08);
+            border: 1px solid rgba(25,126,128,0.14);
+            color: var(--brand);
+            font-size: 0.88rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .catalog-trigger-value.is-default {
+            background: #f7f4ef;
+            border-color: #e6ddd2;
+            color: var(--text-secondary);
+        }
+        .catalog-filter.filter-city .catalog-trigger-value.is-default,
+        .catalog-filter.filter-type .catalog-trigger-value.is-default,
+        .catalog-filter.filter-diagnosis .catalog-trigger-value.is-default,
+        .catalog-filter.filter-age .catalog-trigger-value.is-default,
+        .catalog-filter.filter-visit .catalog-trigger-value.is-default {
+            background: #f7f4ef;
+            border-color: #e6ddd2;
+            color: var(--text-secondary);
+        }
+        body.dark .catalog-toolbar .custom-select button.select-trigger {
+            background-color: var(--bg-card);
+            border-color: var(--border-color);
+            box-shadow: none;
+        }
+        body.dark .catalog-clear-btn {
+            background: rgba(22,28,28,0.8);
+            border-color: var(--border-color);
+            color: var(--text-secondary);
+        }
+        body.dark .catalog-clear-btn:hover {
+            color: var(--text-primary);
+            background: rgba(28,34,34,0.96);
+        }
+        body.dark .catalog-trigger-prefix {
+            color: var(--text-primary);
+        }
+        body.dark .catalog-trigger-value {
+            background: rgba(25,126,128,0.14);
+            border-color: rgba(25,126,128,0.22);
+            color: #8fd0d1;
+        }
+        body.dark .catalog-trigger-value.is-default {
+            background: #202727;
+            border-color: #2b3737;
+            color: var(--text-secondary);
+        }
+        @media (min-width: 1280px) {
+            .catalog-layout {
+                display: grid;
+                grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
+                gap: 2rem;
+                align-items: start;
+            }
+            .catalog-header {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                align-items: start;
+                margin-bottom: 0;
+                position: sticky;
+                top: 6.5rem;
+            }
+            .catalog-toolbar {
+                grid-template-columns: 1fr;
+            }
+            .catalog-actions {
+                justify-content: flex-start;
+            }
+        }
+        @media (max-width: 1024px) {
+            .catalog-header {
+                grid-template-columns: 1fr;
+                align-items: start;
+            }
+            .catalog-toolbar {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.7rem;
+            }
+        }
+        @media (max-width: 640px) {
+            .catalog-toolbar {
+                grid-template-columns: 1fr;
+            }
+            .catalog-toolbar .custom-select button.select-trigger {
+                min-height: 56px;
+            }
+        }
+        .btn-cta {
+            background-color: var(--cta);
+            color: #fff;
+            transition: background-color 0.2s, transform 0.15s;
+        }
+        .btn-cta:hover { background-color: var(--cta-hover); transform: translateY(-1px); }
+        .btn-cta:active { transform: translateY(0); }
+        .hero-illustration {
+            -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 18%, rgba(0,0,0,1) 36%, rgba(0,0,0,1) 100%);
+            mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 18%, rgba(0,0,0,1) 36%, rgba(0,0,0,1) 100%);
+        }
+        .hero-shell {
+            position: relative;
+            overflow: visible; /* allow dropdowns to overflow */
+            border-radius: clamp(16px, 4vw, 32px);
+            box-shadow: 0 24px 50px rgba(0,0,0,0.08);
+            background: var(--bg-body);
+        }
+        .hero-bg {
+            position: absolute;
+            top: 0; right: 0; bottom: 0;
+            width: 60%;
+            background: url('Gemini_Generated_Image_cdi7jfcdi7jfcdi7.png') 65% center / 110% auto no-repeat;
+            mask-image: linear-gradient(270deg,
+                rgba(0,0,0,1) 50%,
+                rgba(0,0,0,0.85) 60%,
+                rgba(0,0,0,0.55) 70%,
+                rgba(0,0,0,0.25) 80%,
+                rgba(0,0,0,0) 90%);
+            -webkit-mask-image: linear-gradient(270deg,
+                rgba(0,0,0,1) 50%,
+                rgba(0,0,0,0.85) 60%,
+                rgba(0,0,0,0.55) 70%,
+                rgba(0,0,0,0.25) 80%,
+                rgba(0,0,0,0) 90%);
+            border-radius: inherit;
+            z-index: 0;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        @media (max-width: 900px) {
+            .hero-bg { display: none; }
+            .hero-shell { border-radius: 20px; }
+        }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+        .skip-link { position: absolute; top: -100%; left: 50%; transform: translateX(-50%); background: var(--brand); color: white; padding: 0.75rem 1.5rem; border-radius: 0 0 0.75rem 0.75rem; font-weight: 700; z-index: 9999; font-size: 0.875rem; }
+        .skip-link:focus { top: 0; }
+        .site-nav {
+            background: transparent !important;
+            border-bottom: none !important;
+            box-shadow: none !important;
+        }
+        .site-nav > div:first-child {
+            margin-top: 0.9rem;
+            padding-top: 0.8rem;
+            padding-bottom: 0.8rem;
+            background: rgba(255,255,255,0.82);
+            border: 1px solid rgba(233,219,207,0.82);
+            border-radius: 22px;
+            box-shadow: 0 12px 30px rgba(64,49,34,0.05);
+            backdrop-filter: blur(16px);
+        }
+        .site-nav .nav-shell {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .site-nav .nav-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .site-nav .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 0;
+        }
+        .site-nav .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-shrink: 0;
+        }
+        .site-nav .nav-pills {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 0.1rem;
+        }
+        .site-nav .nav-pills::-webkit-scrollbar {
+            display: none;
+        }
+        .site-nav .nav-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 2.2rem;
+            padding: 0.45rem 0.75rem;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            background: transparent;
+            font-size: 0.84rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            text-transform: none;
+            color: var(--text-secondary);
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .site-nav .nav-link::after {
+            display: none;
+        }
+        .site-nav .nav-link:hover,
+        .site-nav .nav-link.active {
+            background: rgba(255,255,255,0.78);
+            border-color: rgba(25,126,128,0.14);
+            color: var(--brand) !important;
+            box-shadow: 0 4px 14px rgba(64,49,34,0.035);
+        }
+        .site-nav .nav-brand {
+            width: 3.4rem;
+            height: 3.4rem;
+            border-radius: 0.95rem;
+            border: 1px solid rgba(233,219,207,0.82);
+            box-shadow: 0 8px 22px rgba(64,49,34,0.04);
+        }
+        .site-nav .theme-switch {
+            background: rgba(255,255,255,0.72);
+            border: 1px solid rgba(233,219,207,0.82);
+            border-radius: 999px;
+            box-shadow: none;
+        }
+        .site-nav .theme-btn {
+            min-width: 2.15rem;
+            min-height: 2.15rem;
+            color: var(--text-secondary);
+        }
+        .site-nav .theme-btn.active-theme {
+            background: rgba(25,126,128,0.12);
+            color: var(--brand);
+        }
+        .site-nav #loginBtn {
+            min-height: 2.35rem;
+            border-radius: 999px;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            box-shadow: none;
+            font-size: 0.84rem;
+        }
+        .site-nav #userMenu {
+            min-height: 2.35rem;
+            border-radius: 999px;
+            background: rgba(215,239,239,0.65);
+            box-shadow: none;
+        }
+        .hero-kicker {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.45rem 0.8rem;
+            border-radius: 999px;
+            border: 1px solid rgba(25,126,128,0.18);
+            background: rgba(255,255,255,0.62);
+            color: var(--brand);
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        main > section[id^="sec-"]:not(#sec-home) {
+            margin-top: 1.35rem;
+        }
+        .hero-shell {
+            border: 1px solid rgba(233,219,207,0.9);
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.85) 0%, rgba(251,241,232,0.92) 56%, rgba(247,234,220,0.98) 100%);
+            overflow: visible;
+        }
+        .hero-shell::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background:
+                radial-gradient(circle at top left, rgba(25,126,128,0.14), rgba(25,126,128,0) 34%),
+                linear-gradient(180deg, rgba(255,255,255,0.38), rgba(255,255,255,0));
+            pointer-events: none;
+        }
+        .hero-search-bar {
+            border: 1px solid rgba(233,219,207,0.9);
+            box-shadow: 0 18px 38px rgba(64,49,34,0.08);
+        }
+        .section-panel {
+            position: relative;
+            border: 1px solid rgba(233,219,207,0.9);
+            border-radius: 32px;
+            background: rgba(255,255,255,0.45);
+            box-shadow: 0 18px 45px rgba(64,49,34,0.06);
+            backdrop-filter: blur(12px);
+        }
+        .feature-card {
+            border: 1px solid rgba(233,219,207,0.9) !important;
+            border-left-width: 1px !important;
+            background: rgba(255,255,255,0.84);
+            box-shadow: 0 14px 34px rgba(64,49,34,0.06);
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 3px;
+            margin: -1.5rem -1.5rem 1.15rem;
+            background: linear-gradient(90deg, rgba(25,126,128,0.8), rgba(25,126,128,0.1));
+        }
+        .feature-kicker {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3.4rem;
+            height: 3.4rem;
+            margin-bottom: 0.95rem;
+            border-radius: 1rem;
+            background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(230,243,243,0.96) 100%);
+            border: 1px solid rgba(233,219,207,0.9);
+            color: var(--brand);
+            font-size: 1.4rem;
+            box-shadow: 0 10px 24px rgba(64,49,34,0.07);
+        }
+        .specialist-card {
+            border: 1px solid rgba(233,219,207,0.9) !important;
+            background: rgba(255,255,255,0.86);
+            box-shadow: 0 14px 36px rgba(64,49,34,0.06);
+        }
+        .guide-btn {
+            border-width: 1px !important;
+            border-color: rgba(233,219,207,0.9) !important;
+            border-radius: 20px !important;
+            background: rgba(255,255,255,0.82) !important;
+            box-shadow: 0 10px 24px rgba(64,49,34,0.05);
+            transition: border-color 0.22s ease, background-color 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+        }
+        .guide-btn:hover {
+            border-color: rgba(25,126,128,0.22) !important;
+            background: rgba(255,255,255,0.94) !important;
+            transform: translateY(-1px);
+        }
+        .guide-btn.is-active {
+            border-color: rgba(25,126,128,0.34) !important;
+            background: linear-gradient(135deg, rgba(215,239,239,0.86), rgba(255,255,255,0.92)) !important;
+            box-shadow: 0 16px 30px rgba(25,126,128,0.08);
+        }
+        .guide-index {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 2.2rem;
+            min-height: 2.2rem;
+            border-radius: 999px;
+            border: 1px solid rgba(233,219,207,0.9);
+            background: rgba(255,255,255,0.7);
+            color: var(--text-secondary);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+        }
+        #sec-guide > div[id^="guide-"] > div:first-child,
+        #sec-faq details,
+        #sec-community .space-y-4 > div,
+        #sec-specialist-dashboard .bg-white,
+        #profileModal .bg-brand-light,
+        #profileModal .bg-green-50,
+        #calendarModal .bg-gray-50 {
+            border: 1px solid rgba(233,219,207,0.88);
+            box-shadow: 0 14px 32px rgba(64,49,34,0.05);
+        }
+        #sec-faq details {
+            background: rgba(255,255,255,0.86);
+        }
+        #sec-community .space-y-4 > div {
+            background: rgba(255,255,255,0.86);
+        }
+        footer[role="contentinfo"] {
+            margin-top: auto;
+            background: transparent !important;
+            border-top: none !important;
+        }
+        footer[role="contentinfo"] > div {
+            background: rgba(255,255,255,0.72);
+            border: 1px solid rgba(233,219,207,0.9);
+            border-radius: 24px;
+            box-shadow: 0 18px 40px rgba(64,49,34,0.06);
+            backdrop-filter: blur(12px);
+        }
+        body.dark .site-nav > div:first-child,
+        body.dark .section-panel,
+        body.dark footer[role="contentinfo"] > div {
+            background: rgba(18,24,24,0.78);
+            border-color: var(--border-color);
+            box-shadow: none;
+        }
+        body.dark .site-nav .nav-brand,
+        body.dark .site-nav .theme-switch {
+            border-color: var(--border-color);
+            box-shadow: none;
+        }
+        body.dark .site-nav .nav-link {
+            background: transparent;
+            border-color: transparent;
+            color: var(--text-secondary) !important;
+        }
+        body.dark .site-nav .nav-link:hover,
+        body.dark .site-nav .nav-link.active {
+            background: rgba(25,126,128,0.12);
+            border-color: rgba(25,126,128,0.18);
+            color: #8fd0d1 !important;
+            box-shadow: none;
+        }
+        body.dark .site-nav .theme-btn {
+            color: var(--text-secondary);
+        }
+        body.dark .site-nav .theme-btn.active-theme {
+            background: rgba(25,126,128,0.18);
+            color: #8fd0d1;
+        }
+        @media (max-width: 767px) {
+            .site-nav > div:first-child {
+                border-radius: 18px;
+            }
+            .site-nav .nav-top {
+                align-items: flex-start;
+            }
+            .site-nav .nav-left {
+                flex: 1 1 auto;
+            }
+            .site-nav .nav-right {
+                gap: 0.5rem;
+            }
+            .site-nav .nav-link {
+                min-height: 2rem;
+                padding: 0.4rem 0.7rem;
+                font-size: 0.76rem;
+                white-space: nowrap;
+            }
+            .site-nav .nav-brand {
+                width: 3rem;
+                height: 3rem;
+            }
+        }
+        @media (min-width: 768px) {
+            .site-nav .nav-shell {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .site-nav .nav-top {
+                flex: 1 1 auto;
+                min-width: 0;
+                justify-content: flex-start;
+            }
+            .site-nav .nav-left {
+                gap: 1.35rem;
+                flex: 1 1 auto;
+            }
+            .site-nav .nav-pills {
+                flex-wrap: nowrap;
+                overflow: visible;
+            }
+        }
+        body.dark .hero-shell {
+            border-color: var(--border-color);
+            background: linear-gradient(135deg, rgba(22,28,28,0.96) 0%, rgba(15,20,20,0.98) 100%);
+        }
+        body.dark .hero-search-bar,
+        body.dark .feature-card,
+        body.dark .specialist-card,
+        body.dark .guide-btn,
+        body.dark #sec-faq details,
+        body.dark #sec-community .space-y-4 > div,
+        body.dark #sec-specialist-dashboard .bg-white,
+        body.dark #profileModal .bg-brand-light,
+        body.dark #profileModal .bg-green-50,
+        body.dark #calendarModal .bg-gray-50 {
+            border-color: var(--border-color) !important;
+            background: rgba(22,28,28,0.88) !important;
+            box-shadow: none !important;
+        }
+        body.dark .feature-kicker,
+        body.dark .guide-index,
+        body.dark .hero-kicker {
+            background: rgba(25,126,128,0.18);
+            border-color: rgba(25,126,128,0.3);
+            color: #8fd0d1;
+        }
+    </style>
+</head>
+<body class="text-gray-800" id="appBody" style="background-color: var(--bg-body);">
+
+    <!-- Skip navigation for keyboard users -->
+    <a href="#main-content" class="skip-link">Pāriet uz saturu</a>
+
+    <!-- ═══ NAVIGATION ═══ -->
+    <nav class="site-nav bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm" aria-label="Galvenā navigācija">
+        <div class="max-w-6xl mx-auto px-6 py-3">
+            <div class="nav-shell">
+                <div class="nav-top">
+                    <div class="nav-left">
+                        <a href="#" onclick="showSection('home')" class="flex items-center gap-3">
+                            <div class="nav-brand h-16 w-16 rounded-xl overflow-hidden flex items-center justify-center bg-white shadow-sm">
+                                <img src="NEW_Logo.png" alt="augt.lv logo" class="h-full w-full object-cover object-center block">
+                            </div>
+                        </a>
+                        <div class="nav-pills text-sm font-bold text-gray-500">
+                            <a href="#" onclick="showSection('specialists')" class="nav-link hover:text-gray-900" id="nav-specialists">Speciālisti</a>
+                            <a href="#" onclick="showSection('guide')" class="nav-link hover:text-gray-900" id="nav-guide">Ko darīt tālāk?</a>
+                            <a href="#" onclick="showSection('community')" class="nav-link hover:text-gray-900" id="nav-community">Kopiena</a>
+                            <a href="#" onclick="showSection('faq')" class="nav-link hover:text-gray-900" id="nav-faq">BUJ</a>
+                            <a href="#" onclick="showSection('specialist-dashboard')" class="nav-link hover:text-gray-900 hidden text-brand" id="navSpecDashboard">Mans panelis</a>
+                        </div>
+                    </div>
+                    <div class="nav-right">
+                        <div class="theme-switch flex bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200" role="group" aria-label="Tēmas pārslēgšana">
+                            <button onclick="changeTheme('default')" class="theme-btn active-theme p-2 text-sm" title="Gaišais" id="btnLight" aria-label="Gaišā tēma" aria-pressed="true">☀️</button>
+                            <button onclick="changeTheme('dark')" class="theme-btn p-2 text-sm" title="Tumšais" id="btnDark" aria-label="Tumšā tēma" aria-pressed="false">🌙</button>
+                        </div>
+                        <button id="loginBtn" onclick="showModal('authModal')" class="btn-cta px-5 py-2 rounded-xl font-bold text-sm hover:opacity-90 transition shadow">Pieteikties</button>
+                        <button id="userMenu" class="hidden items-center gap-2 bg-brand-light px-4 py-2 rounded-xl font-bold text-sm text-brand">
+                            <span>👤</span> <span id="userName">Vita</span>
+                            <span onclick="doLogout()" class="ml-2 text-xs opacity-50 hover:opacity-100 cursor-pointer">✕</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ═══ HOME / HERO ═══ -->
+    <main id="main-content">
+    <section id="sec-home" class="fade-in">
+        <div class="bg-transparent">
+            <div class="max-w-6xl mx-auto px-0 md:px-6 py-0 md:py-8">
+                <div class="hero-shell p-8 md:p-12 relative min-h-[360px] md:min-h-[440px] flex flex-col md:flex-row items-center">
+                    <div class="hero-bg"></div>
+                    <div class="hero-content max-w-5xl w-full md:w-5/6">
+                        <div class="hero-kicker">Atbalsts ģimenēm vienuviet</div>
+                        <h1 class="text-4xl md:text-6xl font-black text-gray-900 mb-5 leading-tight">Palīdzam bērniem<br><span class="text-brand">augt un attīstīties</span></h1>
+                        <div class="text-lg text-gray-600 max-w-xl mb-10 leading-relaxed space-y-1">
+                            <p>Atrodi speciālistu savam bērnam, pieraksti vizītei</p>
+                            <p>un saņem skaidru ceļvedi.</p>
+                        </div>
+                        <!-- Quick search -->
+                        <div class="hero-search-bar bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg p-3 flex flex-col md:flex-row md:flex-nowrap gap-2 w-full max-w-5xl">
+                            <div class="custom-select flex-1 min-w-0" data-select data-scope="hero">
+                                <input type="hidden" name="heroCity" value="">
+                                <button type="button" class="select-trigger" data-placeholder="Pilsēta..." aria-haspopup="listbox">Pilsēta...</button>
+                                <ul class="select-menu" role="listbox"></ul>
+                            </div>
+                            <div class="custom-select flex-1 min-w-0" data-select data-scope="hero">
+                                <input type="hidden" name="heroType" value="">
+                                <button type="button" class="select-trigger" data-placeholder="Speciālists..." aria-haspopup="listbox">Speciālista tips...</button>
+                                <ul class="select-menu" role="listbox"></ul>
+                            </div>
+                            <button onclick="goToSpecialists()" class="btn-cta px-8 py-3 rounded-xl font-black text-sm whitespace-nowrap">MEKLĒT</button>
+                        </div>
+                    </div>
+                    <div class="flex-1"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Quick links -->
+        <div class="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-3 gap-6">
+            <div onclick="showSection('specialists')" class="feature-card bg-white p-6 rounded-2xl shadow-sm card-hover cursor-pointer border-l-4 border-brand" role="link" tabindex="0" onkeydown="if(event.key==='Enter')showSection('specialists')">
+                <div class="feature-kicker" aria-hidden="true">🔍</div>
+                <h3 class="font-black text-lg mb-1">Speciālistu katalogs</h3>
+                <p class="text-gray-400 text-sm">Meklē pēc pilsētas, specializācijas, diagnozes un pieejamības</p>
+            </div>
+            <div onclick="showSection('guide')" class="feature-card bg-white p-6 rounded-2xl shadow-sm card-hover cursor-pointer border-l-4 border-amber-400" role="link" tabindex="0" onkeydown="if(event.key==='Enter')showSection('guide')">
+                <div class="feature-kicker" aria-hidden="true">🧭</div>
+                <h3 class="font-black text-lg mb-1">Ko darīt tālāk?</h3>
+                <p class="text-gray-400 text-sm">Soli-pa-solim ceļvedis no pirmajām bažām līdz atbalstam</p>
+            </div>
+            <div onclick="showSection('faq')" class="feature-card bg-white p-6 rounded-2xl shadow-sm card-hover cursor-pointer border-l-4 border-amber-400" role="link" tabindex="0" onkeydown="if(event.key==='Enter')showSection('faq')">
+                <div class="feature-kicker" aria-hidden="true">💬</div>
+                <h3 class="font-black text-lg mb-1">Biežāk uzdotie jautājumi</h3>
+                <p class="text-gray-400 text-sm">Atbildes uz vecāku biežākajiem jautājumiem</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ SPECIALISTS (OPEN) ═══ -->
+    <section id="sec-specialists" class="hidden fade-in max-w-6xl mx-auto px-6 py-10">
+        <div class="catalog-layout">
+            <div class="catalog-header mb-8">
+                <div>
+                    <h2 class="text-3xl font-black tracking-tight">Speciālistu katalogs</h2>
+                    <p class="text-gray-400 font-medium mt-1" id="specialistCount">Pieejami speciālisti</p>
+                </div>
+                <div class="catalog-toolbar">
+                    <div class="catalog-filter filter-city">
+                        <div class="custom-select" data-select data-default="Visas pilsētas" data-filter-label="Pilsēta">
+                        <input type="hidden" name="filterCity" value="Visas pilsētas">
+                        <button type="button" class="select-trigger" aria-haspopup="listbox">Visas pilsētas</button>
+                        <ul class="select-menu" role="listbox"></ul>
+                    </div>
+                    </div>
+                    <div class="catalog-filter filter-type">
+                        <div class="custom-select" data-select data-default="Visi speciālisti" data-filter-label="Speciālists">
+                        <input type="hidden" name="filterType" value="Visi speciālisti">
+                        <button type="button" class="select-trigger" aria-haspopup="listbox">Visi speciālisti</button>
+                        <ul class="select-menu" role="listbox"></ul>
+                    </div>
+                    </div>
+                    <div class="catalog-filter filter-diagnosis">
+                        <div class="custom-select" data-select data-default="Visas diagnozes" data-filter-label="Diagnoze">
+                        <input type="hidden" name="filterDiag" value="Visas diagnozes">
+                        <button type="button" class="select-trigger" aria-haspopup="listbox">Visas diagnozes</button>
+                        <ul class="select-menu" role="listbox"></ul>
+                    </div>
+                    </div>
+                    <div class="catalog-filter filter-age">
+                        <div class="custom-select" data-select data-default="Jebkurš vecums" data-filter-label="Vecums">
+                        <input type="hidden" name="filterAge" value="Jebkurš vecums">
+                        <button type="button" class="select-trigger" aria-haspopup="listbox">Jebkurš vecums</button>
+                        <ul class="select-menu" role="listbox"></ul>
+                    </div>
+                    </div>
+                    <div class="catalog-filter filter-visit">
+                        <div class="custom-select" data-select data-default="Jebkurš formāts" data-filter-label="Formāts">
+                        <input type="hidden" name="filterVisit" value="Jebkurš formāts">
+                        <button type="button" class="select-trigger" aria-haspopup="listbox">Jebkurš formāts</button>
+                        <ul class="select-menu" role="listbox"></ul>
+                    </div>
+                    </div>
+                </div>
+                <div class="catalog-actions">
+                    <button type="button" class="catalog-clear-btn" onclick="clearCatalogFilters()">Notīrīt filtrus</button>
+                </div>
+            </div>
+
+            <div class="grid gap-4">
+            <div id="specialistEmptyState" class="hidden bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center text-gray-500 font-medium">
+                Neviens speciālists pēc šādiem kritērijiem netika atrasts
+            </div>
+            <div id="specialistList" class="grid gap-4"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ GUIDE (OPEN) ═══ -->
+    <section id="sec-guide" class="section-panel hidden fade-in max-w-4xl mx-auto px-6 py-10">
+        <h2 class="text-3xl font-black tracking-tight mb-2">Ko darīt tālāk?</h2>
+        <p class="text-gray-400 mb-10">Izvēlieties savu situāciju, lai redzētu konkrētus nākamos soļus.</p>
+
+        <!-- Situation selector -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
+            <button onclick="showGuide('concerns')" class="guide-btn p-4 bg-white rounded-xl border-2 border-gray-100 hover:border-brand transition text-center card-hover">
+                <div class="guide-index mb-2" aria-hidden="true">01</div>
+                <div class="text-xs font-bold">Pirmās bažas</div>
+            </button>
+            <button onclick="showGuide('waiting')" class="guide-btn p-4 bg-white rounded-xl border-2 border-gray-100 hover:border-brand transition text-center card-hover">
+                <div class="guide-index mb-2" aria-hidden="true">02</div>
+                <div class="text-xs font-bold">Gaidu diagnozi</div>
+            </button>
+            <button onclick="showGuide('diagnosis')" class="guide-btn p-4 bg-white rounded-xl border-2 border-gray-100 hover:border-brand transition text-center card-hover">
+                <div class="guide-index mb-2" aria-hidden="true">03</div>
+                <div class="text-xs font-bold">Ir diagnoze</div>
+            </button>
+            <button onclick="showGuide('education')" class="guide-btn p-4 bg-white rounded-xl border-2 border-gray-100 hover:border-brand transition text-center card-hover">
+                <div class="guide-index mb-2" aria-hidden="true">04</div>
+                <div class="text-xs font-bold">Izglītības atbalsts</div>
+            </button>
+        </div>
+
+        <!-- Guide: Concerns -->
+        <div id="guide-concerns" class="hidden fade-in">
+            <div class="bg-brand-light rounded-2xl p-6 mb-6">
+                <h3 class="font-black text-lg text-brand mb-1">Pirmās bažas par bērna attīstību</h3>
+                <p class="text-sm text-gray-500">Jūs esat pamanījuši, ka bērns attīstās citādi nekā vienaudži. Šeit ir konkrēti soļi.</p>
+            </div>
+            <div class="space-y-6">
+                <div class="step-line">
+                    <div class="step-dot bg-brand">1</div>
+                    <h4 class="font-black text-base mb-1">Vērsieties pie ģimenes ārsta</h4>
+                    <p class="text-sm text-gray-500">Aprakstiet, kas jūs satrauc. Lūdziet nosūtījumu pie bērnu psihiatra vai neirologa. Ja ārsts iesaka "pagaidīt" - jums ir tiesības uzstāt uz nosūtījumu.</p>
+                </div>
+                <div class="step-line">
+                    <div class="step-dot bg-brand">2</div>
+                    <h4 class="font-black text-base mb-1">Paralēli pierakstieties rindā pie speciālistiem</h4>
+                    <p class="text-sm text-gray-500">Rindas ir garas - reģistrējieties vairākās iestādēs vienlaicīgi. <a href="#" onclick="showSection('specialists')" class="text-brand font-bold underline">Meklēt speciālistus →</a></p>
+                </div>
+                <div class="step-line">
+                    <div class="step-dot bg-brand">3</div>
+                    <h4 class="font-black text-base mb-1">Sāciet funkcionālo speciālistu nodarbības</h4>
+                    <p class="text-sm text-gray-500">Kamēr gaidāt diagnozi, var sākt logopēda, ergoterapeita vai speciālā pedagoga nodarbības - tām diagnoze nav nepieciešama.</p>
+                </div>
+                <div class="step-line">
+                    <div class="step-dot bg-brand">4</div>
+                    <h4 class="font-black text-base mb-1">Dokumentējiet bērna uzvedību</h4>
+                    <p class="text-sm text-gray-500">Pierakstiet situācijas, kas jūs satrauc - tas palīdzēs speciālistam saprast ainu ātrāk.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guide: Waiting -->
+        <div id="guide-waiting" class="hidden fade-in">
+            <div class="bg-amber-50 rounded-2xl p-6 mb-6">
+                <h3 class="font-black text-lg text-amber-700 mb-1">Gaidīšanas periods pirms diagnozes</h3>
+                <p class="text-sm text-gray-500">Šis laiks nav "tukšs" - ir daudz, ko var darīt, kamēr gaidāt.</p>
+            </div>
+            <div class="space-y-6">
+                <div class="step-line">
+                    <div class="step-dot bg-amber-500">1</div>
+                    <h4 class="font-black text-base mb-1">Izmantojiet ambulatoros pakalpojumus</h4>
+                    <p class="text-sm text-gray-500">Logopēda, ergoterapeita un speciālā pedagoga nodarbības ir pieejamas arī bez diagnozes.</p>
+                </div>
+                <div class="step-line">
+                    <div class="step-dot bg-amber-500">2</div>
+                    <h4 class="font-black text-base mb-1">Apmeklējiet vecāku izglītojošās programmas</h4>
+                    <p class="text-sm text-gray-500">BKUS, Autisma apvienība un citas organizācijas piedāvā bezmaksas apmācības vecākiem.</p>
+                </div>
+                <div class="step-line">
+                    <div class="step-dot bg-amber-500">3</div>
+                    <h4 class="font-black text-base mb-1">Sazinieties ar gadījumu vadītāju</h4>
+                    <p class="text-sm text-gray-500">Latvijas Autisma apvienības gadījumu vadītāji palīdz orientēties sistēmā - bezmaksas.</p>
+                </div>
+                <div class="step-line">
+                    <div class="step-dot bg-amber-500">4</div>
+                    <h4 class="font-black text-base mb-1">Atrodiet atbalsta grupu</h4>
+                    <p class="text-sm text-gray-500">Saruna ar citiem vecākiem līdzīgā situācijā ir viena no vērtīgākajām atbalsta formām.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guide: Diagnosis -->
+        <div id="guide-diagnosis" class="hidden fade-in">
+            <div class="bg-green-50 rounded-2xl p-6 mb-6">
+                <h3 class="font-black text-lg text-green-700 mb-1">Diagnoze ir apstiprināta</h3>
+                <p class="text-sm text-gray-500">Tagad ir skaidrs ceļš uz valsts apmaksātiem pakalpojumiem un atbalstu.</p>
+            </div>
+            <div class="space-y-6">
+                <div class="step-line">
+                    <div class="step-dot bg-green-600">1</div>
+                    <h4 class="font-black text-base mb-1">Pieteikties valsts apmaksātiem pakalpojumiem</h4>
+                    <p class="text-sm text-gray-500">Ar diagnozi jūs varat pieteikties rehabilitācijai, agrīnajai intervencei un speciālistu konsultācijām caur NVD.</p>
+                </div>
+                <div class="step-line">
+                    <div class="step-dot bg-green-600">2</div>
+                    <h4 class="font-black text-base mb-1">Noformēt invaliditātes statusu</h4>
+                    <p class="text-sm text-gray-500">Tas atver papildu pabalstus, asistenta pakalpojumu un citus valsts atbalsta veidus.</p>
+                </div>
+                <div class="step-line">
+                    <div class="step-dot bg-green-600">3</div>
+                    <h4 class="font-black text-base mb-1">Sākt regulāras terapijas</h4>
+                    <p class="text-sm text-gray-500">Balstoties uz rehabilitācijas plānu, sāciet terapijas - ABA, logopēdija, ergoterapija vai citas. <a href="#" onclick="showSection('specialists')" class="text-brand font-bold underline">Meklēt speciālistus →</a></p>
+                </div>
+                <div class="step-line">
+                    <div class="step-dot bg-green-600">4</div>
+                    <h4 class="font-black text-base mb-1">Sazināties ar skolu / bērnudārzu</h4>
+                    <p class="text-sm text-gray-500">Informējiet izglītības iestādi par diagnozi un nepieciešamo atbalstu. Pieprasiet pedagoģiski medicīniskās komisijas izvērtējumu.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guide: Education -->
+        <div id="guide-education" class="hidden fade-in">
+            <div class="bg-blue-50 rounded-2xl p-6 mb-6">
+                <h3 class="font-black text-lg text-blue-700 mb-1">Izglītības atbalsts</h3>
+                <p class="text-sm text-gray-500">Kā nodrošināt, lai bērns saņem piemērotu izglītību un atbalstu skolā.</p>
+            </div>
+            <div class="space-y-6">
+                <div class="step-line">
+                    <div class="step-dot bg-blue-600">1</div>
+                    <h4 class="font-black text-base mb-1">Pedagoģiski medicīniskā komisija (PMK)</h4>
+                    <p class="text-sm text-gray-500">PMK izvērtē bērna vajadzības un piešķir izglītības programmas kodu, kas ļauj saņemt atbalstu skolā.</p>
+                </div>
+                <div class="step-line">
+                    <div class="step-dot bg-blue-600">2</div>
+                    <h4 class="font-black text-base mb-1">Pieprasīt asistentu</h4>
+                    <p class="text-sm text-gray-500">Ar atbilstošu PMK kodu bērns var saņemt asistenta pakalpojumu skolā.</p>
+                </div>
+                <div class="step-line">
+                    <div class="step-dot bg-blue-600">3</div>
+                    <h4 class="font-black text-base mb-1">Individuālais izglītības plāns</h4>
+                    <p class="text-sm text-gray-500">Sadarbojieties ar skolu, lai izveidotu plānu, kas pielāgots bērna vajadzībām.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ FAQ (OPEN) ═══ -->
+    <section id="sec-faq" class="section-panel hidden fade-in max-w-4xl mx-auto px-6 py-10">
+        <h2 class="text-3xl font-black tracking-tight mb-8">Biežāk uzdotie jautājumi</h2>
+        <div class="space-y-4">
+            <details class="bg-white rounded-2xl shadow-sm border border-gray-100 group">
+                <summary class="p-5 font-bold cursor-pointer flex justify-between items-center hover:text-brand">Kur sameklēt bērnu psihologu?<span class="text-gray-300 group-open:rotate-45 transition text-xl">+</span></summary>
+                <div class="px-5 pb-5 text-sm text-gray-500">Platformā izmantojiet filtru "Speciālista tips" un izvēlieties "Klīniskais psihologs." Papildus iesakām vērsties pie ģimenes ārsta, lai saņemtu nosūtījumu pie valsts apmaksāta speciālista BKUS vai reģionālajās slimnīcās.</div>
+            </details>
+            <details class="bg-white rounded-2xl shadow-sm border border-gray-100 group">
+                <summary class="p-5 font-bold cursor-pointer flex justify-between items-center hover:text-brand">Kāda ir starpība starp ABA un Montesori?<span class="text-gray-300 group-open:rotate-45 transition text-xl">+</span></summary>
+                <div class="px-5 pb-5 text-sm text-gray-500">ABA terapija ir uzvedības analīzes metode, kas palīdz bērnam apgūt jaunas prasmes un mazināt nevēlamu uzvedību. Montesori ir pedagoģiska pieeja, kas fokusējas uz bērna pašizpausmi un dabisku attīstību sagatavotā vidē. Abas var būt noderīgas - izvēle atkarīga no bērna vajadzībām.</div>
+            </details>
+            <details class="bg-white rounded-2xl shadow-sm border border-gray-100 group">
+                <summary class="p-5 font-bold cursor-pointer flex justify-between items-center hover:text-brand">Vai ABA terapija ir valsts apmaksāta?<span class="text-gray-300 group-open:rotate-45 transition text-xl">+</span></summary>
+                <div class="px-5 pb-5 text-sm text-gray-500">Šobrīd ABA terapija Latvijā nav valsts apmaksāta - vecākiem tā jāsedz no saviem līdzekļiem. Valsts apmaksāti ir logopēda, ergoterapeita, klīniskā psihologa un bērnu psihiatra pakalpojumi (ar nosūtījumu un rindas gaidīšanu).</div>
+            </details>
+            <details class="bg-white rounded-2xl shadow-sm border border-gray-100 group">
+                <summary class="p-5 font-bold cursor-pointer flex justify-between items-center hover:text-brand">Cik ilgi jāgaida uz diagnozi?<span class="text-gray-300 group-open:rotate-45 transition text-xl">+</span></summary>
+                <div class="px-5 pb-5 text-sm text-gray-500">Diemžēl diagnostikas process Latvijā vidēji prasa 1–2 gadus. Taču gaidīšanas laikā ir iespējams saņemt funkcionālo speciālistu palīdzību. Skatiet mūsu ceļvedi <a href="#" onclick="showSection('guide')" class="text-brand font-bold underline">"Ko darīt tālāk?"</a></div>
+            </details>
+            <details class="bg-white rounded-2xl shadow-sm border border-gray-100 group">
+                <summary class="p-5 font-bold cursor-pointer flex justify-between items-center hover:text-brand">Vai man vajag diagnozi, lai saņemtu palīdzību?<span class="text-gray-300 group-open:rotate-45 transition text-xl">+</span></summary>
+                <div class="px-5 pb-5 text-sm text-gray-500">Nē! Daudzi speciālisti (logopēdi, ergoterapeiti, speciālie pedagogi) pieņem bērnus arī bez diagnozes. Diagnozi var gaidīt, kamēr bērns jau saņem palīdzību.</div>
+            </details>
+        </div>
+    </section>
+
+    <!-- ═══ COMMUNITY (READ-ONLY, WRITE NEEDS LOGIN) ═══ -->
+    <section id="sec-community" class="section-panel hidden fade-in max-w-4xl mx-auto px-6 py-10">
+        <div class="flex justify-between items-end mb-8">
+            <div>
+                <h2 class="text-3xl font-black tracking-tight">Vecāku kopiena</h2>
+                <p class="text-gray-400 mt-1">Dalieties pieredzē un atbalstiet cits citu</p>
+            </div>
+            <button onclick="requireLogin(null, 'Lai rakstītu kopienā, lūdzu piesakieties.')" class="btn-cta px-5 py-2 rounded-xl font-bold text-sm hover:opacity-90 transition shadow">+ Uzdot jautājumu</button>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center text-xs font-black text-pink-600">M</div>
+                    <div><span class="font-bold text-sm">Mamma no Ventspils</span> <span class="text-xs text-gray-400">· pirms 2 dienām</span></div>
+                </div>
+                <p class="text-sm text-gray-600">Vai kāds var ieteikt labu logopēdu Ventspilī vai tiešsaistē? Dēlam 4 gadi, runas aizture. Esam rindā BKUS, bet gaidīšana ir gara...</p>
+                <div class="mt-3 flex gap-4 text-xs text-gray-400">
+                    <span>💬 3 atbildes</span>
+                    <span>❤️ 8</span>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-xs font-black text-blue-600">T</div>
+                    <div><span class="font-bold text-sm">Tēvs no Rīgas</span> <span class="text-xs text-gray-400">· pirms 5 dienām</span></div>
+                </div>
+                <p class="text-sm text-gray-600">Mums beidzot apstiprināja AST diagnozi. Ārste ieteica ABA terapiju, bet tā nav valsts apmaksāta. Cik aptuveni izmaksā viena sesija?</p>
+                <div class="mt-3 flex gap-4 text-xs text-gray-400">
+                    <span>💬 7 atbildes</span>
+                    <span>❤️ 12</span>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-xs font-black text-green-600">A</div>
+                    <div><span class="font-bold text-sm">Anonīms</span> <span class="text-xs text-gray-400">· pirms 1 nedēļas</span></div>
+                </div>
+                <p class="text-sm text-gray-600">Kā jūs tikāt galā ar skolas attieksmi? Mūsu dēlam UDHS, un skolotāja regulāri zvana, ka viņš "traucē klasi." Jūtos bezpalīdzīga.</p>
+                <div class="mt-3 flex gap-4 text-xs text-gray-400">
+                    <span>💬 11 atbildes</span>
+                    <span>❤️ 24</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ MODAL: Auth ═══ -->
+    <div id="authModal" class="fixed inset-0 modal-bg hidden z-[100] flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-label="Pieteikšanās">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full relative shadow-2xl fade-in">
+            <button onclick="closeModal('authModal')" class="absolute top-4 right-5 text-2xl text-gray-300 hover:text-gray-600 transition" aria-label="Aizvērt">✕</button>
+            <h2 class="text-xl font-black text-center mb-2">Pieteikties</h2>
+            <p id="authMessage" class="text-sm text-gray-400 text-center mb-6">Lai pieteiktos vizītei vai rakstītu kopienā</p>
+            <div class="space-y-3">
+                <button onclick="doLogin('smart-id')" class="w-full p-4 border-2 border-gray-100 rounded-xl hover:border-brand hover:bg-brand-light transition font-bold text-left flex justify-between items-center">Smart-ID <span>→</span></button>
+                <button onclick="doLogin('e-paraksts')" class="w-full p-4 border-2 border-gray-100 rounded-xl hover:border-brand hover:bg-brand-light transition font-bold text-left flex justify-between items-center">e-Paraksts <span>→</span></button>
+                <button onclick="doLogin('password')" class="w-full p-4 border-2 border-gray-100 rounded-xl hover:border-brand hover:bg-brand-light transition font-bold text-left flex justify-between items-center">E-pasts un parole <span>→</span></button>
+            </div>
+            <p class="text-xs text-gray-300 text-center mt-6">Pieslēdzoties, jūs piekrītat <a href="#" class="underline">lietošanas noteikumiem</a> un <a href="#" class="underline">privātuma politikai</a>.</p>
+        </div>
+    </div>
+
+    <!-- ═══ MODAL: Profile ═══ -->
+    <div id="profileModal" class="fixed inset-0 modal-bg hidden z-[100] flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-label="Speciālista profils">
+        <div class="bg-white rounded-3xl p-8 max-w-lg w-full relative shadow-2xl fade-in">
+            <button onclick="closeModal('profileModal')" class="absolute top-4 right-5 text-2xl text-gray-300 hover:text-gray-600 transition" aria-label="Aizvērt">✕</button>
+            <div class="flex items-center gap-4 mb-5">
+                <div id="profileAvatar" class="w-14 h-14 bg-brand rounded-2xl flex items-center justify-center text-white text-xl font-black">LB</div>
+                <div>
+                    <h2 id="profileName" class="text-2xl font-black">Līga Bērziņa</h2>
+                    <p id="profileType" class="text-brand font-bold text-xs uppercase">ABA terapeite</p>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div class="bg-brand-light p-4 rounded-xl">
+                    <p class="text-xs font-bold text-gray-500 mb-1">Par speciālistu</p>
+                    <p id="profileSummary" class="text-sm text-gray-600">Strādā ar bērniem vecumā no 2 līdz 10 gadiem. Galvenās darba jomas: AST, uzvedības traucējumi.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-3 text-sm">
+                    <div class="p-3 bg-gray-50 rounded-xl"><span class="text-xs text-gray-400 block">Vieta</span><span id="profileCity" class="font-bold">Rīga</span></div>
+                    <div class="p-3 bg-gray-50 rounded-xl"><span class="text-xs text-gray-400 block">Vizītes</span><span id="profileVisitType" class="font-bold">Klātienē & tiešsaistē</span></div>
+                    <div class="p-3 bg-gray-50 rounded-xl"><span class="text-xs text-gray-400 block">Diagnozes</span><span id="profileFocus" class="font-bold">AST, uzvedības traucējumi</span></div>
+                    <div class="p-3 bg-gray-50 rounded-xl"><span class="text-xs text-gray-400 block">Cena</span><span id="profilePrice" class="font-bold">45–60 EUR / sesija</span></div>
+                </div>
+                <div class="bg-green-50 p-4 rounded-xl">
+                    <p id="profileReviewTitle" class="text-xs font-bold text-green-700 mb-2">Vecāku atsauksmes (⭐ 4.8)</p>
+                    <p id="profileReviewText" class="text-sm text-gray-600 italic">"Vecāki īpaši novērtē skaidro komunikāciju un mierīgo pieeju darbā ar bērnu."</p>
+                    <p id="profileLanguages" class="text-xs text-gray-400 mt-1">Valodas: LV</p>
+                </div>
+                <button onclick="closeModal('profileModal'); bookSelectedSpecialist()" class="w-full btn-cta py-3 rounded-xl font-bold hover:opacity-90 transition shadow">Pieteikties vizītei</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ MODAL: Calendar (LOGIN REQUIRED) ═══ -->
+    <div id="calendarModal" class="fixed inset-0 modal-bg hidden z-[100] flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-label="Vizītes pieteikšana">
+        <div class="bg-white rounded-3xl p-8 max-w-3xl w-full relative shadow-2xl fade-in">
+            <button onclick="closeModal('calendarModal')" class="absolute top-4 right-5 text-2xl text-gray-300 hover:text-gray-600 transition" aria-label="Aizvērt">✕</button>
+            <h2 id="calendarTitle" class="text-2xl font-black mb-1">Izvēlieties laiku</h2>
+            <p id="calendarSubtitle" class="text-sm text-gray-400 mb-6">Līga Bērziņa - ABA terapeite, Rīga</p>
+            <div class="grid grid-cols-7 gap-2 mb-6" id="calendarGrid"></div>
+            <div class="bg-gray-50 rounded-xl p-4">
+                <p class="text-xs font-bold text-gray-500 mb-2">Pieteikuma forma</p>
+                <div class="grid md:grid-cols-2 gap-3">
+                    <input type="text" placeholder="Bērna vārds" aria-label="Bērna vārds" class="p-3 rounded-xl border text-sm outline-none focus:border-brand">
+                    <input type="text" placeholder="Bērna vecums" aria-label="Bērna vecums" class="p-3 rounded-xl border text-sm outline-none focus:border-brand">
+                </div>
+                <textarea placeholder="Galvenā grūtība vai jautājums (neobligāts)" aria-label="Galvenā grūtība vai jautājums" class="w-full mt-3 p-3 rounded-xl border text-sm outline-none focus:border-brand h-20 resize-none"></textarea>
+                <button onclick="alert('Vizīte pieteikta! Apstiprinājums nosūtīts uz jūsu e-pastu.'); closeModal('calendarModal')" class="w-full mt-3 btn-cta py-3 rounded-xl font-bold hover:opacity-90 transition shadow">Apstiprināt pierakstu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ MODAL: Role Selection (after auth) ═══ -->
+    <div id="roleModal" class="fixed inset-0 modal-bg hidden z-[100] flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-label="Lomas izvēle">
+        <div class="bg-white rounded-3xl p-8 max-w-lg w-full relative shadow-2xl fade-in">
+            <button onclick="closeModal('roleModal')" class="absolute top-4 right-5 text-2xl text-gray-300 hover:text-gray-600 transition" aria-label="Aizvērt">✕</button>
+            <h2 class="text-xl font-black text-center mb-2">Kā jūs lietosiet sistēmu?</h2>
+            <p class="text-sm text-gray-400 text-center mb-8">Izvēlieties savu lomu</p>
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="completeLogin('parent')" class="group p-8 bg-gray-50 rounded-2xl border-2 border-gray-100 hover:border-brand hover:bg-brand-light transition text-center">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition">🏡</div>
+                    <div class="font-black text-lg">Esmu vecāks</div>
+                    <div class="text-gray-400 mt-1 text-xs">Meklēju speciālistu bērnam</div>
+                </button>
+                <button onclick="completeLogin('specialist')" class="group p-8 bg-gray-50 rounded-2xl border-2 border-gray-100 hover:border-brand hover:bg-brand-light transition text-center">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition">🎓</div>
+                    <div class="font-black text-lg">Esmu speciālists</div>
+                    <div class="text-gray-400 mt-1 text-xs">Piedāvāju pakalpojumus</div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ MODAL: Specialist Onboarding (certificate upload) ═══ -->
+    <div id="onboardingModal" class="fixed inset-0 modal-bg hidden z-[100] flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-label="Speciālista reģistrācija">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full relative shadow-2xl fade-in">
+            <button onclick="closeModal('onboardingModal')" class="absolute top-4 right-5 text-2xl text-gray-300 hover:text-gray-600 transition" aria-label="Aizvērt">✕</button>
+            <h2 class="text-xl font-black mb-2">Reģistrācijas pabeigšana</h2>
+            <p class="text-sm text-gray-400 mb-6">Lai darbotos kā speciālists, nepieciešama sertifikāta pārbaude.</p>
+            <div class="border-2 border-dashed border-gray-200 p-8 rounded-2xl text-center mb-6 hover:bg-brand-light transition cursor-pointer">
+                <div class="text-3xl mb-2">📄</div>
+                <span class="text-brand font-bold text-sm">Augšupielādēt sertifikātu (.pdf)</span>
+                <p class="text-xs text-gray-400 mt-1">Administrators pārbaudīs jūsu kvalifikāciju</p>
+            </div>
+            <button onclick="processOnboarding()" class="w-full btn-cta py-3 rounded-xl font-bold hover:opacity-90 transition shadow">Iesniegt moderatoram</button>
+            <p id="onboardingStatus" class="mt-4 text-center text-brand font-bold text-sm hidden animate-pulse">Dokumenti tiek apstrādāti...</p>
+        </div>
+    </div>
+
+    <!-- ═══ SPECIALIST DASHBOARD (visible after specialist login) ═══ -->
+    <section id="sec-specialist-dashboard" class="section-panel hidden fade-in max-w-6xl mx-auto px-6 py-10">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
+            <div>
+                <h2 class="text-3xl font-black tracking-tight">Mans panelis</h2>
+                <p class="text-gray-400 font-medium mt-1">Speciālista vadības panelis</p>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-12 gap-6">
+            <!-- Profile -->
+            <div class="md:col-span-4 space-y-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Mans profils</h3>
+                    <p class="text-sm text-gray-400 mb-4">Galvenie profila iestatījumi vienuviet, lai tos var ātri pārskatīt un labot.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="dashboard-field">
+                            <label>Pamatnozare</label>
+                            <select>
+                                <option>ABA terapeits</option>
+                                <option>Logopēds</option>
+                                <option>Speciālais pedagogs</option>
+                                <option>Ergoterapeits</option>
+                                <option>Bērnu psihiatrs</option>
+                                <option>Klīniskais psihologs</option>
+                            </select>
+                        </div>
+                        <div class="dashboard-field">
+                            <label>Pilsēta</label>
+                            <input type="text" value="Rīga">
+                        </div>
+                        <div class="dashboard-field">
+                            <label>Vizītes veids</label>
+                            <select>
+                                <option>Klātienē & tiešsaistē</option>
+                                <option>Tikai klātienē</option>
+                                <option>Tikai tiešsaistē</option>
+                            </select>
+                        </div>
+                        <div class="dashboard-field">
+                            <label>Cena (EUR / sesija)</label>
+                            <input type="text" value="40 - 60">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Statistika</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-green-50 p-4 rounded-xl text-center">
+                            <div class="text-2xl font-black text-green-700">12</div>
+                            <div class="text-xs text-gray-500">Pieraksti šomēnes</div>
+                        </div>
+                        <div class="bg-brand-light p-4 rounded-xl text-center">
+                            <div class="text-2xl font-black text-brand">4.8</div>
+                            <div class="text-xs text-gray-500">Vidējais vērtējums</div>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-xl text-center">
+                            <div class="text-2xl font-black text-blue-600">23</div>
+                            <div class="text-xs text-gray-500">Atsauksmes</div>
+                        </div>
+                        <div class="bg-amber-50 p-4 rounded-xl text-center">
+                            <div class="text-2xl font-black text-amber-600">2</div>
+                            <div class="text-xs text-gray-500">Gaidīšanas sarakstā</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendar -->
+            <div class="md:col-span-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-black text-lg">Vizīšu kalendārs - Marts 2026</h3>
+                </div>
+                <div class="grid grid-cols-7 gap-2 mb-4">
+                    <div class="text-center text-xs font-bold text-gray-300 py-1">Pr</div>
+                    <div class="text-center text-xs font-bold text-gray-300 py-1">Ot</div>
+                    <div class="text-center text-xs font-bold text-gray-300 py-1">Tr</div>
+                    <div class="text-center text-xs font-bold text-gray-300 py-1">Ce</div>
+                    <div class="text-center text-xs font-bold text-gray-300 py-1">Pk</div>
+                    <div class="text-center text-xs font-bold text-gray-300 py-1">Se</div>
+                    <div class="text-center text-xs font-bold text-gray-300 py-1">Sv</div>
+                </div>
+                <div class="grid grid-cols-7 gap-2" id="specCalendar"></div>
+
+                <!-- Upcoming appointments -->
+                <div class="mt-6 border-t border-gray-100 pt-4">
+                    <h4 class="font-bold text-sm mb-3">Tuvākās vizītes</h4>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between bg-green-50 p-3 rounded-xl">
+                            <div>
+                                <span class="font-bold text-sm">Mārtiņš K.</span>
+                                <span class="text-xs text-gray-500 ml-2">5 gadi, AST</span>
+                            </div>
+                            <div class="text-xs font-bold text-green-700">18. marts, 10:00</div>
+                        </div>
+                        <div class="flex items-center justify-between bg-green-50 p-3 rounded-xl">
+                            <div>
+                                <span class="font-bold text-sm">Anna L.</span>
+                                <span class="text-xs text-gray-500 ml-2">7 gadi, UDHS</span>
+                            </div>
+                            <div class="text-xs font-bold text-green-700">18. marts, 14:00</div>
+                        </div>
+                        <div class="flex items-center justify-between bg-amber-50 p-3 rounded-xl">
+                            <div>
+                                <span class="font-bold text-sm">Emīls B.</span>
+                                <span class="text-xs text-gray-500 ml-2">3 gadi, runas aizture</span>
+                            </div>
+                            <div class="text-xs font-bold text-amber-600">19. marts, 10:00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="bg-white border-t border-gray-100 mt-16" role="contentinfo">
+        <div class="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
+            <div class="flex items-center gap-2">
+                <img src="NEW_Logo.png" alt="augt.lv logo" class="h-10 w-10 rounded-lg object-cover object-center block">
+                <span class="font-bold text-gray-500">augt.lv</span>
+                <span>- Vienmēr līdzās</span>
+            </div>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-brand">Par mums</a>
+                <a href="#" class="hover:text-brand">Privātuma politika</a>
+                <a href="#" class="hover:text-brand">Kontakti</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let isLoggedIn = false;
+        let userRole = null;
+        let pendingAction = null;
+
+        function showSection(id) {
+            document.querySelectorAll('section[id^="sec-"]').forEach(s => { s.classList.add('hidden'); s.classList.remove('fade-in'); });
+            const el = document.getElementById('sec-' + id);
+            if (el) { el.classList.remove('hidden'); el.classList.add('fade-in'); }
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            const navEl = document.getElementById('nav-' + id);
+            if (navEl) navEl.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (id === 'home') { resetHomeFilters(); }
+        }
+
+        function showGuide(type) {
+            document.querySelectorAll('[id^="guide-"]').forEach(g => g.classList.add('hidden'));
+            const el = document.getElementById('guide-' + type);
+            if (el) { el.classList.remove('hidden'); el.classList.add('fade-in'); }
+            document.querySelectorAll('.guide-btn').forEach(b => b.classList.remove('is-active'));
+            event.currentTarget.classList.add('is-active');
+        }
+
+        function requireLogin(modalToOpen, message) {
+            if (isLoggedIn) {
+                if (modalToOpen) showModal(modalToOpen);
+                return;
+            }
+            pendingAction = modalToOpen;
+            if (message) document.getElementById('authMessage').textContent = message;
+            else document.getElementById('authMessage').textContent = 'Lai pieteiktos vizītei, ludzu piesakieties.';
+            showModal('authModal');
+        }
+
+        function doLogin(method) {
+            closeModal('authModal');
+            setTimeout(function() { showModal('roleModal'); }, 200);
+        }
+
+        function completeLogin(role) {
+            isLoggedIn = true;
+            userRole = role;
+            closeModal('roleModal');
+            document.getElementById('loginBtn').classList.add('hidden');
+            document.getElementById('userMenu').classList.remove('hidden');
+            document.getElementById('userMenu').classList.add('flex');
+
+            if (role === 'specialist') {
+                document.getElementById('userName').textContent = 'Ieva';
+                document.getElementById('navSpecDashboard').classList.remove('hidden');
+                setTimeout(function() { showModal('onboardingModal'); }, 300);
+            } else {
+                document.getElementById('userName').textContent = 'Vita';
+                document.getElementById('navSpecDashboard').classList.add('hidden');
+                if (pendingAction) {
+                    setTimeout(function() { showModal(pendingAction); pendingAction = null; }, 300);
+                }
+            }
+        }
+
+        function processOnboarding() {
+            document.getElementById('onboardingStatus').classList.remove('hidden');
+            setTimeout(function() {
+                closeModal('onboardingModal');
+                document.getElementById('onboardingStatus').classList.add('hidden');
+                showSection('specialist-dashboard');
+                buildSpecCalendar();
+            }, 2000);
+        }
+
+        function doLogout() {
+            isLoggedIn = false;
+            userRole = null;
+            document.getElementById('loginBtn').classList.remove('hidden');
+            document.getElementById('userMenu').classList.add('hidden');
+            document.getElementById('userMenu').classList.remove('flex');
+            document.getElementById('navSpecDashboard').classList.add('hidden');
+            showSection('home');
+        }
+
+        function changeTheme(theme) {
+            var body = document.getElementById('appBody');
+            var btnLight = document.getElementById('btnLight');
+            var btnDark = document.getElementById('btnDark');
+            if (theme === 'dark') {
+                body.classList.add('dark');
+                btnDark.classList.add('active-theme');
+                btnLight.classList.remove('active-theme');
+                btnDark.setAttribute('aria-pressed', 'true');
+                btnLight.setAttribute('aria-pressed', 'false');
+            } else {
+                body.classList.remove('dark');
+                btnLight.classList.add('active-theme');
+                btnDark.classList.remove('active-theme');
+                btnLight.setAttribute('aria-pressed', 'true');
+                btnDark.setAttribute('aria-pressed', 'false');
+            }
+        }
+
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        const specialistData = [
+            { name: 'Līga Bērziņa', type: 'ABA terapeits', city: 'Rīga', rating: 4.8, focus: 'AST, uzvedības traucējumi', agesRaw: '2-10 g.', visitType: 'Klātienē', nextAvailable: '22. marts', price: '45-60', languages: 'LV', initials: 'LB', color: 'brand' },
+            { name: 'Ilze Kļaviņa', type: 'ABA terapeits', city: 'Rīga', rating: 4.5, focus: 'AST, intelektuālās attīstības aizture', agesRaw: '2-12 g.', visitType: 'Klātienē & mājas vizītes', nextAvailable: '28. marts', price: '40-55', languages: 'LV, RU', initials: 'IK', color: 'brand' },
+            { name: 'Dace Rudzīte', type: 'ABA terapeits', city: 'Rīga', rating: 4.3, focus: 'AST, uzvedības korekcija', agesRaw: '3-8 g.', visitType: 'Klātienē', nextAvailable: '30. marts', price: '40-55', languages: 'LV', initials: 'DR', color: 'brand' },
+            { name: 'Liene Kalēja', type: 'ABA terapeits', city: 'Jelgava', rating: 4.4, focus: 'AST, uzvedības traucējumi', agesRaw: '2-10 g.', visitType: 'Klātienē', nextAvailable: '5. aprīlis', price: '35-50', languages: 'LV', initials: 'LK', color: 'brand' },
+            { name: 'Katrīna Zeltiņa', type: 'ABA terapeits', city: 'Rīga', rating: 4.7, focus: 'AST, vecāku koučings, uzvedības analīze', agesRaw: '2-12 g.', visitType: 'Klātienē (vecāku koučings tiešsaistē)', nextAvailable: '21. marts', price: '40-55', languages: 'LV, EN', initials: 'KZ', color: 'brand' },
+            { name: 'Renāte Cimermane', type: 'ABA terapeits', city: 'Liepāja', rating: 4.4, focus: 'AST, agrīnā intervence', agesRaw: '1-7 g.', visitType: 'Klātienē', nextAvailable: '2. aprīlis', price: '35-50', languages: 'LV', initials: 'RC', color: 'brand' },
+            { name: 'Anna Kalniņa', type: 'Logopēds', city: 'Rīga', rating: 4.9, focus: 'Runas aizture, AST', agesRaw: '2-7 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '24. marts', price: '30-40', languages: 'LV, RU', initials: 'AK', color: 'blue' },
+            { name: 'Elīna Šmite', type: 'Logopēds', city: 'Rīga', rating: 4.6, focus: 'Runas aizture, disleksija, stostīšanās', agesRaw: '3-12 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '21. marts', price: '25-35', languages: 'LV', initials: 'EŠ', color: 'blue' },
+            { name: 'Vineta Liepa', type: 'Logopēds', city: 'Rīga', rating: 4.5, focus: 'Runas aizture, valodas sistēmas nepietiekama attīstība', agesRaw: '2-6 g.', visitType: 'Klātienē', nextAvailable: '25. marts', price: '30-40', languages: 'LV', initials: 'VL', color: 'blue' },
+            { name: 'Inese Feldmane', type: 'Logopēds', city: 'Liepāja', rating: 4.5, focus: 'Runas aizture, valodas traucējumi', agesRaw: '2-8 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '24. marts', price: '25-30', languages: 'LV', initials: 'IF', color: 'blue' },
+            { name: 'Jeļena Ivanova', type: 'Logopēds', city: 'Daugavpils', rating: 4.4, focus: 'Runas aizture, bilingvāli bērni', agesRaw: '2-9 g.', visitType: 'Klātienē', nextAvailable: '25. marts', price: '20-30', languages: 'LV, RU', initials: 'JI', color: 'blue' },
+            { name: 'Aija Priede', type: 'Logopēds', city: 'Ventspils', rating: 4.3, focus: 'Runas aizture, fonētiskās grūtības', agesRaw: '2-7 g.', visitType: 'Klātienē', nextAvailable: '4. aprīlis', price: '20-30', languages: 'LV', initials: 'AP', color: 'blue' },
+            { name: 'Evija Cēbere', type: 'Logopēds', city: 'Valmiera', rating: 4.6, focus: 'Runas aizture, lasīšanas grūtības', agesRaw: '3-10 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '22. marts', price: '20-30', languages: 'LV', initials: 'EC', color: 'blue' },
+            { name: 'Valentīna Ņikitina', type: 'Logopēds', city: 'Rēzekne', rating: 4.3, focus: 'Runas aizture, bilingvāli bērni', agesRaw: '2-8 g.', visitType: 'Klātienē', nextAvailable: '7. aprīlis', price: '20-25', languages: 'RU, LV', initials: 'VŅ', color: 'blue' },
+            { name: 'Anda Grīnberga', type: 'Speciālais pedagogs', city: 'Rīga', rating: 4.4, focus: 'Mācīšanās traucējumi, UDHS, AST', agesRaw: '5-14 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '25. marts', price: '25-35', languages: 'LV', initials: 'AG', color: 'purple' },
+            { name: 'Daiga Medne', type: 'Speciālais pedagogs', city: 'Rīga', rating: 4.5, focus: 'Disleksija, disgrāfija, mācīšanās grūtības', agesRaw: '6-14 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '27. marts', price: '25-35', languages: 'LV', initials: 'DM', color: 'purple' },
+            { name: 'Gunta Zariņa', type: 'Speciālais pedagogs', city: 'Liepāja', rating: 4.3, focus: 'UDHS, mācīšanās grūtības, disleksija', agesRaw: '6-14 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '26. marts', price: '20-30', languages: 'LV', initials: 'GZ', color: 'purple' },
+            { name: 'Natālija Volkova', type: 'Speciālais pedagogs', city: 'Daugavpils', rating: 4.2, focus: 'Mācīšanās traucējumi, UDHS', agesRaw: '5-12 g.', visitType: 'Klātienē', nextAvailable: '28. marts', price: '20-25', languages: 'LV, RU', initials: 'NV', color: 'purple' },
+            { name: 'Marta Ozoliņa', type: 'Speciālais pedagogs', city: 'Ventspils', rating: 4.7, focus: 'UDHS, mācīšanās grūtības', agesRaw: '5-12 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '2. aprīlis', price: '25-30', languages: 'LV', initials: 'MO', color: 'purple' },
+            { name: 'Inga Sproģe', type: 'Speciālais pedagogs', city: 'Valmiera', rating: 4.3, focus: 'UDHS, mācīšanās traucējumi, AST', agesRaw: '5-14 g.', visitType: 'Klātienē', nextAvailable: '29. marts', price: '20-30', languages: 'LV', initials: 'IS', color: 'purple' },
+            { name: 'Kristīne Vanaga', type: 'Ergoterapeits', city: 'Rīga', rating: 4.6, focus: 'Sensorā integrācija, AST', agesRaw: '1-8 g.', visitType: 'Klātienē', nextAvailable: '20. marts', price: '35-45', languages: 'LV', initials: 'KV', color: 'teal' },
+            { name: 'Irina Pavlova', type: 'Ergoterapeits', city: 'Rīga', rating: 4.4, focus: 'Smalko motorikas grūtības, ikdienas prasmes', agesRaw: '2-10 g.', visitType: 'Klātienē & mājas vizītes', nextAvailable: '26. marts', price: '35-45', languages: 'LV, RU', initials: 'IP', color: 'teal' },
+            { name: 'Baiba Lāce', type: 'Ergoterapeits', city: 'Liepāja', rating: 4.4, focus: 'Sensorā integrācija, motorās grūtības', agesRaw: '1-10 g.', visitType: 'Klātienē', nextAvailable: '3. aprīlis', price: '30-40', languages: 'LV', initials: 'BL', color: 'teal' },
+            { name: 'Maija Bičole', type: 'Ergoterapeits', city: 'Jelgava', rating: 4.5, focus: 'Sensorā integrācija, smalko motorikas grūtības', agesRaw: '1-8 g.', visitType: 'Klātienē', nextAvailable: '27. marts', price: '25-35', languages: 'LV', initials: 'MB', color: 'teal' },
+            { name: 'Aiva Rundāne', type: 'Ergoterapeits', city: 'Daugavpils', rating: 4.3, focus: 'Sensorā apstrāde, ikdienas aktivitātes', agesRaw: '2-12 g.', visitType: 'Klātienē', nextAvailable: '1. aprīlis', price: '25-35', languages: 'LV, RU', initials: 'AR', color: 'teal' },
+            { name: 'Zane Ozoliņa', type: 'Klīniskais psihologs', city: 'Rīga', rating: 4.8, focus: 'UDHS, trauksme, uzvedības grūtības', agesRaw: '4-16 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '26. marts', price: '50-70', languages: 'LV', initials: 'ZO', color: 'green' },
+            { name: 'Sanita Lapiņa', type: 'Klīniskais psihologs', city: 'Rīga', rating: 4.7, focus: 'AST diagnostika, UDHS, trauksme', agesRaw: '3-14 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '1. aprīlis', price: '55-75', languages: 'LV, EN', initials: 'SL', color: 'green' },
+            { name: 'Dr. Vita Kreicberga', type: 'Klīniskais psihologs', city: 'Liepāja', rating: 4.6, focus: 'AST, UDHS, vecāku konsultācijas', agesRaw: '3-16 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '29. marts', price: '45-60', languages: 'LV, RU', initials: 'VK', color: 'green' },
+            { name: 'Oksana Sidorova', type: 'Klīniskais psihologs', city: 'Daugavpils', rating: 4.5, focus: 'UDHS, trauksme, uzvedības grūtības', agesRaw: '4-16 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '31. marts', price: '40-55', languages: 'RU, LV', initials: 'OS', color: 'green' },
+            { name: 'Sandra Pētersone', type: 'Klīniskais psihologs', city: 'Jēkabpils', rating: 4.4, focus: 'UDHS, trauksme, ģimenes konsultācijas', agesRaw: '4-16 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '3. aprīlis', price: '40-55', languages: 'LV', initials: 'SP', color: 'green' },
+            { name: 'Alise Blūma', type: 'Klīniskais psihologs', city: 'Jelgava', rating: 4.5, focus: 'AST, emocionālās grūtības, adaptācija', agesRaw: '3-14 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '28. marts', price: '45-60', languages: 'LV', initials: 'AB', color: 'green' },
+            { name: 'Dr. Jānis Liepiņš', type: 'Bērnu psihiatrs', city: 'Rīga', rating: 4.7, focus: 'AST, UDHS, trauksme', agesRaw: '3-18 g.', visitType: 'Klātienē (atkārtotas konsultācijas tiešsaistē)', nextAvailable: '15. aprīlis', price: '80-120', languages: 'LV, RU', initials: 'JL', color: 'red' },
+            { name: 'Dr. Ņikita Petrovs', type: 'Bērnu psihiatrs', city: 'Rīga', rating: 4.5, focus: 'AST, UDHS, emocionāli traucējumi', agesRaw: '5-18 g.', visitType: 'Klātienē', nextAvailable: '22. aprīlis', price: '85-120', languages: 'LV, RU', initials: 'ŅP', color: 'red' },
+            { name: 'Dr. Arta Ķēniņa', type: 'Bērnu psihiatrs', city: 'Liepāja', rating: 4.4, focus: 'UDHS, trauksme, garastāvokļa traucējumi', agesRaw: '4-18 g.', visitType: 'Klātienē', nextAvailable: '18. aprīlis', price: '75-100', languages: 'LV', initials: 'AĶ', color: 'red' },
+            { name: 'Dr. Māra Vītola', type: 'Bērnu neirologs', city: 'Rīga', rating: 4.9, focus: 'Epilepsija, attīstības aizture, AST', agesRaw: '0-18 g.', visitType: 'Klātienē', nextAvailable: '8. aprīlis', price: '90-130', languages: 'LV', initials: 'MV', color: 'amber' },
+            { name: 'Dr. Andris Kalnājs', type: 'Bērnu neirologs', city: 'Rīga', rating: 4.6, focus: 'UDHS, tiki, galvassāpes, attīstības aizture', agesRaw: '1-18 g.', visitType: 'Klātienē (atkārtotas konsultācijas tiešsaistē)', nextAvailable: '12. aprīlis', price: '85-120', languages: 'LV, RU', initials: 'AKa', color: 'amber' },
+            { name: 'Solvita Jansone', type: 'Fizioterapeits', city: 'Rīga', rating: 4.7, focus: 'Kustību traucējumi, cerebrālā trieka', agesRaw: '0-12 g.', visitType: 'Klātienē & mājas vizītes', nextAvailable: '23. marts', price: '30-45', languages: 'LV', initials: 'SJ', color: 'cyan' },
+            { name: 'Toms Grundmanis', type: 'Fizioterapeits', city: 'Rīga', rating: 4.5, focus: 'Stājas problēmas, muskuļu tonuss, motorā attīstība', agesRaw: '0-14 g.', visitType: 'Klātienē', nextAvailable: '25. marts', price: '30-45', languages: 'LV', initials: 'TG', color: 'cyan' },
+            { name: 'Laima Ābele', type: 'Fizioterapeits', city: 'Liepāja', rating: 4.4, focus: 'Kustību traucējumi, motorā attīstība', agesRaw: '0-10 g.', visitType: 'Klātienē', nextAvailable: '28. marts', price: '25-35', languages: 'LV', initials: 'LA', color: 'cyan' },
+            { name: 'Kaspars Ūdris', type: 'Fizioterapeits', city: 'Daugavpils', rating: 4.3, focus: 'Cerebrālā trieka, stājas korekcija', agesRaw: '0-14 g.', visitType: 'Klātienē & mājas vizītes', nextAvailable: '1. aprīlis', price: '25-35', languages: 'LV, RU', initials: 'KŪ', color: 'cyan' },
+            { name: 'Laura Krūmiņa', type: 'Mākslas terapeits', city: 'Rīga', rating: 4.8, focus: 'AST, emocionālās grūtības, trauksme', agesRaw: '3-14 g.', visitType: 'Klātienē', nextAvailable: '24. marts', price: '30-45', languages: 'LV', initials: 'LKr', color: 'rose' },
+            { name: 'Elza Celmiņa', type: 'Mākslas terapeits', city: 'Rīga', rating: 4.5, focus: 'Pašregulācija, sociālās prasmes, trauma', agesRaw: '4-12 g.', visitType: 'Klātienē', nextAvailable: '27. marts', price: '30-40', languages: 'LV, EN', initials: 'ECe', color: 'rose' },
+            { name: 'Tatjana Bogdanova', type: 'Mākslas terapeits', city: 'Daugavpils', rating: 4.3, focus: 'AST, emocionālā regulācija, sociālās prasmes', agesRaw: '4-12 g.', visitType: 'Klātienē', nextAvailable: '2. aprīlis', price: '20-30', languages: 'RU, LV', initials: 'TB', color: 'rose' },
+            { name: 'Madara Vīksna', type: 'Mākslas terapeits', city: 'Jelgava', rating: 4.4, focus: 'Emocionālās grūtības, UDHS, AST', agesRaw: '3-10 g.', visitType: 'Klātienē', nextAvailable: '29. marts', price: '25-35', languages: 'LV', initials: 'MVī', color: 'rose' },
+            { name: 'Simona Bite', type: 'Mākslas terapeits', city: 'Valmiera', rating: 4.3, focus: 'AST, pašizpausme, emocionālā attīstība', agesRaw: '3-12 g.', visitType: 'Klātienē', nextAvailable: '3. aprīlis', price: '20-30', languages: 'LV', initials: 'SB', color: 'rose' },
+            { name: 'Ruta Eglīte', type: 'Mūzikas terapeits', city: 'Rīga', rating: 4.6, focus: 'AST, emocionālā regulācija, sensorā jutība', agesRaw: '2-10 g.', visitType: 'Klātienē', nextAvailable: '27. marts', price: '30-40', languages: 'LV', initials: 'RE', color: 'pink' },
+            { name: 'Helēna Ķīse', type: 'Mūzikas terapeits', city: 'Rīga', rating: 4.7, focus: 'Runas attīstības veicināšana, AST, sociālās prasmes', agesRaw: '1-8 g.', visitType: 'Klātienē', nextAvailable: '24. marts', price: '30-40', languages: 'LV', initials: 'HĶ', color: 'pink' },
+            { name: 'Dana Strazdiņa', type: 'Mūzikas terapeits', city: 'Liepāja', rating: 4.4, focus: 'AST, sensorā apstrāde, komunikācija', agesRaw: '2-10 g.', visitType: 'Klātienē', nextAvailable: '30. marts', price: '25-35', languages: 'LV', initials: 'DS', color: 'pink' },
+            { name: 'Gita Baumane', type: 'Mūzikas terapeits', city: 'Ventspils', rating: 4.3, focus: 'Emocionālā regulācija, AST, kontakta veidošana', agesRaw: '2-8 g.', visitType: 'Klātienē', nextAvailable: '5. aprīlis', price: '20-30', languages: 'LV', initials: 'GB', color: 'pink' },
+            { name: 'Agnese Vēvere', type: 'Kanisterapeits', city: 'Rīga', rating: 4.9, focus: 'AST, sociālās prasmes, sensorā jutība', agesRaw: '3-12 g.', visitType: 'Klātienē (āra nodarbības)', nextAvailable: '22. marts', price: '25-40', languages: 'LV', initials: 'AV', color: 'emerald' },
+            { name: 'Monta Ozola', type: 'Kanisterapeits', city: 'Rīga', rating: 4.6, focus: 'Trauksme, emocionālā regulācija, AST', agesRaw: '3-14 g.', visitType: 'Klātienē (āra nodarbības)', nextAvailable: '26. marts', price: '25-40', languages: 'LV', initials: 'MOz', color: 'emerald' },
+            { name: 'Sintija Kalva', type: 'Kanisterapeits', city: 'Jelgava', rating: 4.5, focus: 'AST, sociālā komunikācija, bailes', agesRaw: '3-10 g.', visitType: 'Klātienē (āra nodarbības)', nextAvailable: '29. marts', price: '20-35', languages: 'LV', initials: 'SK', color: 'emerald' },
+            { name: 'Anete Dzērve', type: 'Smilšu terapeits', city: 'Rīga', rating: 4.6, focus: 'AST, trauma, emocionālā regulācija', agesRaw: '3-12 g.', visitType: 'Klātienē', nextAvailable: '23. marts', price: '30-40', languages: 'LV', initials: 'AD', color: 'amber' },
+            { name: 'Diāna Ose', type: 'Smilšu terapeits', city: 'Liepāja', rating: 4.5, focus: 'Trauksme, emocionālās grūtības, AST', agesRaw: '3-10 g.', visitType: 'Klātienē', nextAvailable: '28. marts', price: '25-35', languages: 'LV', initials: 'DO', color: 'amber' },
+            { name: 'Olga Romanova', type: 'Smilšu terapeits', city: 'Daugavpils', rating: 4.3, focus: 'Trauksme, bailes, sociālā komunikācija', agesRaw: '3-10 g.', visitType: 'Klātienē', nextAvailable: '4. aprīlis', price: '20-30', languages: 'RU, LV', initials: 'OR', color: 'amber' },
+            { name: 'Astra Kāpa', type: 'Spēļu terapeits', city: 'Rīga', rating: 4.7, focus: 'AST, UDHS, pašregulācija, vecāku-bērnu attiecības', agesRaw: '2-9 g.', visitType: 'Klātienē', nextAvailable: '22. marts', price: '30-45', languages: 'LV', initials: 'AKā', color: 'orange' },
+            { name: 'Guna Pole', type: 'Spēļu terapeits', city: 'Rīga', rating: 4.5, focus: 'Trauksme, separācija, adaptācijas grūtības', agesRaw: '2-7 g.', visitType: 'Klātienē & mājas vizītes', nextAvailable: '28. marts', price: '30-40', languages: 'LV', initials: 'GP', color: 'orange' },
+            { name: 'Ieva Balode', type: 'Spēļu terapeits', city: 'Jelgava', rating: 4.6, focus: 'AST, sociālās prasmes, emocionālā attīstība', agesRaw: '2-8 g.', visitType: 'Klātienē', nextAvailable: '26. marts', price: '25-35', languages: 'LV', initials: 'IB', color: 'orange' },
+            { name: 'Marina Kuzmina', type: 'Spēļu terapeits', city: 'Daugavpils', rating: 4.3, focus: 'AST, sociālā komunikācija, emocionālās grūtības', agesRaw: '2-8 g.', visitType: 'Klātienē', nextAvailable: '3. aprīlis', price: '20-30', languages: 'RU, LV', initials: 'MKu', color: 'orange' },
+            { name: 'Mārīte Kārkliņa', type: 'Deju un kustību terapeits', city: 'Rīga', rating: 4.5, focus: 'AST, sensorā apstrāde, ķermeņa apzinātība', agesRaw: '3-14 g.', visitType: 'Klātienē', nextAvailable: '25. marts', price: '30-40', languages: 'LV', initials: 'MK', color: 'pink' },
+            { name: 'Alīna Romāne', type: 'Deju un kustību terapeits', city: 'Rīga', rating: 4.4, focus: 'Motorā koordinācija, emocionālā izpausme, AST', agesRaw: '4-12 g.', visitType: 'Klātienē', nextAvailable: '30. marts', price: '30-40', languages: 'LV', initials: 'ARo', color: 'pink' },
+            { name: 'Kitija Sproģe', type: 'Deju un kustību terapeits', city: 'Liepāja', rating: 4.3, focus: 'Ķermeņa apzinātība, sensorā integrācija', agesRaw: '3-10 g.', visitType: 'Klātienē', nextAvailable: '1. aprīlis', price: '25-30', languages: 'LV', initials: 'KS', color: 'pink' }
+        ];
+
+        const specialistColorClasses = {
+            brand: { avatar: 'bg-brand-soft text-brand', badge: 'bg-brand-light text-brand' },
+            blue: { avatar: 'bg-blue-50 text-blue-600', badge: 'bg-blue-50 text-blue-600' },
+            teal: { avatar: 'bg-teal-50 text-teal-600', badge: 'bg-teal-50 text-teal-600' },
+            red: { avatar: 'bg-red-50 text-red-600', badge: 'bg-red-50 text-red-600' },
+            green: { avatar: 'bg-green-50 text-green-700', badge: 'bg-green-50 text-green-700' },
+            purple: { avatar: 'bg-purple-50 text-purple-600', badge: 'bg-purple-50 text-purple-600' },
+            amber: { avatar: 'bg-amber-50 text-amber-600', badge: 'bg-amber-50 text-amber-600' },
+            cyan: { avatar: 'bg-cyan-50 text-cyan-600', badge: 'bg-cyan-50 text-cyan-600' },
+            pink: { avatar: 'bg-pink-100 text-pink-600', badge: 'bg-pink-100 text-pink-600' },
+            rose: { avatar: 'bg-rose-100 text-rose-600', badge: 'bg-rose-100 text-rose-600' },
+            emerald: { avatar: 'bg-emerald-100 text-emerald-700', badge: 'bg-emerald-100 text-emerald-700' },
+            orange: { avatar: 'bg-orange-100 text-orange-600', badge: 'bg-orange-100 text-orange-600' }
+        };
+
+        const AGE_BUCKETS = [
+            { label: '0–3 gadi', min: 0, max: 3 },
+            { label: '3–7 gadi', min: 3, max: 7 },
+            { label: '7–12 gadi', min: 7, max: 12 },
+            { label: '12–18 gadi', min: 12, max: 18 }
+        ];
+
+        let selectedSpecialistIndex = 0;
+
+        function getUniqueOrdered(values) {
+            const seen = new Set();
+            return values.filter(function(value) {
+                if (!value || seen.has(value)) return false;
+                seen.add(value);
+                return true;
+            });
+        }
+
+        function parseFocusAreas(focus) {
+            return String(focus || '').split(',').map(function(value) { return value.trim(); }).filter(Boolean);
+        }
+
+        function normalizeAgeDisplay(raw) {
+            return String(raw || '').replace(/-/g, '–');
+        }
+
+        function getAgeBucketsForSpecialist(raw) {
+            const match = String(raw || '').match(/(\d+)\s*-\s*(\d+)/);
+            if (!match) return [];
+            const min = Number(match[1]);
+            const max = Number(match[2]);
+            return AGE_BUCKETS.filter(function(bucket) {
+                return max >= bucket.min && min <= bucket.max;
+            }).map(function(bucket) { return bucket.label; });
+        }
+
+        function getVisitMeta(visitType) {
+            const rawValue = String(visitType || '');
+            const value = rawValue.toLowerCase();
+            const modes = [];
+            if (value.indexOf('klātien') !== -1) modes.push('Klātienē');
+            if (value.indexOf('tiešsaist') !== -1) modes.push('Tiešsaistē');
+            if (value.indexOf('mājas') !== -1) modes.push('Mājas vizītes');
+            const noteMatch = rawValue.match(/\(([^)]+)\)/);
+            const note = noteMatch ? noteMatch[1].charAt(0).toUpperCase() + noteMatch[1].slice(1) : '';
+            return {
+                modes: getUniqueOrdered(modes),
+                note: note
+            };
+        }
+
+        function getSpecialistColorClasses(color) {
+            return specialistColorClasses[color] || specialistColorClasses.brand;
+        }
+
+        function getAvailabilityClasses(nextAvailable) {
+            return /apr/i.test(nextAvailable) ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
+        }
+
+        function populateSelectMenu(selectEl, values) {
+            const menu = selectEl.querySelector('.select-menu');
+            menu.innerHTML = values.map(function(value) {
+                return '<li data-value="' + escapeHtml(value) + '">' + escapeHtml(value) + '</li>';
+            }).join('');
+        }
+
+        function buildSpecialistCard(specialist, index) {
+            const colorClasses = getSpecialistColorClasses(specialist.color);
+            const diagnoses = parseFocusAreas(specialist.focus);
+            const ages = getAgeBucketsForSpecialist(specialist.agesRaw);
+            const visitMeta = getVisitMeta(specialist.visitType);
+            const visitSummary = visitMeta.modes.length ? visitMeta.modes.join(' · ') : specialist.visitType;
+            const availabilityClasses = getAvailabilityClasses(specialist.nextAvailable);
+            return '' +
+                '<div class="specialist-card bg-white p-6 rounded-2xl shadow-sm card-hover flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-gray-100" ' +
+                    'data-city="' + escapeHtml(specialist.city) + '" ' +
+                    'data-type="' + escapeHtml(specialist.type) + '" ' +
+                    'data-diagnoses="' + escapeHtml(diagnoses.join('|')) + '" ' +
+                    'data-ages="' + escapeHtml(ages.join('|')) + '" ' +
+                    'data-visits="' + escapeHtml(visitMeta.modes.join('|')) + '">' +
+                    '<div class="flex items-center gap-5 cursor-pointer" onclick="openSpecialistProfile(' + index + ')">' +
+                        '<div class="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-black ' + colorClasses.avatar + '">' + escapeHtml(specialist.initials) + '</div>' +
+                        '<div>' +
+                            '<h4 class="text-xl font-black">' + escapeHtml(specialist.name) + '</h4>' +
+                            '<div class="flex flex-wrap gap-2 mt-1">' +
+                                '<span class="' + colorClasses.badge + ' px-3 py-0.5 rounded-full text-xs font-bold">' + escapeHtml(specialist.type) + '</span>' +
+                                '<span class="bg-gray-100 text-gray-500 px-3 py-0.5 rounded-full text-xs font-bold">' + escapeHtml(specialist.city) + '</span>' +
+                                '<span class="bg-green-50 text-green-700 px-3 py-0.5 rounded-full text-xs font-bold">⭐ ' + escapeHtml(Number(specialist.rating).toFixed(1)) + '</span>' +
+                            '</div>' +
+                            '<p class="text-xs text-gray-400 mt-1">' + escapeHtml(specialist.focus) + ' · Bērni ' + escapeHtml(normalizeAgeDisplay(specialist.agesRaw)) + '</p>' +
+                            '<p class="text-[11px] text-gray-400 mt-1"><span class="font-semibold text-gray-500">Formāts:</span> ' + escapeHtml(visitSummary) + (visitMeta.note ? '<span class="text-gray-300"> · ' + escapeHtml(visitMeta.note) + '</span>' : '') + '</p>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="flex items-center gap-3 md:flex-col md:items-end">' +
+                        '<span class="text-xs font-bold px-3 py-1 rounded-full ' + availabilityClasses + '">Tuvākais: ' + escapeHtml(specialist.nextAvailable) + '</span>' +
+                        '<button onclick="startSpecialistBooking(' + index + ')" class="btn-cta px-6 py-2.5 rounded-xl font-bold text-sm hover:opacity-90 transition shadow">Pieteikties vizītei</button>' +
+                    '</div>' +
+                '</div>';
+        }
+
+        function initializeSpecialistsCatalog() {
+            const cities = getUniqueOrdered(specialistData.map(function(item) { return item.city; }));
+            const types = getUniqueOrdered(specialistData.map(function(item) { return item.type; }));
+            const diagnoses = getUniqueOrdered(specialistData.reduce(function(allFocusAreas, item) {
+                return allFocusAreas.concat(parseFocusAreas(item.focus));
+            }, []));
+            const ageBuckets = AGE_BUCKETS.map(function(bucket) { return bucket.label; });
+            const visitModes = ['Klātienē', 'Tiešsaistē', 'Mājas vizītes'];
+
+            populateSelectMenu(document.querySelector('input[name="heroCity"]').closest('[data-select]'), cities);
+            populateSelectMenu(document.querySelector('input[name="heroType"]').closest('[data-select]'), types);
+            populateSelectMenu(document.querySelector('input[name="filterCity"]').closest('[data-select]'), ['Visas pilsētas'].concat(cities));
+            populateSelectMenu(document.querySelector('input[name="filterType"]').closest('[data-select]'), ['Visi speciālisti'].concat(types));
+            populateSelectMenu(document.querySelector('input[name="filterDiag"]').closest('[data-select]'), ['Visas diagnozes'].concat(diagnoses));
+            populateSelectMenu(document.querySelector('input[name="filterAge"]').closest('[data-select]'), ['Jebkurš vecums'].concat(ageBuckets));
+            populateSelectMenu(document.querySelector('input[name="filterVisit"]').closest('[data-select]'), ['Jebkurš formāts'].concat(visitModes));
+
+            const specialistList = document.getElementById('specialistList');
+            specialistList.innerHTML = specialistData.map(function(item, index) {
+                return buildSpecialistCard(item, index);
+            }).join('');
+
+            populateSelectedSpecialistUI();
+        }
+
+        function getSelectedSpecialist() {
+            return specialistData[selectedSpecialistIndex] || specialistData[0];
+        }
+
+        function populateSelectedSpecialistUI() {
+            const specialist = getSelectedSpecialist();
+            if (!specialist) return;
+            const colorClasses = getSpecialistColorClasses(specialist.color);
+            const profileAvatar = document.getElementById('profileAvatar');
+            profileAvatar.className = 'w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-black ' + colorClasses.avatar;
+            profileAvatar.textContent = specialist.initials;
+            document.getElementById('profileName').textContent = specialist.name;
+            document.getElementById('profileType').textContent = specialist.type;
+            document.getElementById('profileSummary').textContent = 'Strādā ar bērniem vecumā ' + normalizeAgeDisplay(specialist.agesRaw) + '. Galvenās darba jomas: ' + specialist.focus + '. Vizītes: ' + specialist.visitType + '.';
+            document.getElementById('profileCity').textContent = specialist.city;
+            document.getElementById('profileVisitType').textContent = specialist.visitType;
+            document.getElementById('profileFocus').textContent = specialist.focus;
+            document.getElementById('profilePrice').textContent = specialist.price + ' EUR / sesija';
+            document.getElementById('profileReviewTitle').textContent = 'Vecāku atsauksmes (⭐ ' + Number(specialist.rating).toFixed(1) + ')';
+            document.getElementById('profileReviewText').textContent = '“Vecāki īpaši novērtē speciālista strukturēto pieeju, saprotamo komunikāciju un spēju pielāgot nodarbības bērna vajadzībām.”';
+            document.getElementById('profileLanguages').textContent = 'Valodas: ' + specialist.languages;
+            document.getElementById('calendarSubtitle').textContent = specialist.name + ' - ' + specialist.type + ', ' + specialist.city;
+        }
+
+        function openSpecialistProfile(index) {
+            selectedSpecialistIndex = index;
+            populateSelectedSpecialistUI();
+            showModal('profileModal');
+        }
+
+        function startSpecialistBooking(index) {
+            selectedSpecialistIndex = index;
+            populateSelectedSpecialistUI();
+            requireLogin('calendarModal');
+        }
+
+        function bookSelectedSpecialist() {
+            populateSelectedSpecialistUI();
+            requireLogin('calendarModal');
+        }
+
+        function renderCustomSelectTrigger(selectEl, value, label) {
+            const trigger = selectEl.querySelector('.select-trigger');
+            const filterLabel = selectEl.dataset.filterLabel;
+            const defaultValue = selectEl.dataset.default || '';
+            const displayLabel = label || value || trigger.dataset.placeholder || '';
+            if (!filterLabel) {
+                trigger.textContent = displayLabel;
+                return;
+            }
+            const isDefault = !value || value === defaultValue;
+            trigger.innerHTML = '<span class="catalog-trigger-prefix">' + escapeHtml(filterLabel) + ':</span>' +
+                '<span class="catalog-trigger-value' + (isDefault ? ' is-default' : '') + '">' + escapeHtml(displayLabel) + '</span>';
+        }
+
+        function setCustomSelectValue(selectEl, value, label) {
+            const hidden = selectEl.querySelector('input[type="hidden"]');
+            hidden.value = value;
+            renderCustomSelectTrigger(selectEl, value, label);
+            updateCatalogFilterState(selectEl);
+        }
+
+        function updateCatalogFilterState(selectEl) {
+            const filterCard = selectEl.closest('.catalog-filter');
+            const hidden = selectEl.querySelector('input[type="hidden"]');
+            if (!filterCard || !hidden) return;
+            const defaultValue = selectEl.dataset.default || hidden.defaultValue || '';
+            const currentValue = hidden.value || '';
+            const isActive = currentValue !== '' && currentValue !== defaultValue;
+            filterCard.classList.toggle('is-active', isActive);
+        }
+
+        function resetHomeFilters() {
+            document.querySelectorAll('[data-select][data-scope=\"hero\"]').forEach(sel => {
+                const placeholder = sel.querySelector('.select-trigger').dataset.placeholder || 'Izvēlieties...';
+                setCustomSelectValue(sel, '', placeholder);
+            });
+        }
+
+        function applyFilters() {
+            const cityVal = document.querySelector('input[name=\"filterCity\"]').value || 'Visas pilsētas';
+            const typeVal = document.querySelector('input[name=\"filterType\"]').value || 'Visi speciālisti';
+            const diagVal = document.querySelector('input[name=\"filterDiag\"]').value || 'Visas diagnozes';
+            const ageVal = document.querySelector('input[name=\"filterAge\"]').value || 'Jebkurš vecums';
+            const visitVal = document.querySelector('input[name=\"filterVisit\"]').value || 'Jebkurš formāts';
+            const cards = document.querySelectorAll('.specialist-card');
+            const countEl = document.getElementById('specialistCount');
+            const emptyStateEl = document.getElementById('specialistEmptyState');
+            let visibleCount = 0;
+            cards.forEach(card => {
+                const c = card.dataset.city;
+                const t = card.dataset.type;
+                const diagnoses = (card.dataset.diagnoses || '').split('|').filter(Boolean);
+                const ages = (card.dataset.ages || '').split('|').filter(Boolean);
+                const visits = (card.dataset.visits || '').split('|').filter(Boolean);
+                const cityMatch = (cityVal === 'Visas pilsētas' || cityVal === '' || c === cityVal);
+                const typeMatch = (typeVal === 'Visi speciālisti' || typeVal === '' || t === typeVal);
+                const diagMatch = (diagVal === 'Visas diagnozes' || diagVal === '' || diagnoses.includes(diagVal));
+                const ageMatch = (ageVal === 'Jebkurš vecums' || ageVal === '' || ages.includes(ageVal));
+                const visitMatch = (visitVal === 'Jebkurš formāts' || visitVal === '' || visits.includes(visitVal));
+                if (cityMatch && typeMatch && diagMatch && ageMatch && visitMatch) {
+                    card.classList.remove('hidden');
+                    visibleCount += 1;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            if (countEl) {
+                countEl.textContent = visibleCount === 1 ? 'Pieejams 1 speciālists' : 'Pieejami ' + visibleCount + ' speciālisti';
+            }
+            if (emptyStateEl) {
+                emptyStateEl.classList.toggle('hidden', visibleCount !== 0);
+            }
+        }
+
+        function clearCatalogFilters() {
+            document.querySelectorAll('#sec-specialists [data-select]').forEach(function(sel) {
+                const defaultValue = sel.dataset.default || '';
+                setCustomSelectValue(sel, defaultValue, defaultValue);
+                sel.classList.remove('open');
+                const filterCard = sel.closest('.catalog-filter');
+                if (filterCard) filterCard.classList.remove('is-open');
+            });
+            applyFilters();
+        }
+
+        function goToSpecialists() {
+            const heroCity = document.querySelector('input[name=\"heroCity\"]').value;
+            const heroType = document.querySelector('input[name=\"heroType\"]').value;
+            const filterCitySelect = document.querySelector('input[name=\"filterCity\"]').closest('[data-select]');
+            const filterTypeSelect = document.querySelector('input[name=\"filterType\"]').closest('[data-select]');
+            if (heroCity) setCustomSelectValue(filterCitySelect, heroCity, heroCity); else setCustomSelectValue(filterCitySelect, 'Visas pilsētas', 'Visas pilsētas');
+            if (heroType) setCustomSelectValue(filterTypeSelect, heroType, heroType); else setCustomSelectValue(filterTypeSelect, 'Visi speciālisti', 'Visi speciālisti');
+            applyFilters();
+            showSection('specialists');
+        }
+
+        // Custom select handling (non-native rounded dropdowns)
+        (function initCustomSelects() {
+            initializeSpecialistsCatalog();
+            var selects = Array.prototype.slice.call(document.querySelectorAll('[data-select]'));
+            var closeAll = function() {
+                selects.forEach(function(s){
+                    s.classList.remove('open');
+                    var filterCard = s.closest('.catalog-filter');
+                    if (filterCard) filterCard.classList.remove('is-open');
+                });
+            };
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('[data-select]')) closeAll();
+            });
+            selects.forEach(function(sel) {
+                var trigger = sel.querySelector('.select-trigger');
+                var menu = sel.querySelector('.select-menu');
+                var hidden = sel.querySelector('input[type=\"hidden\"]');
+                var options = sel.querySelectorAll('.select-menu li');
+                trigger.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var isOpen = sel.classList.contains('open');
+                    closeAll();
+                    if (!isOpen) {
+                        sel.classList.add('open');
+                        var filterCard = sel.closest('.catalog-filter');
+                        if (filterCard) filterCard.classList.add('is-open');
+                    }
+                });
+                options.forEach(function(opt) {
+                    opt.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        var val = opt.dataset.value || opt.textContent;
+                        hidden.value = val;
+                        renderCustomSelectTrigger(sel, val, opt.textContent);
+                        updateCatalogFilterState(sel);
+                        var filterCard = sel.closest('.catalog-filter');
+                        if (filterCard) filterCard.classList.remove('is-open');
+                        sel.classList.remove('open');
+                        if (hidden.name === 'filterCity' || hidden.name === 'filterType' || hidden.name === 'filterDiag' || hidden.name === 'filterAge' || hidden.name === 'filterVisit') {
+                            applyFilters();
+                        }
+                    });
+                });
+                renderCustomSelectTrigger(sel, hidden.value, trigger.textContent);
+                updateCatalogFilterState(sel);
+            });
+            resetHomeFilters();
+            applyFilters();
+        })();
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                ['authModal','profileModal','calendarModal','roleModal','onboardingModal'].forEach(function(id) {
+                    var modal = document.getElementById(id);
+                    if (modal && !modal.classList.contains('hidden')) { closeModal(id); }
+                });
+            }
+        });
+
+        function showModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        (function buildCalendar() {
+            var grid = document.getElementById('calendarGrid');
+            var days = ['Pr','Ot','Tr','Ce','Pk','Se','Sv'];
+            days.forEach(function(d) { grid.innerHTML += '<div class="text-center text-xs font-bold text-gray-300 py-1">' + d + '</div>'; });
+            for (var i = 17; i <= 31; i++) {
+                var isWeekend = (i - 17 + 1) % 7 >= 6;
+                var isFull = i % 4 === 0;
+                var cls, text;
+                if (isWeekend) { cls = 'bg-gray-50 text-gray-200'; text = '-'; }
+                else if (isFull) { cls = 'bg-gray-50 text-gray-300'; text = 'Aiznemts'; }
+                else { cls = 'bg-green-50 text-green-700 hover:bg-green-600 hover:text-white cursor-pointer'; text = '10:00'; }
+                grid.innerHTML += '<div class="p-2 rounded-xl text-center transition text-xs font-bold ' + cls + '"><div>' + i + '. mar.</div><div class="text-xs mt-0.5">' + text + '</div></div>';
+            }
+        })();
+
+        function buildSpecCalendar() {
+            var grid = document.getElementById('specCalendar');
+            if (!grid || grid.children.length > 0) return;
+            for (var i = 1; i <= 31; i++) {
+                var day = new Date(2026, 2, i).getDay();
+                var isWeekend = day === 0 || day === 6;
+                var isPast = i < 17;
+                var hasAppt = [18,19,21,23,25,26,28].indexOf(i) !== -1;
+                var cls, text;
+                if (isPast) { cls = 'bg-gray-50 text-gray-300'; text = ''; }
+                else if (isWeekend) { cls = 'bg-gray-50 text-gray-300'; text = ''; }
+                else if (hasAppt) { cls = 'bg-brand-light text-brand'; text = 'Rezervets'; }
+                else { cls = 'bg-green-50 text-green-700 cursor-pointer hover:bg-green-100'; text = 'Brivs'; }
+                grid.innerHTML += '<div class="p-2 rounded-xl text-center text-xs font-bold ' + cls + '"><div>' + i + '</div><div class="text-[9px] mt-0.5">' + text + '</div></div>';
+            }
+        }
+    </script>
+</body>
+</html>

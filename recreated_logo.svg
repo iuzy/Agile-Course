@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+  <defs>
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#16C7D9"/>
+      <stop offset="100%" stop-color="#0C4FA0"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B8E000"/>
+      <stop offset="100%" stop-color="#4B9400"/>
+    </linearGradient>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD400"/>
+      <stop offset="100%" stop-color="#FF7A00"/>
+    </linearGradient>
+  </defs>
+
+  <!-- left outer swoosh -->
+  <path d="M355 470
+           C250 505 238 655 430 845
+           C345 730 330 585 425 500
+           C393 498 370 486 355 470 Z"
+        fill="url(#blueGrad)"/>
+
+  <!-- left inner body -->
+  <path d="M455 500
+           C385 545 380 670 505 810
+           L505 640
+           C505 585 535 555 595 582
+           C565 508 496 480 455 500 Z"
+        fill="url(#blueGrad)"/>
+
+  <!-- right outer swoosh -->
+  <path d="M845 470
+           C950 505 962 655 770 845
+           C855 730 870 585 775 500
+           C807 498 830 486 845 470 Z"
+        fill="url(#greenGrad)"/>
+
+  <!-- right inner body -->
+  <path d="M745 500
+           C815 545 820 670 695 810
+           L695 640
+           C695 585 665 555 605 582
+           C635 508 704 480 745 500 Z"
+        fill="url(#greenGrad)"/>
+
+  <!-- center child -->
+  <path d="M510 640
+           C510 590 548 560 595 585
+           C605 590 615 590 625 585
+           C672 560 710 590 710 640
+           C710 670 690 688 676 700
+           C661 712 652 730 652 748
+           L652 875
+           L600 910
+           L548 875
+           L548 748
+           C548 730 539 712 524 700
+           C510 688 490 670 490 640
+           C490 622 498 624 510 640 Z"
+        fill="url(#orangeGrad)"/>
+
+  <!-- heads -->
+  <circle cx="420" cy="420" r="58" fill="url(#blueGrad)"/>
+  <circle cx="780" cy="420" r="58" fill="url(#greenGrad)"/>
+  <circle cx="600" cy="560" r="62" fill="url(#orangeGrad)"/>
+
+  <!-- sprout stem -->
+  <path d="M600 450 C600 395 618 350 654 318" fill="none" stroke="#B7C800" stroke-width="9" stroke-linecap="round"/>
+
+  <!-- leaves -->
+  <path d="M595 305
+           C548 280 536 228 560 178
+           C610 195 627 238 595 305 Z"
+        fill="#C6DA00"/>
+  <path d="M648 315
+           C692 285 740 282 790 305
+           C765 356 718 374 648 315 Z"
+        fill="#B9D300"/>
+  <path d="M579 192 C577 237 585 268 603 296" fill="none" stroke="#E8F3A8" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+  <path d="M760 306 C720 312 688 317 662 326" fill="none" stroke="#E8F3A8" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+
+</svg>
