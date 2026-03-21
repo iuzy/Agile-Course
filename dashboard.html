@@ -25,13 +25,12 @@
             <div id="parentDashboardView" class="hidden">
                 <div class="dashboard-subsection-switcher mb-6">
                     <button type="button" class="dashboard-subsection-btn" data-parent-dashboard-view="visits" onclick="showParentDashboardSection('visits', event)">Vizītes</button>
-                    <button type="button" class="dashboard-subsection-btn" data-parent-dashboard-view="specialists" onclick="showParentDashboardSection('specialists', event)">Mani speciālisti</button>
                     <button type="button" class="dashboard-subsection-btn" data-parent-dashboard-view="summary" onclick="showParentDashboardSection('summary', event)">Kopsavilkums</button>
                     <button type="button" class="dashboard-subsection-btn" data-parent-dashboard-view="child" onclick="showParentDashboardSection('child', event)">Bērna profils</button>
                 </div>
 
                 <div id="parentSummarySection" class="dashboard-subsection-panel hidden">
-                    <div class="max-w-md">
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                             <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Kopsavilkums</h3>
                             <div class="dashboard-stat-list">
@@ -50,6 +49,23 @@
                                 <div class="dashboard-stat-pill stat-amber">
                                     <span class="dashboard-stat-pill-label">Nepabeigta anketa</span>
                                     <span class="dashboard-stat-pill-value">1</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                            <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Mani speciālisti</h3>
+                            <div class="space-y-3">
+                                <div class="bg-gray-50 p-4 rounded-xl">
+                                    <div class="font-bold text-sm">Anna Kalniņa</div>
+                                    <div class="text-xs text-gray-500 mt-1">Logopēds · Tiešsaistē & klātienē</div>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-xl">
+                                    <div class="font-bold text-sm">Dr. Māra Vītola</div>
+                                    <div class="text-xs text-gray-500 mt-1">Bērnu neirologs · Rīga</div>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-xl">
+                                    <div class="font-bold text-sm">Līga Bērziņa</div>
+                                    <div class="text-xs text-gray-500 mt-1">ABA terapeits · Rīga</div>
                                 </div>
                             </div>
                         </div>
@@ -85,7 +101,7 @@
                 </div>
 
                 <div id="parentVisitsSection" class="dashboard-subsection-panel hidden">
-                    <div class="max-w-3xl">
+                    <div class="w-full">
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
                             <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Tuvākās vizītes</h3>
                             <div class="space-y-3">
@@ -173,27 +189,6 @@
                     </div>
                 </div>
 
-                <div id="parentSpecialistsSection" class="dashboard-subsection-panel hidden">
-                    <div class="max-w-3xl">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                            <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Mani speciālisti</h3>
-                            <div class="space-y-3">
-                                <div class="bg-gray-50 p-4 rounded-xl">
-                                    <div class="font-bold text-sm">Anna Kalniņa</div>
-                                    <div class="text-xs text-gray-500 mt-1">Logopēds · Tiešsaistē & klātienē</div>
-                                </div>
-                                <div class="bg-gray-50 p-4 rounded-xl">
-                                    <div class="font-bold text-sm">Dr. Māra Vītola</div>
-                                    <div class="text-xs text-gray-500 mt-1">Bērnu neirologs · Rīga</div>
-                                </div>
-                                <div class="bg-gray-50 p-4 rounded-xl">
-                                    <div class="font-bold text-sm">Līga Bērziņa</div>
-                                    <div class="text-xs text-gray-500 mt-1">ABA terapeits · Rīga</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div id="specialistDashboardView">

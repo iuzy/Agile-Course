@@ -733,6 +733,9 @@ const specialistData = [
     { name: 'Liene Kalēja', type: 'ABA terapeits', city: 'Jelgava', rating: 4.4, focus: 'AST, uzvedības traucējumi', agesRaw: '2-10 g.', visitType: 'Klātienē', nextAvailable: '5. aprīlis', price: '35-50', languages: 'LV', initials: 'LK', color: 'brand' },
     { name: 'Katrīna Zeltiņa', type: 'ABA terapeits', city: 'Rīga', rating: 4.7, focus: 'AST, vecāku koučings, uzvedības analīze', agesRaw: '2-12 g.', visitType: 'Klātienē (vecāku koučings tiešsaistē)', nextAvailable: '21. marts', price: '40-55', languages: 'LV, EN', initials: 'KZ', color: 'brand' },
     { name: 'Renāte Cimermane', type: 'ABA terapeits', city: 'Liepāja', rating: 4.4, focus: 'AST, agrīnā intervence', agesRaw: '1-7 g.', visitType: 'Klātienē', nextAvailable: '2. aprīlis', price: '35-50', languages: 'LV', initials: 'RC', color: 'brand' },
+    { name: 'Māra Dālmane', type: 'Audiologopēds', city: 'Rīga', rating: 4.7, focus: 'Dzirdes traucējumi, kohleārais implants, runas attīstība', agesRaw: '0-12 g.', visitType: 'Klātienē', nextAvailable: '24. marts', price: '35-50', languages: 'LV', initials: 'MD', color: 'indigo' },
+    { name: 'Ināra Vīgante', type: 'Audiologopēds', city: 'Rīga', rating: 4.5, focus: 'Dzirdes aparāti, runas uztvere, bilingvāli bērni ar dzirdes traucējumiem', agesRaw: '1-14 g.', visitType: 'Klātienē', nextAvailable: '28. marts', price: '35-50', languages: 'LV, RU', initials: 'IV', color: 'indigo' },
+    { name: 'Gita Pakalne', type: 'Audiologopēds', city: 'Liepāja', rating: 4.4, focus: 'Dzirdes traucējumi, runas un valodas attīstība', agesRaw: '0-10 g.', visitType: 'Klātienē', nextAvailable: '2. aprīlis', price: '30-40', languages: 'LV', initials: 'GPa', color: 'indigo' },
     { name: 'Anna Kalniņa', type: 'Logopēds', city: 'Rīga', rating: 4.9, focus: 'Runas aizture, AST', agesRaw: '2-7 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '24. marts', price: '30-40', languages: 'LV, RU', initials: 'AK', color: 'blue' },
     { name: 'Elīna Šmite', type: 'Logopēds', city: 'Rīga', rating: 4.6, focus: 'Runas aizture, disleksija, stostīšanās', agesRaw: '3-12 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '21. marts', price: '25-35', languages: 'LV', initials: 'EŠ', color: 'blue' },
     { name: 'Vineta Liepa', type: 'Logopēds', city: 'Rīga', rating: 4.5, focus: 'Runas aizture, valodas sistēmas nepietiekama attīstība', agesRaw: '2-6 g.', visitType: 'Klātienē', nextAvailable: '25. marts', price: '30-40', languages: 'LV', initials: 'VL', color: 'blue' },
@@ -747,6 +750,9 @@ const specialistData = [
     { name: 'Natālija Volkova', type: 'Speciālais pedagogs', city: 'Daugavpils', rating: 4.2, focus: 'Mācīšanās traucējumi, UDHS', agesRaw: '5-12 g.', visitType: 'Klātienē', nextAvailable: '28. marts', price: '20-25', languages: 'LV, RU', initials: 'NV', color: 'purple' },
     { name: 'Marta Ozoliņa', type: 'Speciālais pedagogs', city: 'Ventspils', rating: 4.7, focus: 'UDHS, mācīšanās grūtības', agesRaw: '5-12 g.', visitType: 'Klātienē & tiešsaistē', nextAvailable: '2. aprīlis', price: '25-30', languages: 'LV', initials: 'MO', color: 'purple' },
     { name: 'Inga Sproģe', type: 'Speciālais pedagogs', city: 'Valmiera', rating: 4.3, focus: 'UDHS, mācīšanās traucējumi, AST', agesRaw: '5-14 g.', visitType: 'Klātienē', nextAvailable: '29. marts', price: '20-30', languages: 'LV', initials: 'IS', color: 'purple' },
+    { name: 'Zanda Ābola', type: 'Montesori pedagogs', city: 'Rīga', rating: 4.8, focus: 'AST, attīstības aizture, sensorā attīstība', agesRaw: '1-6 g.', visitType: 'Klātienē', nextAvailable: '22. marts', price: '30-40', languages: 'LV', initials: 'ZĀ', color: 'lime' },
+    { name: 'Kristiāna Puķe', type: 'Montesori pedagogs', city: 'Rīga', rating: 4.6, focus: 'Uzmanības grūtības, UDHS, pašapkalpošanās prasmes', agesRaw: '2-7 g.', visitType: 'Klātienē', nextAvailable: '26. marts', price: '30-40', languages: 'LV, EN', initials: 'KP', color: 'lime' },
+    { name: 'Iveta Stūre', type: 'Montesori pedagogs', city: 'Jelgava', rating: 4.4, focus: 'AST, attīstības aizture, ikdienas prasmes', agesRaw: '1-6 g.', visitType: 'Klātienē', nextAvailable: '1. aprīlis', price: '25-35', languages: 'LV', initials: 'ISt', color: 'lime' },
     { name: 'Kristīne Vanaga', type: 'Ergoterapeits', city: 'Rīga', rating: 4.6, focus: 'Sensorā integrācija, AST', agesRaw: '1-8 g.', visitType: 'Klātienē', nextAvailable: '20. marts', price: '35-45', languages: 'LV', initials: 'KV', color: 'teal' },
     { name: 'Irina Pavlova', type: 'Ergoterapeits', city: 'Rīga', rating: 4.4, focus: 'Smalko motorikas grūtības, ikdienas prasmes', agesRaw: '2-10 g.', visitType: 'Klātienē & mājas vizītes', nextAvailable: '26. marts', price: '35-45', languages: 'LV, RU', initials: 'IP', color: 'teal' },
     { name: 'Baiba Lāce', type: 'Ergoterapeits', city: 'Liepāja', rating: 4.4, focus: 'Sensorā integrācija, motorās grūtības', agesRaw: '1-10 g.', visitType: 'Klātienē', nextAvailable: '3. aprīlis', price: '30-40', languages: 'LV', initials: 'BL', color: 'teal' },
@@ -798,6 +804,8 @@ const specialistColorClasses = {
     red: { avatar: 'bg-red-50 text-red-600', badge: 'bg-red-50 text-red-600' },
     green: { avatar: 'bg-green-50 text-green-700', badge: 'bg-green-50 text-green-700' },
     purple: { avatar: 'bg-purple-50 text-purple-600', badge: 'bg-purple-50 text-purple-600' },
+    indigo: { avatar: 'bg-indigo-50 text-indigo-600', badge: 'bg-indigo-50 text-indigo-600' },
+    lime: { avatar: 'bg-lime-100 text-lime-700', badge: 'bg-lime-100 text-lime-700' },
     amber: { avatar: 'bg-amber-50 text-amber-600', badge: 'bg-amber-50 text-amber-600' },
     cyan: { avatar: 'bg-cyan-50 text-cyan-600', badge: 'bg-cyan-50 text-cyan-600' },
     pink: { avatar: 'bg-pink-100 text-pink-600', badge: 'bg-pink-100 text-pink-600' },
@@ -1431,8 +1439,7 @@ function showParentDashboardSection(section, event) {
     const sectionMap = {
         summary: document.getElementById('parentSummarySection'),
         child: document.getElementById('parentChildSection'),
-        visits: document.getElementById('parentVisitsSection'),
-        specialists: document.getElementById('parentSpecialistsSection')
+        visits: document.getElementById('parentVisitsSection')
     };
 
     Object.keys(sectionMap).forEach(function(key) {
