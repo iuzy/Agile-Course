@@ -163,6 +163,18 @@
         .nav-link:hover::after, .nav-link.active::after { width: 100%; }
         .card-hover { transition: all 0.25s; }
         .card-hover:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+        .feature-card {
+            border-left: 4px solid rgba(25,126,128,0.22);
+        }
+        .feature-card.feature-card-brand {
+            border-left-color: rgba(25,126,128,0.62);
+        }
+        .feature-card.feature-card-peach {
+            border-left-color: rgba(194,109,57,0.58);
+        }
+        .feature-card.feature-card-lavender {
+            border-left-color: rgba(107,89,179,0.56);
+        }
         .step-line { position: relative; padding-left: 2.5rem; }
         .step-line::before { content: ''; position: absolute; left: 0.9rem; top: 2rem; bottom: 0; width: 2px; background: var(--border-color); }
         .step-line:last-child::before { display: none; }
@@ -540,6 +552,18 @@
             background: rgba(27,33,35,0.86);
             border-color: var(--border-color);
         }
+        body.dark .feature-card {
+            border-left-color: rgba(143,208,209,0.26);
+        }
+        body.dark .feature-card.feature-card-brand {
+            border-left-color: rgba(143,208,209,0.62);
+        }
+        body.dark .feature-card.feature-card-peach {
+            border-left-color: rgba(255,199,158,0.58);
+        }
+        body.dark .feature-card.feature-card-lavender {
+            border-left-color: rgba(211,200,255,0.58);
+        }
         body.dark .dashboard-subsection-btn {
             color: var(--text-secondary);
         }
@@ -643,8 +667,8 @@
         body.dark .spec-scheduler-day-lines {
             background-image: repeating-linear-gradient(
                 to bottom,
-                rgba(83,100,101,0.34) 0,
-                rgba(83,100,101,0.34) 1px,
+                rgba(83,100,101,0.22) 0,
+                rgba(83,100,101,0.22) 1px,
                 transparent 1px,
                 transparent 38px
             );
@@ -658,21 +682,36 @@
             background: rgba(25,126,128,0.18);
             color: #8fd0d1;
         }
+        body.dark .spec-scheduler-appointment {
+            border-color: rgba(83,100,101,0.28);
+            box-shadow: none;
+        }
+        body.dark .spec-scheduler-appointment.is-active {
+            border-color: rgba(143,208,209,0.22);
+            box-shadow: 0 10px 24px rgba(3,8,9,0.2);
+        }
+        body.dark .spec-scheduler-appointment.is-brand,
+        body.dark .spec-scheduler-appointment.is-mint,
+        body.dark .spec-scheduler-appointment.is-lavender,
+        body.dark .spec-scheduler-appointment.is-peach {
+            background: rgba(31,38,39,0.94);
+            color: var(--text-primary);
+        }
         body.dark .spec-scheduler-appointment.is-brand {
-            background: rgba(25,126,128,0.2);
-            color: #8fd0d1;
+            border-left-color: rgba(143,208,209,0.62);
         }
         body.dark .spec-scheduler-appointment.is-mint {
-            background: rgba(30,92,74,0.28);
-            color: #9ee6c8;
+            border-left-color: rgba(158,230,200,0.58);
         }
         body.dark .spec-scheduler-appointment.is-lavender {
-            background: rgba(78,66,128,0.28);
-            color: #d3c8ff;
+            border-left-color: rgba(211,200,255,0.58);
         }
         body.dark .spec-scheduler-appointment.is-peach {
-            background: rgba(114,69,40,0.3);
-            color: #ffc79e;
+            border-left-color: rgba(255,199,158,0.6);
+        }
+        body.dark .spec-scheduler-detail-summary,
+        body.dark .spec-scheduler-detail-section-label {
+            color: var(--text-secondary);
         }
         body.dark .dashboard-calendar-day {
             background: var(--bg-card);
@@ -761,21 +800,21 @@
             color: var(--text-secondary);
         }
         .spec-scheduler-board {
-            min-width: 48rem;
+            min-width: 50rem;
         }
         .spec-scheduler-head {
             display: grid;
             grid-template-columns: 4.25rem repeat(5, minmax(0, 1fr));
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
+            gap: 0.55rem;
+            margin-bottom: 0.6rem;
         }
         .spec-scheduler-head-spacer {
             border-right: 1px solid rgba(44,55,55,0.08);
         }
         .spec-scheduler-day-head {
-            padding: 0.75rem 0.85rem;
-            border-radius: 1rem;
-            background: rgba(248,244,239,0.9);
+            padding: 0.65rem 0.75rem;
+            border-radius: 0.9rem;
+            background: rgba(249,247,243,0.84);
             border: 1px solid rgba(44,55,55,0.08);
             display: flex;
             flex-direction: column;
@@ -792,47 +831,48 @@
             color: var(--text-muted);
         }
         .spec-scheduler-day-label {
-            font-size: 0.92rem;
-            font-weight: 700;
+            font-size: 0.86rem;
+            font-weight: 800;
             color: var(--text-primary);
         }
         .spec-scheduler-grid-shell {
             display: grid;
             grid-template-columns: 4.25rem minmax(0, 1fr);
-            gap: 0.75rem;
+            gap: 0.55rem;
         }
         .spec-scheduler-times {
             display: grid;
             grid-template-rows: repeat(21, 38px);
         }
         .spec-scheduler-time {
-            font-size: 0.68rem;
-            font-weight: 700;
+            font-size: 0.64rem;
+            font-weight: 800;
+            letter-spacing: 0.02em;
             color: var(--text-muted);
-            transform: translateY(-0.55rem);
+            transform: translateY(-0.45rem);
         }
         .spec-scheduler-columns {
             display: grid;
             grid-template-columns: repeat(5, minmax(0, 1fr));
-            gap: 0.75rem;
+            gap: 0.55rem;
         }
         .spec-scheduler-day-column {
             position: relative;
-            border-radius: 1rem;
+            border-radius: 0.95rem;
             border: 1px solid rgba(44,55,55,0.08);
-            background: rgba(255,255,255,0.78);
+            background: rgba(255,255,255,0.9);
             overflow: hidden;
         }
         .spec-scheduler-day-column.is-off {
-            background: rgba(248,244,239,0.82);
+            background: rgba(246,243,238,0.9);
         }
         .spec-scheduler-day-lines {
             position: absolute;
             inset: 0;
             background-image: repeating-linear-gradient(
                 to bottom,
-                rgba(44,55,55,0.08) 0,
-                rgba(44,55,55,0.08) 1px,
+                rgba(44,55,55,0.05) 0,
+                rgba(44,55,55,0.05) 1px,
                 transparent 1px,
                 transparent 38px
             );
@@ -849,52 +889,95 @@
         }
         .spec-scheduler-appointment {
             position: absolute;
-            left: 0.45rem;
-            right: 0.45rem;
+            left: 0.35rem;
+            right: 0.35rem;
             z-index: 2;
-            border-radius: 0.95rem;
-            padding: 0.65rem 0.75rem;
-            border: 1px solid transparent;
+            border-radius: 0.8rem;
+            padding: 0.58rem 0.68rem 0.6rem;
+            border: 1px solid rgba(44,55,55,0.08);
+            border-left-width: 4px;
             text-align: left;
-            box-shadow: 0 10px 24px rgba(64,49,34,0.08);
-            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+            box-shadow: 0 4px 10px rgba(64,49,34,0.05);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+            overflow: hidden;
         }
         .spec-scheduler-appointment:hover {
             transform: translateY(-1px);
         }
         .spec-scheduler-appointment.is-active {
-            border-color: rgba(44,55,55,0.18);
-            box-shadow: 0 16px 30px rgba(64,49,34,0.12);
+            border-color: rgba(44,55,55,0.16);
+            box-shadow: 0 10px 22px rgba(64,49,34,0.1);
+        }
+        .spec-scheduler-appointment.is-brand,
+        .spec-scheduler-appointment.is-mint,
+        .spec-scheduler-appointment.is-lavender,
+        .spec-scheduler-appointment.is-peach {
+            background: rgba(250,249,247,0.96);
+            color: var(--text-primary);
         }
         .spec-scheduler-appointment.is-brand {
-            background: rgba(215,239,239,0.96);
-            color: var(--brand);
+            border-left-color: rgba(25,126,128,0.62);
         }
         .spec-scheduler-appointment.is-mint {
-            background: rgba(232,246,239,0.96);
-            color: #1f8a65;
+            border-left-color: rgba(34,135,98,0.58);
         }
         .spec-scheduler-appointment.is-lavender {
-            background: rgba(237,232,249,0.96);
-            color: #6b59b3;
+            border-left-color: rgba(107,89,179,0.56);
         }
         .spec-scheduler-appointment.is-peach {
-            background: rgba(252,235,225,0.98);
-            color: #c26d39;
+            border-left-color: rgba(194,109,57,0.58);
         }
         .spec-scheduler-appointment-title {
             display: block;
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             font-weight: 800;
             line-height: 1.2;
+            margin-top: 0.18rem;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
         }
         .spec-scheduler-appointment-time,
         .spec-scheduler-appointment-child {
             display: block;
-            font-size: 0.66rem;
+            font-size: 0.64rem;
             line-height: 1.25;
-            margin-top: 0.14rem;
-            opacity: 0.9;
+            opacity: 0.88;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .spec-scheduler-appointment-time {
+            font-weight: 800;
+            letter-spacing: 0.01em;
+        }
+        .spec-scheduler-appointment-child {
+            margin-top: 0.16rem;
+        }
+        .spec-scheduler-appointment.is-compact {
+            padding: 0.46rem 0.56rem 0.48rem;
+        }
+        .spec-scheduler-appointment.is-compact .spec-scheduler-appointment-title {
+            font-size: 0.72rem;
+            -webkit-line-clamp: 1;
+        }
+        .spec-scheduler-appointment.is-compact .spec-scheduler-appointment-child {
+            display: none;
+        }
+        .spec-scheduler-appointment.is-tight {
+            padding: 0.42rem 0.52rem;
+        }
+        .spec-scheduler-appointment.is-tight .spec-scheduler-appointment-time {
+            font-size: 0.6rem;
+        }
+        .spec-scheduler-appointment.is-tight .spec-scheduler-appointment-title {
+            margin-top: 0.1rem;
+            font-size: 0.7rem;
+            -webkit-line-clamp: 1;
+        }
+        .spec-scheduler-appointment.is-tight .spec-scheduler-appointment-child {
+            display: none;
         }
         .spec-scheduler-detail {
             min-width: 0;
@@ -903,9 +986,9 @@
         .spec-scheduler-detail-card,
         .spec-scheduler-empty {
             border: 1px solid rgba(44,55,55,0.08);
-            border-radius: 1.2rem;
-            background: rgba(248,244,239,0.9);
-            padding: 1.1rem;
+            border-radius: 1rem;
+            background: rgba(249,247,243,0.9);
+            padding: 1rem;
         }
         .spec-scheduler-detail-kicker {
             font-size: 0.72rem;
@@ -916,16 +999,25 @@
             margin-bottom: 0.35rem;
         }
         .spec-scheduler-detail-title {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 900;
             color: var(--text-primary);
-            margin-bottom: 1rem;
+            margin-bottom: 0.55rem;
+        }
+        .spec-scheduler-detail-summary {
+            font-size: 0.84rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            margin-bottom: 0.9rem;
         }
         .spec-scheduler-detail-meta,
         .spec-scheduler-detail-list {
             display: grid;
-            gap: 0.7rem;
-            margin-bottom: 1rem;
+            gap: 0.65rem;
+            margin-bottom: 0.9rem;
+        }
+        .spec-scheduler-detail-meta {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
         .spec-scheduler-detail-meta div,
         .spec-scheduler-detail-list div {
@@ -951,10 +1043,10 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.8rem 0.85rem;
-            border-radius: 1rem;
-            background: rgba(255,255,255,0.85);
+            border-radius: 0.9rem;
+            background: rgba(255,255,255,0.94);
             border: 1px solid rgba(44,55,55,0.08);
-            margin-bottom: 1rem;
+            margin-bottom: 0.9rem;
         }
         .spec-scheduler-person-avatar {
             width: 2.7rem;
@@ -976,6 +1068,14 @@
             font-size: 0.8rem;
             color: var(--text-secondary);
             margin-top: 0.1rem;
+        }
+        .spec-scheduler-detail-section-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.6rem;
         }
         .spec-scheduler-detail-actions {
             display: grid;
@@ -1251,11 +1351,6 @@
                 justify-content: flex-start;
             }
         }
-        @media (min-width: 1380px) {
-            .spec-scheduler-shell {
-                grid-template-columns: minmax(0, 1fr) 18rem;
-            }
-        }
         @media (max-width: 1180px) {
             .spec-scheduler-shell {
                 grid-template-columns: 1fr;
@@ -1303,6 +1398,9 @@
                 align-items: flex-start;
             }
             .spec-scheduler-detail-actions {
+                grid-template-columns: 1fr;
+            }
+            .spec-scheduler-detail-meta {
                 grid-template-columns: 1fr;
             }
         }
@@ -1499,6 +1597,24 @@
             background: rgba(255,255,255,0.96);
             border-color: rgba(25,126,128,0.18);
         }
+        .site-nav .user-menu-trigger.is-parent {
+            background: rgba(56,189,248,0.08);
+            border-color: rgba(56,189,248,0.18);
+            color: #0f6f8f;
+        }
+        .site-nav .user-menu-trigger.is-parent:hover {
+            background: rgba(56,189,248,0.12);
+            border-color: rgba(56,189,248,0.22);
+        }
+        .site-nav .user-menu-trigger.is-specialist {
+            background: rgba(245,158,11,0.09);
+            border-color: rgba(245,158,11,0.2);
+            color: #a16207;
+        }
+        .site-nav .user-menu-trigger.is-specialist:hover {
+            background: rgba(245,158,11,0.13);
+            border-color: rgba(245,158,11,0.24);
+        }
         .site-nav .user-menu-icon {
             display: inline-flex;
             align-items: center;
@@ -1509,6 +1625,14 @@
             background: rgba(25,126,128,0.12);
             font-size: 0.95rem;
             line-height: 1;
+        }
+        .site-nav .user-menu-trigger.is-parent .user-menu-icon {
+            background: rgba(56,189,248,0.14);
+            color: #0f6f8f;
+        }
+        .site-nav .user-menu-trigger.is-specialist .user-menu-icon {
+            background: rgba(245,158,11,0.16);
+            color: #a16207;
         }
         .site-nav .user-menu-copy {
             display: flex;
@@ -1718,18 +1842,19 @@
         }
         .feature-card {
             border: 1px solid rgba(233,219,207,0.9) !important;
-            border-left-width: 1px !important;
+            border-left-width: 4px !important;
             background: rgba(255,255,255,0.84);
             box-shadow: 0 14px 34px rgba(64,49,34,0.06);
             overflow: hidden;
         }
-        .feature-card::before {
-            content: "";
-            display: block;
-            width: 100%;
-            height: 3px;
-            margin: -1.5rem -1.5rem 1.15rem;
-            background: linear-gradient(90deg, rgba(25,126,128,0.8), rgba(25,126,128,0.1));
+        .feature-card.feature-card-brand {
+            border-left-color: rgba(25,126,128,0.62) !important;
+        }
+        .feature-card.feature-card-peach {
+            border-left-color: rgba(194,109,57,0.58) !important;
+        }
+        .feature-card.feature-card-lavender {
+            border-left-color: rgba(107,89,179,0.56) !important;
         }
         .feature-kicker {
             display: inline-flex;
@@ -1852,8 +1977,34 @@
             background: rgba(25,126,128,0.18);
             border-color: rgba(25,126,128,0.28);
         }
+        body.dark .site-nav .user-menu-trigger.is-parent {
+            background: rgba(56,189,248,0.12);
+            border-color: rgba(56,189,248,0.18);
+            color: #7dd3fc;
+        }
+        body.dark .site-nav .user-menu-trigger.is-parent:hover {
+            background: rgba(56,189,248,0.16);
+            border-color: rgba(56,189,248,0.24);
+        }
+        body.dark .site-nav .user-menu-trigger.is-specialist {
+            background: rgba(245,158,11,0.14);
+            border-color: rgba(245,158,11,0.2);
+            color: #fbbf24;
+        }
+        body.dark .site-nav .user-menu-trigger.is-specialist:hover {
+            background: rgba(245,158,11,0.18);
+            border-color: rgba(245,158,11,0.26);
+        }
         body.dark .site-nav .user-menu-icon {
             background: rgba(25,126,128,0.2);
+        }
+        body.dark .site-nav .user-menu-trigger.is-parent .user-menu-icon {
+            background: rgba(56,189,248,0.18);
+            color: #7dd3fc;
+        }
+        body.dark .site-nav .user-menu-trigger.is-specialist .user-menu-icon {
+            background: rgba(245,158,11,0.2);
+            color: #fbbf24;
         }
         body.dark .site-nav .user-menu-name {
             color: var(--text-primary);
@@ -2031,4 +2182,13 @@
             background: rgba(25,126,128,0.18);
             border-color: rgba(25,126,128,0.3);
             color: #8fd0d1;
+        }
+        body.dark .feature-card.feature-card-brand {
+            border-left-color: rgba(143,208,209,0.62) !important;
+        }
+        body.dark .feature-card.feature-card-peach {
+            border-left-color: rgba(255,199,158,0.58) !important;
+        }
+        body.dark .feature-card.feature-card-lavender {
+            border-left-color: rgba(211,200,255,0.58) !important;
         }

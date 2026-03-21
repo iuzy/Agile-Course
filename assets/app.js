@@ -27,7 +27,7 @@ let selectedSpecVisitId = null;
 const SPEC_SCHEDULE_WEEKS = [
     {
         label: '16. marts - 20. marts',
-        sublabel: 'Nedēļas skats · 2026',
+        sublabel: 'Speciālista darba grafiks · 2026',
         days: [
             { key: 'mon', short: 'Pr', label: '16. marts' },
             { key: 'tue', short: 'Ot', label: '17. marts' },
@@ -46,7 +46,7 @@ const SPEC_SCHEDULE_WEEKS = [
     },
     {
         label: '23. marts - 27. marts',
-        sublabel: 'Nedēļas skats · 2026',
+        sublabel: 'Speciālista darba grafiks · 2026',
         days: [
             { key: 'mon', short: 'Pr', label: '23. marts' },
             { key: 'tue', short: 'Ot', label: '24. marts' },
@@ -66,7 +66,7 @@ const SPEC_SCHEDULE_WEEKS = [
     },
     {
         label: '30. marts - 3. aprīlis',
-        sublabel: 'Nedēļas skats · 2026',
+        sublabel: 'Speciālista darba grafiks · 2026',
         days: [
             { key: 'mon', short: 'Pr', label: '30. marts' },
             { key: 'tue', short: 'Ot', label: '31. marts' },
@@ -334,6 +334,13 @@ function renderSiteShell() {
                 </div>
             </div>
 
+            <div id="specVisitModal" class="fixed inset-0 modal-bg hidden z-[100] flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-label="Vizītes detaļas">
+                <div class="modal-card modal-card-md bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full relative shadow-2xl fade-in">
+                    <button onclick="closeModal('specVisitModal')" class="absolute top-4 right-5 text-2xl text-gray-300 hover:text-gray-600 transition" aria-label="Aizvērt">✕</button>
+                    <div id="specVisitModalContent"></div>
+                </div>
+            </div>
+
             <div id="roleModal" class="fixed inset-0 modal-bg hidden z-[100] flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-label="Lomas izvēle">
                 <div class="bg-white rounded-3xl p-8 max-w-lg w-full relative shadow-2xl fade-in">
                     <button onclick="closeModal('roleModal')" class="absolute top-4 right-5 text-2xl text-gray-300 hover:text-gray-600 transition" aria-label="Aizvērt">✕</button>
@@ -541,10 +548,17 @@ function updateAuthUI() {
         if (userRoleLabel) {
             userRoleLabel.textContent = authState.role === 'specialist' ? 'Speciālists' : 'Vecāks';
         }
+        if (userMenuBtn) {
+            userMenuBtn.classList.toggle('is-parent', authState.role === 'parent');
+            userMenuBtn.classList.toggle('is-specialist', authState.role === 'specialist');
+        }
     } else {
         loginBtn.classList.remove('hidden');
         if (userDropdown) userDropdown.classList.add('hidden');
-        if (userMenuBtn) userMenuBtn.setAttribute('aria-expanded', 'false');
+        if (userMenuBtn) {
+            userMenuBtn.setAttribute('aria-expanded', 'false');
+            userMenuBtn.classList.remove('is-parent', 'is-specialist');
+        }
         userMenu.classList.add('hidden');
     }
 
@@ -1294,23 +1308,16 @@ function getSpecAppointmentToneClass(tone) {
     return 'is-brand';
 }
 
-function renderSpecScheduleDetail(week, visit) {
-    const detail = document.getElementById('specSchedulerDetail');
-    if (!detail) return;
-
-    if (!visit) {
-        detail.innerHTML = '<div class="spec-scheduler-empty">Šai nedēļai nav ieplānotu mock-vizīšu.</div>';
-        return;
-    }
-
+function getSpecVisitModalContent(week, visit) {
     const day = week.days.find(function(item) {
         return item.key === visit.day;
     });
 
-    detail.innerHTML = '' +
+    return '' +
         '<div class="spec-scheduler-detail-card">' +
             '<p class="spec-scheduler-detail-kicker">Izvēlētā vizīte</p>' +
             '<h4 class="spec-scheduler-detail-title">' + escapeHtml(visit.summary) + '</h4>' +
+            '<p class="spec-scheduler-detail-summary">' + escapeHtml(visit.note) + '</p>' +
             '<div class="spec-scheduler-detail-meta">' +
                 '<div><span>Diena</span><strong>' + escapeHtml(day ? day.label : '') + '</strong></div>' +
                 '<div><span>Laiks</span><strong>' + escapeHtml(visit.start) + ' - ' + escapeHtml(visit.end) + '</strong></div>' +
@@ -1324,16 +1331,30 @@ function renderSpecScheduleDetail(week, visit) {
                     '<div class="spec-scheduler-person-copy">' + escapeHtml(visit.parent) + '</div>' +
                 '</div>' +
             '</div>' +
+            '<div class="spec-scheduler-detail-section-label">Praktiskā informācija</div>' +
             '<div class="spec-scheduler-detail-list">' +
                 '<div><span>Formāts</span><strong>' + escapeHtml(visit.location) + '</strong></div>' +
                 '<div><span>Kontakts</span><strong>' + escapeHtml(visit.phone) + '</strong></div>' +
-                '<div><span>Piezīme</span><strong>' + escapeHtml(visit.note) + '</strong></div>' +
+                '<div><span>Vecāks</span><strong>' + escapeHtml(visit.parent) + '</strong></div>' +
             '</div>' +
             '<div class="spec-scheduler-detail-actions">' +
                 '<button type="button" class="btn-cta px-4 py-3 rounded-xl font-bold text-sm">Atvērt vizīti</button>' +
-                '<button type="button" class="spec-scheduler-secondary-btn">Pārcelt</button>' +
+                '<button type="button" class="spec-scheduler-secondary-btn">Sazināties</button>' +
             '</div>' +
         '</div>';
+}
+
+function openSpecVisitModal(visitId) {
+    const week = getCurrentSpecWeek();
+    const visit = (week.appointments || []).find(function(item) {
+        return item.id === visitId;
+    });
+    const modalContent = document.getElementById('specVisitModalContent');
+    if (!visit || !modalContent) return;
+    selectedSpecVisitId = visitId;
+    modalContent.innerHTML = getSpecVisitModalContent(week, visit);
+    buildSpecCalendar();
+    showModal('specVisitModal');
 }
 
 function buildSpecCalendar() {
@@ -1347,12 +1368,7 @@ function buildSpecCalendar() {
     const week = getCurrentSpecWeek();
     const totalSlots = (SPEC_SCHEDULE_END_MINUTES - SPEC_SCHEDULE_START_MINUTES) / SPEC_SCHEDULE_SLOT_MINUTES;
     const boardHeight = totalSlots * SPEC_SCHEDULE_ROW_HEIGHT;
-    const selectedVisit = getSelectedSpecVisit(week);
     const timeLabels = [];
-
-    if (!selectedSpecVisitId && selectedVisit) {
-        selectedSpecVisitId = selectedVisit.id;
-    }
 
     if (label) label.textContent = week.label;
     if (sublabel) sublabel.textContent = week.sublabel;
@@ -1394,9 +1410,10 @@ function buildSpecCalendar() {
                             const top = Math.max(0, (startMinutes / SPEC_SCHEDULE_SLOT_MINUTES) * SPEC_SCHEDULE_ROW_HEIGHT);
                             const height = Math.max(50, ((endMinutes - startMinutes) / SPEC_SCHEDULE_SLOT_MINUTES) * SPEC_SCHEDULE_ROW_HEIGHT - 8);
                             const isActive = appointment.id === selectedSpecVisitId;
-                            return '<button type="button" onclick="selectSpecVisit(\'' + escapeHtml(appointment.id) + '\')" class="spec-scheduler-appointment ' + getSpecAppointmentToneClass(appointment.tone) + (isActive ? ' is-active' : '') + '" style="top:' + top + 'px;height:' + height + 'px">' +
-                                '<span class="spec-scheduler-appointment-title">' + escapeHtml(appointment.summary) + '</span>' +
+                            const sizeClass = height <= 54 ? ' is-tight' : (height <= 68 ? ' is-compact' : '');
+                            return '<button type="button" onclick="openSpecVisitModal(\'' + escapeHtml(appointment.id) + '\')" class="spec-scheduler-appointment ' + getSpecAppointmentToneClass(appointment.tone) + sizeClass + (isActive ? ' is-active' : '') + '" style="top:' + top + 'px;height:' + height + 'px">' +
                                 '<span class="spec-scheduler-appointment-time">' + escapeHtml(appointment.start) + ' - ' + escapeHtml(appointment.end) + '</span>' +
+                                '<span class="spec-scheduler-appointment-title">' + escapeHtml(appointment.summary) + '</span>' +
                                 '<span class="spec-scheduler-appointment-child">' + escapeHtml(appointment.child) + '</span>' +
                             '</button>';
                         }).join('') +
@@ -1404,13 +1421,6 @@ function buildSpecCalendar() {
                 }).join('') +
             '</div>' +
         '</div>';
-
-    renderSpecScheduleDetail(week, selectedVisit);
-}
-
-function selectSpecVisit(visitId) {
-    selectedSpecVisitId = visitId;
-    buildSpecCalendar();
 }
 
 function changeSpecCalendarMonth(direction) {
@@ -1521,7 +1531,7 @@ function initGlobalKeyboardHandlers() {
             closeLoginDropdown();
             closeUserDropdown();
             closeMobileNav();
-            ['authModal', 'profileModal', 'calendarModal', 'roleModal', 'onboardingModal', 'logoutModal'].forEach(function(id) {
+            ['authModal', 'profileModal', 'calendarModal', 'specVisitModal', 'roleModal', 'onboardingModal', 'logoutModal'].forEach(function(id) {
                 const modal = document.getElementById(id);
                 if (modal && !modal.classList.contains('hidden')) {
                     closeModal(id);
