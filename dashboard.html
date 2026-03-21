@@ -89,51 +89,83 @@
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
                             <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Tuvākās vizītes</h3>
                             <div class="space-y-3">
-                                <div class="dashboard-visit-item dashboard-upcoming-item bg-green-50 p-4 rounded-xl">
-                                    <div class="dashboard-visit-slot">
-                                        <div class="dashboard-visit-date">24. marts</div>
-                                        <div class="dashboard-visit-time">10:00</div>
+                                <div class="dashboard-booking-row is-upcoming">
+                                    <div class="dashboard-booking-date">
+                                        <div class="dashboard-booking-weekday">Ot</div>
+                                        <div class="dashboard-booking-day">24</div>
+                                        <div class="dashboard-booking-month">mar</div>
                                     </div>
-                                    <div class="dashboard-visit-body">
-                                        <div class="font-bold text-sm">Logopēdijas sesija ar Anna Kalniņu</div>
-                                        <div class="text-xs text-gray-500 mt-1">Tiešsaistē</div>
+                                    <div class="dashboard-booking-main">
+                                        <div class="dashboard-booking-meta">
+                                            <span>10:00 - 10:45</span>
+                                            <span>Tiešsaistē</span>
+                                        </div>
+                                        <div class="dashboard-booking-title">Logopēdijas sesija</div>
+                                        <div class="dashboard-booking-copy">Anna Kalniņa</div>
                                     </div>
-                                    <div class="dashboard-visit-status text-xs font-bold text-green-700">Apstiprināta</div>
+                                    <div class="dashboard-booking-actions">
+                                        <div class="dashboard-booking-status is-confirmed">Apstiprināta</div>
+                                        <button type="button" class="dashboard-booking-btn">Skatīt</button>
+                                    </div>
                                 </div>
-                                <div class="dashboard-visit-item dashboard-upcoming-item bg-brand-light p-4 rounded-xl">
-                                    <div class="dashboard-visit-slot">
-                                        <div class="dashboard-visit-date">8. aprīlis</div>
-                                        <div class="dashboard-visit-time">15:30</div>
+                                <div class="dashboard-booking-row is-upcoming">
+                                    <div class="dashboard-booking-date">
+                                        <div class="dashboard-booking-weekday">Tr</div>
+                                        <div class="dashboard-booking-day">08</div>
+                                        <div class="dashboard-booking-month">apr</div>
                                     </div>
-                                    <div class="dashboard-visit-body">
-                                        <div class="font-bold text-sm">Kontroles vizīte pie Dr. Māras Vītolas</div>
-                                        <div class="text-xs text-gray-500 mt-1">Rīga</div>
+                                    <div class="dashboard-booking-main">
+                                        <div class="dashboard-booking-meta">
+                                            <span>15:30 - 16:00</span>
+                                            <span>Rīga</span>
+                                        </div>
+                                        <div class="dashboard-booking-title">Kontroles vizīte</div>
+                                        <div class="dashboard-booking-copy">Dr. Māra Vītola</div>
                                     </div>
-                                    <div class="dashboard-visit-status text-xs font-bold text-brand">Jāaizpilda anketa</div>
+                                    <div class="dashboard-booking-actions">
+                                        <div class="dashboard-booking-status is-pending">Jāaizpilda anketa</div>
+                                        <button type="button" class="dashboard-booking-btn">Pārvaldīt</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                             <h3 class="font-black text-lg mb-4 border-b border-gray-100 pb-2">Iepriekšējās vizītes</h3>
                             <div class="space-y-3">
-                                <div class="dashboard-visit-item bg-gray-50 p-4 rounded-xl">
-                                    <div class="dashboard-visit-slot">
-                                        <div class="dashboard-visit-date">18. marts</div>
-                                        <div class="dashboard-visit-time">10:00</div>
+                                <div class="dashboard-booking-row is-past">
+                                    <div class="dashboard-booking-date">
+                                        <div class="dashboard-booking-weekday">Tr</div>
+                                        <div class="dashboard-booking-day">18</div>
+                                        <div class="dashboard-booking-month">mar</div>
                                     </div>
-                                    <div class="dashboard-visit-body">
-                                        <div class="font-bold text-sm">ABA sesija ar Līga Bērziņa</div>
-                                        <div class="text-xs text-gray-400 mt-2">Piezīme: nākamajā reizē turpināt komunikācijas uzdevumus.</div>
+                                    <div class="dashboard-booking-main">
+                                        <div class="dashboard-booking-meta">
+                                            <span>10:00 - 10:45</span>
+                                            <span>Rīga</span>
+                                        </div>
+                                        <div class="dashboard-booking-title">ABA sesija</div>
+                                        <div class="dashboard-booking-copy">Līga Bērziņa · Piezīme: nākamajā reizē turpināt komunikācijas uzdevumus.</div>
+                                    </div>
+                                    <div class="dashboard-booking-actions">
+                                        <button type="button" class="dashboard-booking-btn is-quiet">Skatīt</button>
                                     </div>
                                 </div>
-                                <div class="dashboard-visit-item bg-gray-50 p-4 rounded-xl">
-                                    <div class="dashboard-visit-slot">
-                                        <div class="dashboard-visit-date">11. marts</div>
-                                        <div class="dashboard-visit-time">14:30</div>
+                                <div class="dashboard-booking-row is-past">
+                                    <div class="dashboard-booking-date">
+                                        <div class="dashboard-booking-weekday">Ot</div>
+                                        <div class="dashboard-booking-day">11</div>
+                                        <div class="dashboard-booking-month">mar</div>
                                     </div>
-                                    <div class="dashboard-visit-body">
-                                        <div class="font-bold text-sm">Ergoterapija ar Irina Pavlova</div>
-                                        <div class="text-xs text-gray-400 mt-2">Saņemts mājas uzdevumu saraksts un rekomendācijas.</div>
+                                    <div class="dashboard-booking-main">
+                                        <div class="dashboard-booking-meta">
+                                            <span>14:30 - 15:15</span>
+                                            <span>Rīga</span>
+                                        </div>
+                                        <div class="dashboard-booking-title">Ergoterapija</div>
+                                        <div class="dashboard-booking-copy">Irina Pavlova · Saņemts mājas uzdevumu saraksts un rekomendācijas.</div>
+                                    </div>
+                                    <div class="dashboard-booking-actions">
+                                        <button type="button" class="dashboard-booking-btn is-quiet">Skatīt</button>
                                     </div>
                                 </div>
                             </div>

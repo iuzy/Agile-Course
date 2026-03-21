@@ -382,42 +382,116 @@
         .dashboard-subsection-panel {
             width: 100%;
         }
-        .dashboard-visit-item {
+        .dashboard-booking-row {
             display: grid;
-            grid-template-columns: 7.25rem minmax(0, 1fr) auto;
-            gap: 1rem;
-            align-items: start;
-        }
-        .dashboard-visit-slot {
-            display: flex;
-            flex-direction: column;
-            gap: 0.12rem;
-            padding: 0.7rem 0.8rem;
-            border-radius: 0.95rem;
-            background: rgba(255,255,255,0.72);
+            grid-template-columns: 6.2rem minmax(0, 1fr) auto;
+            gap: 1.1rem;
+            align-items: center;
+            padding: 1rem 1.1rem;
+            border-radius: 1.15rem;
             border: 1px solid rgba(44,55,55,0.08);
+            background: rgba(250,249,247,0.95);
+            box-shadow: 0 10px 24px rgba(64,49,34,0.04);
         }
-        .dashboard-visit-date {
-            font-size: 0.78rem;
+        .dashboard-booking-date {
+            padding-right: 0.9rem;
+            border-right: 1px solid rgba(44,55,55,0.08);
+            text-align: center;
+        }
+        .dashboard-booking-weekday {
+            font-size: 0.82rem;
             font-weight: 800;
             letter-spacing: 0.04em;
             text-transform: uppercase;
-            color: var(--text-secondary);
+            color: var(--cta);
         }
-        .dashboard-visit-time {
-            font-size: 1.18rem;
+        .dashboard-booking-day {
+            font-size: 2.2rem;
             font-weight: 900;
-            line-height: 1.1;
+            line-height: 1;
+            margin-top: 0.18rem;
             color: var(--text-primary);
         }
-        .dashboard-visit-body {
-            min-width: 0;
-            padding-top: 0.15rem;
+        .dashboard-booking-month {
+            margin-top: 0.2rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
         }
-        .dashboard-visit-status {
-            padding-top: 0.25rem;
-            text-align: right;
+        .dashboard-booking-main {
+            min-width: 0;
+        }
+        .dashboard-booking-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem 1rem;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 0.38rem;
+        }
+        .dashboard-booking-title {
+            font-size: 1.04rem;
+            font-weight: 900;
+            line-height: 1.25;
+            color: var(--text-primary);
+        }
+        .dashboard-booking-copy {
+            margin-top: 0.28rem;
+            font-size: 0.86rem;
+            line-height: 1.45;
+            color: var(--text-muted);
+        }
+        .dashboard-booking-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.55rem;
+        }
+        .dashboard-booking-status {
+            padding: 0.28rem 0.65rem;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 800;
             white-space: nowrap;
+        }
+        .dashboard-booking-status.is-confirmed {
+            background: rgba(139,92,246,0.1);
+            color: #7c3aed;
+        }
+        .dashboard-booking-status.is-pending {
+            background: rgba(56,189,248,0.12);
+            color: #0284c7;
+        }
+        .dashboard-booking-btn {
+            min-height: 2.6rem;
+            padding: 0.55rem 0.95rem;
+            border-radius: 0.9rem;
+            border: 1px solid rgba(44,55,55,0.1);
+            background: rgba(255,255,255,0.84);
+            color: var(--text-primary);
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+        .dashboard-booking-btn.is-quiet {
+            background: rgba(247,244,239,0.92);
+            color: var(--text-secondary);
+        }
+        .dashboard-booking-row.is-past {
+            background: rgba(244,242,239,0.72);
+            border-color: rgba(120,113,108,0.1);
+            box-shadow: none;
+        }
+        .dashboard-booking-row.is-past .dashboard-booking-weekday,
+        .dashboard-booking-row.is-past .dashboard-booking-day,
+        .dashboard-booking-row.is-past .dashboard-booking-title {
+            color: #6b665f;
+        }
+        .dashboard-booking-row.is-past .dashboard-booking-month,
+        .dashboard-booking-row.is-past .dashboard-booking-meta,
+        .dashboard-booking-row.is-past .dashboard-booking-copy {
+            color: #a19a92;
         }
         body.dark .dashboard-field {
             background: linear-gradient(180deg, rgba(28,34,34,0.96) 0%, rgba(22,28,28,0.96) 100%);
@@ -474,15 +548,54 @@
             color: var(--text-primary);
             box-shadow: none;
         }
-        body.dark .dashboard-visit-slot {
-            background: rgba(31,38,39,0.82);
+        body.dark .dashboard-booking-row {
+            background: rgba(27,33,35,0.86);
+            border-color: var(--border-color);
+            box-shadow: none;
+        }
+        body.dark .dashboard-booking-date {
             border-color: var(--border-color);
         }
-        body.dark .dashboard-visit-date {
+        body.dark .dashboard-booking-meta,
+        body.dark .dashboard-booking-month {
             color: var(--text-secondary);
         }
-        body.dark .dashboard-visit-time {
+        body.dark .dashboard-booking-title,
+        body.dark .dashboard-booking-day {
             color: var(--text-primary);
+        }
+        body.dark .dashboard-booking-copy,
+        body.dark .dashboard-booking-btn.is-quiet {
+            color: var(--text-muted);
+        }
+        body.dark .dashboard-booking-btn {
+            background: rgba(31,38,39,0.92);
+            border-color: var(--border-color);
+            color: var(--text-primary);
+        }
+        body.dark .dashboard-booking-status.is-confirmed {
+            background: rgba(124,58,237,0.2);
+            color: #c4b5fd;
+        }
+        body.dark .dashboard-booking-status.is-pending {
+            background: rgba(2,132,199,0.2);
+            color: #7dd3fc;
+        }
+        body.dark .dashboard-booking-row.is-past {
+            background: rgba(27,31,32,0.58);
+            border-color: rgba(83,100,101,0.34);
+            box-shadow: none;
+        }
+        body.dark .dashboard-booking-row.is-past .dashboard-booking-weekday,
+        body.dark .dashboard-booking-row.is-past .dashboard-booking-day,
+        body.dark .dashboard-booking-row.is-past .dashboard-booking-title {
+            color: #aeb9b7;
+        }
+        body.dark .dashboard-booking-row.is-past .dashboard-booking-month,
+        body.dark .dashboard-booking-row.is-past .dashboard-booking-meta,
+        body.dark .dashboard-booking-row.is-past .dashboard-booking-copy,
+        body.dark .dashboard-booking-row.is-past .dashboard-booking-btn {
+            color: #7f918f;
         }
         body.dark .dashboard-calendar-nav-btn {
             background: var(--bg-card);
@@ -1173,17 +1286,21 @@
             .catalog-toolbar .custom-select button.select-trigger {
                 min-height: 56px;
             }
-            .dashboard-visit-item {
+            .dashboard-booking-row {
                 grid-template-columns: 1fr;
-                gap: 0.75rem;
+                gap: 0.85rem;
             }
-            .dashboard-visit-slot {
+            .dashboard-booking-date {
                 width: fit-content;
-                min-width: 7rem;
-            }
-            .dashboard-visit-status {
+                min-width: 5.5rem;
+                border-right: none;
+                border-bottom: 1px solid rgba(44,55,55,0.08);
+                padding-right: 0;
+                padding-bottom: 0.7rem;
                 text-align: left;
-                padding-top: 0;
+            }
+            .dashboard-booking-actions {
+                align-items: flex-start;
             }
             .spec-scheduler-detail-actions {
                 grid-template-columns: 1fr;
@@ -1314,12 +1431,13 @@
             color: var(--brand) !important;
             box-shadow: 0 4px 14px rgba(64,49,34,0.035);
         }
-        .site-nav .nav-brand {
-            width: 3.4rem;
-            height: 3.4rem;
-            border-radius: 0.95rem;
-            border: 1px solid rgba(233,219,207,0.82);
-            box-shadow: 0 8px 22px rgba(64,49,34,0.04);
+        .site-nav .nav-brand-image {
+            width: 3.55rem;
+            height: 3.55rem;
+            object-fit: cover;
+            border-radius: 0;
+            transform: scale(1.02);
+            transform-origin: center;
         }
         .site-nav .theme-switch {
             background: rgba(255,255,255,0.72);
@@ -1327,14 +1445,26 @@
             border-radius: 999px;
             box-shadow: none;
         }
-        .site-nav .theme-btn {
-            min-width: 2.15rem;
-            min-height: 2.15rem;
+        .site-nav .theme-toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.35rem;
+            height: 2.35rem;
             color: var(--text-secondary);
+            border-radius: 999px;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
         }
-        .site-nav .theme-btn.active-theme {
+        .site-nav .theme-toggle-btn:hover {
+            transform: translateY(-1px);
+        }
+        .site-nav .theme-toggle-btn.is-dark {
             background: rgba(25,126,128,0.12);
             color: var(--brand);
+        }
+        .site-nav .theme-toggle-icon {
+            font-size: 1rem;
+            line-height: 1;
         }
         .site-nav #loginBtn {
             min-height: 2.35rem;
@@ -1346,6 +1476,59 @@
         }
         .site-nav .auth-entry {
             position: relative;
+        }
+        .site-nav .user-entry {
+            display: block;
+        }
+        .site-nav .user-menu-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            min-height: 2.55rem;
+            padding: 0.45rem 0.85rem 0.45rem 0.75rem;
+            border: 1px solid rgba(233,219,207,0.88);
+            border-radius: 999px;
+            background: rgba(247,242,236,0.92);
+            color: var(--brand);
+            font-size: 0.84rem;
+            font-weight: 700;
+            box-shadow: none;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+        .site-nav .user-menu-trigger:hover {
+            background: rgba(255,255,255,0.96);
+            border-color: rgba(25,126,128,0.18);
+        }
+        .site-nav .user-menu-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.9rem;
+            height: 1.9rem;
+            border-radius: 999px;
+            background: rgba(25,126,128,0.12);
+            font-size: 0.95rem;
+            line-height: 1;
+        }
+        .site-nav .user-menu-copy {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.08rem;
+            min-width: 0;
+        }
+        .site-nav .user-menu-name {
+            color: var(--text-primary);
+            font-size: 0.86rem;
+            line-height: 1.15;
+        }
+        .site-nav .user-menu-role {
+            color: var(--text-muted);
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            line-height: 1.1;
         }
         .site-nav .auth-entry-caret {
             font-size: 1.18rem;
@@ -1392,6 +1575,14 @@
             font-size: 0.73rem;
             line-height: 1.35;
             color: var(--text-muted);
+        }
+        .site-nav .user-dropdown {
+            min-width: 16.75rem;
+        }
+        .site-nav .user-dropdown-link,
+        .site-nav .user-dropdown-action {
+            border: 0;
+            background: transparent;
         }
         .site-nav .mobile-nav-toggle {
             display: none;
@@ -1629,7 +1820,6 @@
             border-color: var(--border-color);
             box-shadow: none;
         }
-        body.dark .site-nav .nav-brand,
         body.dark .site-nav .theme-switch {
             border-color: var(--border-color);
             box-shadow: none;
@@ -1646,12 +1836,30 @@
             color: #8fd0d1 !important;
             box-shadow: none;
         }
-        body.dark .site-nav .theme-btn {
+        body.dark .site-nav .theme-toggle-btn {
             color: var(--text-secondary);
         }
-        body.dark .site-nav .theme-btn.active-theme {
+        body.dark .site-nav .theme-toggle-btn.is-dark {
             background: rgba(25,126,128,0.18);
             color: #8fd0d1;
+        }
+        body.dark .site-nav .user-menu-trigger {
+            background: rgba(25,126,128,0.12);
+            border-color: rgba(92,130,132,0.34);
+            color: #8fd0d1;
+        }
+        body.dark .site-nav .user-menu-trigger:hover {
+            background: rgba(25,126,128,0.18);
+            border-color: rgba(25,126,128,0.28);
+        }
+        body.dark .site-nav .user-menu-icon {
+            background: rgba(25,126,128,0.2);
+        }
+        body.dark .site-nav .user-menu-name {
+            color: var(--text-primary);
+        }
+        body.dark .site-nav .user-menu-role {
+            color: var(--text-muted);
         }
         body.dark .site-nav .login-dropdown {
             border-color: var(--border-color);
@@ -1698,9 +1906,10 @@
             .site-nav .nav-right {
                 gap: 0.5rem;
             }
-            .site-nav .nav-brand {
-                width: 3rem;
-                height: 3rem;
+            .site-nav .nav-brand-image {
+                width: 3.15rem;
+                height: 3.15rem;
+                transform: scale(1.02);
             }
             .site-nav .nav-right > .theme-switch {
                 display: none !important;
@@ -1728,6 +1937,17 @@
             .site-nav .auth-entry .login-dropdown {
                 right: -0.35rem;
                 min-width: 14.5rem;
+            }
+            .site-nav .user-menu-copy {
+                display: none;
+            }
+            .site-nav .user-menu-trigger {
+                min-height: 2.35rem;
+                padding-right: 0.75rem;
+            }
+            .site-nav .user-menu-icon {
+                width: 1.75rem;
+                height: 1.75rem;
             }
             .specialist-card-actions {
                 width: 100%;

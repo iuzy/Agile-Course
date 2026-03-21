@@ -150,9 +150,7 @@ function renderSiteShell() {
                         <div class="nav-top">
                             <div class="nav-left">
                                 <a href="${ROUTES.home}" class="flex items-center gap-3">
-                                    <div class="nav-brand h-16 w-16 rounded-xl overflow-hidden flex items-center justify-center bg-white shadow-sm">
-                                        <img src="NEW_Logo.png" alt="augt.lv logo" class="h-full w-full object-cover object-center block">
-                                    </div>
+                                    <img src="NEW_Logo.png" alt="augt.lv logo" class="nav-brand-image block">
                                 </a>
                                 <div class="nav-pills text-sm font-bold text-gray-500">
                                     <a href="${ROUTES.specialists}" class="nav-link hover:text-gray-900" data-nav="specialists" id="nav-specialists">Speciālisti</a>
@@ -163,9 +161,10 @@ function renderSiteShell() {
                                 </div>
                             </div>
                             <div class="nav-right">
-                                <div class="theme-switch flex bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200" role="group" aria-label="Tēmas pārslēgšana">
-                                    <button onclick="changeTheme('default')" class="theme-btn p-2 text-sm" title="Gaišais" data-theme-button data-theme-value="default" aria-label="Gaišā tēma" aria-pressed="true">☀️</button>
-                                    <button onclick="changeTheme('dark')" class="theme-btn p-2 text-sm" title="Tumšais" data-theme-button data-theme-value="dark" aria-label="Tumšā tēma" aria-pressed="false">🌙</button>
+                                <div id="desktopThemeSwitch" class="theme-switch" aria-label="Tēmas pārslēgšana">
+                                    <button type="button" onclick="toggleTheme()" class="theme-toggle-btn" data-theme-toggle aria-label="Pārslēgt uz tumšo tēmu" title="Tumšais režīms">
+                                        <span class="theme-toggle-icon" data-theme-icon aria-hidden="true">🌙</span>
+                                    </button>
                                 </div>
                                 <div class="auth-entry">
                                     <button id="loginBtn" onclick="toggleLoginDropdown(event)" class="btn-cta px-5 py-2 rounded-xl font-bold text-sm hover:opacity-90 transition shadow" aria-haspopup="menu" aria-expanded="false">
@@ -183,10 +182,25 @@ function renderSiteShell() {
                                         </button>
                                     </div>
                                 </div>
-                                <div id="userMenu" class="hidden items-center gap-2 bg-brand-light px-4 py-2 rounded-xl font-bold text-sm text-brand">
-                                    <span aria-hidden="true">👤</span>
-                                    <span id="userName">Vita</span>
-                                    <a href="${ROUTES.home}?logout=1" id="logoutBtn" class="user-logout-btn" aria-label="Izrakstīties">Izrakstīties</a>
+                                <div id="userMenu" class="auth-entry user-entry hidden">
+                                    <button id="userMenuBtn" type="button" onclick="toggleUserDropdown(event)" class="user-menu-trigger" aria-haspopup="menu" aria-expanded="false">
+                                        <span class="user-menu-icon" aria-hidden="true">👤</span>
+                                        <span class="user-menu-copy">
+                                            <span id="userName" class="user-menu-name">Vita</span>
+                                            <span id="userRoleLabel" class="user-menu-role">Vecāks</span>
+                                        </span>
+                                        <span class="auth-entry-caret" aria-hidden="true">▾</span>
+                                    </button>
+                                    <div id="userDropdown" class="login-dropdown user-dropdown hidden" role="menu" aria-label="Lietotāja izvēlne">
+                                        <a href="${ROUTES['specialist-dashboard']}" class="login-dropdown-item user-dropdown-link" role="menuitem">
+                                            <span class="login-dropdown-title">Mans panelis</span>
+                                            <span class="login-dropdown-copy">Vizītes, profils un pārskats</span>
+                                        </a>
+                                        <button type="button" id="logoutBtn" class="login-dropdown-item user-dropdown-action" role="menuitem" aria-label="Izrakstīties">
+                                            <span class="login-dropdown-title">Izrakstīties</span>
+                                            <span class="login-dropdown-copy">Aizvērt konta sesiju šajā ierīcē</span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <button type="button" id="mobileNavToggle" onclick="toggleMobileNav(event)" class="mobile-nav-toggle" aria-label="Atvērt izvēlni" aria-controls="mobileNavPanel" aria-expanded="false">
                                     <span class="mobile-nav-glyph mobile-nav-glyph-menu" aria-hidden="true">☰</span>
@@ -202,9 +216,10 @@ function renderSiteShell() {
                             <a href="${ROUTES['specialist-dashboard']}" class="mobile-nav-link hidden text-brand" data-nav="dashboard" id="navSpecDashboardMobile" onclick="closeMobileNav()">Mans panelis</a>
                             <div class="mobile-theme-row">
                                 <span class="mobile-theme-label">Izskats</span>
-                                <div class="theme-switch flex bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200" role="group" aria-label="Tēmas pārslēgšana">
-                                    <button onclick="changeTheme('default')" class="theme-btn p-2 text-sm" title="Gaišais" data-theme-button data-theme-value="default" aria-label="Gaišā tēma" aria-pressed="true">☀️</button>
-                                    <button onclick="changeTheme('dark')" class="theme-btn p-2 text-sm" title="Tumšais" data-theme-button data-theme-value="dark" aria-label="Tumšā tēma" aria-pressed="false">🌙</button>
+                                <div class="theme-switch" aria-label="Tēmas pārslēgšana">
+                                    <button type="button" onclick="toggleTheme()" class="theme-toggle-btn" data-theme-toggle aria-label="Pārslēgt uz tumšo tēmu" title="Tumšais režīms">
+                                        <span class="theme-toggle-icon" data-theme-icon aria-hidden="true">🌙</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -418,16 +433,40 @@ function closeLoginDropdown() {
     loginBtn.setAttribute('aria-expanded', 'false');
 }
 
+function closeUserDropdown() {
+    const userMenuBtn = document.getElementById('userMenuBtn');
+    const userDropdown = document.getElementById('userDropdown');
+    if (!userMenuBtn || !userDropdown) return;
+    userDropdown.classList.add('hidden');
+    userMenuBtn.setAttribute('aria-expanded', 'false');
+}
+
 function toggleLoginDropdown(event) {
     if (event) event.stopPropagation();
     const loginBtn = document.getElementById('loginBtn');
     const loginDropdown = document.getElementById('loginDropdown');
     if (!loginBtn || !loginDropdown) return;
     const willOpen = loginDropdown.classList.contains('hidden');
+    closeUserDropdown();
     closeLoginDropdown();
     if (willOpen) {
         loginDropdown.classList.remove('hidden');
         loginBtn.setAttribute('aria-expanded', 'true');
+    }
+}
+
+function toggleUserDropdown(event) {
+    if (event) event.stopPropagation();
+    const userMenuBtn = document.getElementById('userMenuBtn');
+    const userDropdown = document.getElementById('userDropdown');
+    if (!userMenuBtn || !userDropdown) return;
+    const willOpen = userDropdown.classList.contains('hidden');
+    closeLoginDropdown();
+    closeUserDropdown();
+    closeMobileNav();
+    if (willOpen) {
+        userDropdown.classList.remove('hidden');
+        userMenuBtn.setAttribute('aria-expanded', 'true');
     }
 }
 
@@ -447,6 +486,7 @@ function toggleMobileNav(event) {
     if (!toggle || !panel) return;
     const willOpen = panel.classList.contains('hidden');
     closeLoginDropdown();
+    closeUserDropdown();
     if (willOpen) {
         panel.classList.remove('hidden');
         toggle.classList.add('is-open');
@@ -471,39 +511,39 @@ function updateAuthUI() {
     const loginBtn = document.getElementById('loginBtn');
     const loginDropdown = document.getElementById('loginDropdown');
     const userMenu = document.getElementById('userMenu');
+    const userDropdown = document.getElementById('userDropdown');
+    const userMenuBtn = document.getElementById('userMenuBtn');
     const userName = document.getElementById('userName');
+    const userRoleLabel = document.getElementById('userRoleLabel');
     const dashboardLink = document.getElementById('navSpecDashboard');
     const dashboardLinkMobile = document.getElementById('navSpecDashboardMobile');
-
     if (!loginBtn || !userMenu || !userName || !dashboardLink) return;
 
     if (authState.isLoggedIn) {
         loginBtn.classList.add('hidden');
         if (loginDropdown) loginDropdown.classList.add('hidden');
         userMenu.classList.remove('hidden');
-        userMenu.classList.add('flex');
         userName.textContent = authState.userName || (authState.role === 'specialist' ? 'Ieva' : 'Vita');
+        if (userRoleLabel) {
+            userRoleLabel.textContent = authState.role === 'specialist' ? 'Speciālists' : 'Vecāks';
+        }
     } else {
         loginBtn.classList.remove('hidden');
+        if (userDropdown) userDropdown.classList.add('hidden');
+        if (userMenuBtn) userMenuBtn.setAttribute('aria-expanded', 'false');
         userMenu.classList.add('hidden');
-        userMenu.classList.remove('flex');
     }
 
-    if (authState.isLoggedIn) {
-        dashboardLink.classList.remove('hidden');
-        if (dashboardLinkMobile) dashboardLinkMobile.classList.remove('hidden');
-    } else {
-        dashboardLink.classList.add('hidden');
-        if (dashboardLinkMobile) dashboardLinkMobile.classList.add('hidden');
-    }
+    dashboardLink.classList.add('hidden');
+    if (dashboardLinkMobile) dashboardLinkMobile.classList.add('hidden');
 
     updateActiveNavigation();
 }
 
 function applyTheme(theme) {
     const body = document.getElementById('appBody');
-    const themeButtons = Array.prototype.slice.call(document.querySelectorAll('[data-theme-button]'));
-    if (!body || !themeButtons.length) return;
+    const themeToggleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-theme-toggle]'));
+    if (!body) return;
 
     if (theme === 'dark') {
         body.classList.add('dark');
@@ -511,10 +551,16 @@ function applyTheme(theme) {
         body.classList.remove('dark');
     }
 
-    themeButtons.forEach(function(button) {
-        const isActive = button.dataset.themeValue === (theme === 'dark' ? 'dark' : 'default');
-        button.classList.toggle('active-theme', isActive);
-        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    themeToggleButtons.forEach(function(button) {
+        const isDark = theme === 'dark';
+        const icon = button.querySelector('[data-theme-icon]');
+        button.classList.toggle('is-dark', isDark);
+        button.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+        button.setAttribute('aria-label', isDark ? 'Pārslēgt uz gaišo tēmu' : 'Pārslēgt uz tumšo tēmu');
+        button.setAttribute('title', isDark ? 'Gaišais režīms' : 'Tumšais režīms');
+        if (icon) {
+            icon.textContent = isDark ? '☀️' : '🌙';
+        }
     });
 }
 
@@ -522,6 +568,11 @@ function changeTheme(theme) {
     const normalizedTheme = theme === 'dark' ? 'dark' : 'default';
     applyTheme(normalizedTheme);
     localStorage.setItem(STORAGE_KEYS.theme, normalizedTheme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.getElementById('appBody') && document.getElementById('appBody').classList.contains('dark') ? 'dark' : 'default';
+    changeTheme(currentTheme === 'dark' ? 'default' : 'dark');
 }
 
 function showModal(id) {
@@ -593,21 +644,14 @@ function completeLogin(role) {
     authState.isLoggedIn = true;
     authState.role = role;
     authState.userName = role === 'specialist' ? 'Ieva' : 'Vita';
-    authState.onboardingComplete = role === 'specialist' ? false : true;
+    authState.onboardingComplete = true;
     saveAuthState();
 
     closeModal('authModal');
     closeModal('roleModal');
     updateAuthUI();
     pendingAuthMessage = '';
-
-    if (role === 'specialist') {
-        window.setTimeout(function() {
-            showModal('onboardingModal');
-        }, 200);
-    } else {
-        handlePendingAction();
-    }
+    handlePendingAction();
 }
 
 function processOnboarding() {
@@ -1436,7 +1480,7 @@ function initDashboardPage() {
         if (subtitle) subtitle.textContent = 'Jūsu ģimenes pieraksti, speciālisti un iepriekšējās vizītes';
         if (parentView) parentView.classList.remove('hidden');
         if (specialistView) specialistView.classList.add('hidden');
-        showParentDashboardSection('summary');
+        showParentDashboardSection('visits');
         return;
     }
 
@@ -1448,17 +1492,13 @@ function initDashboardPage() {
     showSpecialistDashboardSection('calendar');
     buildSpecCalendar();
 
-    if (authState.isLoggedIn && authState.role === 'specialist' && !authState.onboardingComplete) {
-        window.setTimeout(function() {
-            showModal('onboardingModal');
-        }, 220);
-    }
 }
 
 function initGlobalKeyboardHandlers() {
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             closeLoginDropdown();
+            closeUserDropdown();
             closeMobileNav();
             ['authModal', 'profileModal', 'calendarModal', 'roleModal', 'onboardingModal', 'logoutModal'].forEach(function(id) {
                 const modal = document.getElementById(id);
@@ -1472,6 +1512,7 @@ function initGlobalKeyboardHandlers() {
     document.addEventListener('click', function(event) {
         if (!event.target.closest('.auth-entry')) {
             closeLoginDropdown();
+            closeUserDropdown();
         }
         if (!event.target.closest('.mobile-nav-toggle') && !event.target.closest('#mobileNavPanel')) {
             closeMobileNav();
@@ -1497,7 +1538,7 @@ function initSite() {
     initGuidePage();
     buildCalendar();
     initDashboardPage();
-    if (authState.isLoggedIn && (authState.role !== 'specialist' || authState.onboardingComplete)) {
+    if (authState.isLoggedIn) {
         handlePendingAction();
     }
 }
