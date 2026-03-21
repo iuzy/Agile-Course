@@ -17,6 +17,73 @@ let authState = loadAuthState();
 let selectedSpecialistIndex = 0;
 let selectedLoginRole = null;
 let pendingAuthMessage = '';
+const SPEC_SCHEDULE_START_MINUTES = 8 * 60;
+const SPEC_SCHEDULE_END_MINUTES = 18 * 60;
+const SPEC_SCHEDULE_SLOT_MINUTES = 30;
+const SPEC_SCHEDULE_ROW_HEIGHT = 38;
+let specCalendarOffset = 1;
+let selectedSpecVisitId = null;
+
+const SPEC_SCHEDULE_WEEKS = [
+    {
+        label: '16. marts - 20. marts',
+        sublabel: 'Nedēļas skats · 2026',
+        days: [
+            { key: 'mon', short: 'Pr', label: '16. marts' },
+            { key: 'tue', short: 'Ot', label: '17. marts' },
+            { key: 'wed', short: 'Tr', label: '18. marts' },
+            { key: 'thu', short: 'Ce', label: '19. marts' },
+            { key: 'fri', short: 'Pk', label: '20. marts' }
+        ],
+        offDays: ['fri'],
+        appointments: [
+            { id: 'wk1-1', day: 'mon', start: '08:30', end: '09:15', child: 'Marta R.', meta: '6 gadi · AST', parent: 'Ilze R.', location: 'Rīga / klātienē', phone: '+371 26544321', summary: 'ABA konsultācija', note: 'Jāturpina komunikācijas uzdevumi.', tone: 'brand' },
+            { id: 'wk1-2', day: 'mon', start: '10:00', end: '10:45', child: 'Sofija K.', meta: '5 gadi · AST', parent: 'Liene K.', location: 'Tiešsaistē', phone: '+371 27833419', summary: 'Vecāku koučings', note: 'Pārrunāt mājas rutīnu.', tone: 'mint' },
+            { id: 'wk1-3', day: 'wed', start: '09:00', end: '09:45', child: 'Mārtiņš K.', meta: '5 gadi · AST', parent: 'Agnese K.', location: 'Rīga / klātienē', phone: '+371 29118874', summary: 'ABA sesija', note: 'Darbs pie sociālajām prasmēm.', tone: 'brand' },
+            { id: 'wk1-4', day: 'wed', start: '14:00', end: '14:45', child: 'Anna L.', meta: '7 gadi · UDHS', parent: 'Dace L.', location: 'Tiešsaistē', phone: '+371 26770014', summary: 'Uzvedības konsultācija', note: 'Atgriezeniskā saite skolai.', tone: 'lavender' },
+            { id: 'wk1-5', day: 'thu', start: '10:00', end: '10:30', child: 'Emīls B.', meta: '3 gadi · Runas aizture', parent: 'Zane B.', location: 'Rīga / klātienē', phone: '+371 29651234', summary: 'Īsā kontroles vizīte', note: 'Novērtēt progresu pirms nākamā plāna.', tone: 'peach' }
+        ]
+    },
+    {
+        label: '23. marts - 27. marts',
+        sublabel: 'Nedēļas skats · 2026',
+        days: [
+            { key: 'mon', short: 'Pr', label: '23. marts' },
+            { key: 'tue', short: 'Ot', label: '24. marts' },
+            { key: 'wed', short: 'Tr', label: '25. marts' },
+            { key: 'thu', short: 'Ce', label: '26. marts' },
+            { key: 'fri', short: 'Pk', label: '27. marts' }
+        ],
+        offDays: [],
+        appointments: [
+            { id: 'wk2-1', day: 'mon', start: '08:30', end: '09:15', child: 'Beāte N.', meta: '5 gadi · AST', parent: 'Marta N.', location: 'Rīga / klātienē', phone: '+371 29114555', summary: 'ABA sesija', note: 'Pirmā sesija šajā ciklā.', tone: 'brand' },
+            { id: 'wk2-2', day: 'mon', start: '11:00', end: '11:45', child: 'Roberts A.', meta: '5 gadi · AST', parent: 'Evija A.', location: 'Tiešsaistē', phone: '+371 26226777', summary: 'Vecāku konsultācija', note: 'Mājas uzdevumu pārskats.', tone: 'mint' },
+            { id: 'wk2-3', day: 'tue', start: '09:30', end: '10:15', child: 'Elīna Z.', meta: '6 gadi · AST', parent: 'Inese Z.', location: 'Rīga / klātienē', phone: '+371 28661122', summary: 'Sociālo prasmju nodarbība', note: 'Darbs pāru uzdevumos.', tone: 'lavender' },
+            { id: 'wk2-4', day: 'wed', start: '13:00', end: '13:45', child: 'Rūdolfs V.', meta: '8 gadi · UDHS', parent: 'Kaspars V.', location: 'Rīga / klātienē', phone: '+371 26319955', summary: 'Uzvedības sesija', note: 'Fokuss uz impulsu kontroli.', tone: 'brand' },
+            { id: 'wk2-5', day: 'thu', start: '15:00', end: '15:45', child: 'Paula C.', meta: '6 gadi · AST', parent: 'Aija C.', location: 'Tiešsaistē', phone: '+371 29884400', summary: 'Vecāku atbalsta zvans', note: 'Pārrunāt nedēļas progresu.', tone: 'peach' },
+            { id: 'wk2-6', day: 'fri', start: '10:30', end: '11:15', child: 'Marks J.', meta: '4 gadi · Sensorās grūtības', parent: 'Signe J.', location: 'Rīga / klātienē', phone: '+371 22331144', summary: 'Novērtēšanas sesija', note: 'Sagatavot ieteikumus ergoterapijai.', tone: 'mint' }
+        ]
+    },
+    {
+        label: '30. marts - 3. aprīlis',
+        sublabel: 'Nedēļas skats · 2026',
+        days: [
+            { key: 'mon', short: 'Pr', label: '30. marts' },
+            { key: 'tue', short: 'Ot', label: '31. marts' },
+            { key: 'wed', short: 'Tr', label: '1. aprīlis' },
+            { key: 'thu', short: 'Ce', label: '2. aprīlis' },
+            { key: 'fri', short: 'Pk', label: '3. aprīlis' }
+        ],
+        offDays: ['wed'],
+        appointments: [
+            { id: 'wk3-1', day: 'mon', start: '09:00', end: '09:45', child: 'Alise M.', meta: '9 gadi · UDHS', parent: 'Gita M.', location: 'Tiešsaistē', phone: '+371 26445581', summary: 'Pārceltā konsultācija', note: 'Jāvienojas par jaunu mājas plānu.', tone: 'lavender' },
+            { id: 'wk3-2', day: 'tue', start: '10:00', end: '10:45', child: 'Toms D.', meta: '10 gadi · UDHS', parent: 'Laura D.', location: 'Rīga / klātienē', phone: '+371 22117745', summary: 'Uzvedības sesija', note: 'Skolas adaptācijas jautājumi.', tone: 'brand' },
+            { id: 'wk3-3', day: 'thu', start: '08:30', end: '09:15', child: 'Sofija P.', meta: '4 gadi · Komunikācijas grūtības', parent: 'Rūta P.', location: 'Rīga / klātienē', phone: '+371 29220051', summary: 'Novērtējuma atkārtota vizīte', note: 'Atjaunot terapijas mērķus.', tone: 'peach' },
+            { id: 'wk3-4', day: 'thu', start: '13:30', end: '14:15', child: 'Eva G.', meta: '3 gadi · Runas attīstība', parent: 'Māra G.', location: 'Tiešsaistē', phone: '+371 25550088', summary: 'Vecāku konsultācija', note: 'Apspriest logopēda ieteikumus.', tone: 'mint' },
+            { id: 'wk3-5', day: 'fri', start: '11:00', end: '11:45', child: 'Rihards S.', meta: '8 gadi · UDHS', parent: 'Lelde S.', location: 'Rīga / klātienē', phone: '+371 26781200', summary: 'Kontroles vizīte', note: 'Jāpārrunā fokusa vingrinājumi.', tone: 'brand' }
+        ]
+    }
+];
 
 function loadAuthState() {
     try {
@@ -119,7 +186,7 @@ function renderSiteShell() {
                                 <div id="userMenu" class="hidden items-center gap-2 bg-brand-light px-4 py-2 rounded-xl font-bold text-sm text-brand">
                                     <span aria-hidden="true">👤</span>
                                     <span id="userName">Vita</span>
-                                    <button type="button" id="logoutBtn" class="user-logout-btn" aria-label="Izrakstīties">Izrakstīties</button>
+                                    <a href="${ROUTES.home}?logout=1" id="logoutBtn" class="user-logout-btn" aria-label="Izrakstīties">Izrakstīties</a>
                                 </div>
                                 <button type="button" id="mobileNavToggle" onclick="toggleMobileNav(event)" class="mobile-nav-toggle" aria-label="Atvērt izvēlni" aria-controls="mobileNavPanel" aria-expanded="false">
                                     <span class="mobile-nav-glyph mobile-nav-glyph-menu" aria-hidden="true">☰</span>
@@ -272,6 +339,21 @@ function renderSiteShell() {
                     <p id="onboardingStatus" class="mt-4 text-center text-brand font-bold text-sm hidden animate-pulse">Dokumenti tiek apstrādāti...</p>
                 </div>
             </div>
+
+            <div id="logoutModal" class="fixed inset-0 modal-bg hidden z-[100] flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-label="Izrakstīšanās apstiprinājums">
+                <div class="bg-white rounded-3xl p-8 max-w-sm w-full relative shadow-2xl fade-in">
+                    <button onclick="closeModal('logoutModal')" class="absolute top-4 right-5 text-2xl text-gray-300 hover:text-gray-600 transition" aria-label="Aizvērt">✕</button>
+                    <div class="text-center">
+                        <p class="text-xs font-bold uppercase tracking-[0.22em] text-brand mb-2">Izrakstīšanās</p>
+                        <h2 class="text-xl font-black mb-2">Vai tiešām vēlaties izrakstīties?</h2>
+                        <p class="text-sm text-gray-400 mb-6">Jūs tiksiet atgriezts sākumlapā un sesija tiks pārtraukta.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button type="button" onclick="closeModal('logoutModal')" class="w-full py-3 rounded-xl font-bold border border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700 transition">Atcelt</button>
+                        <button type="button" onclick="performLogout()" class="w-full btn-cta py-3 rounded-xl font-bold hover:opacity-90 transition shadow">Izrakstīties</button>
+                    </div>
+                </div>
+            </div>
         `;
     }
 }
@@ -323,7 +405,7 @@ function updateAuthModalContent() {
 function bindShellActions() {
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn && !logoutBtn.dataset.bound) {
-        logoutBtn.addEventListener('click', doLogout);
+        logoutBtn.addEventListener('click', requestLogout);
         logoutBtn.dataset.bound = 'true';
     }
 }
@@ -541,15 +623,16 @@ function processOnboarding() {
     }, 1200);
 }
 
-function doLogout(event) {
+function requestLogout(event) {
     if (event) {
         event.preventDefault();
         event.stopPropagation();
     }
+    showModal('logoutModal');
+}
 
-    if (!window.confirm('Vai tiešām vēlaties izrakstīties?')) {
-        return;
-    }
+function performLogout() {
+    closeModal('logoutModal');
 
     authState = {
         isLoggedIn: false,
@@ -564,10 +647,30 @@ function doLogout(event) {
     closeLoginDropdown();
     closeMobileNav();
     updateAuthUI();
+    window.location.href = ROUTES.home;
+}
 
-    if (getCurrentPage() === 'dashboard') {
-        showSection('home');
+function handleLogoutRequest() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('logout') !== '1') {
+        return;
     }
+
+    authState = {
+        isLoggedIn: false,
+        role: null,
+        userName: '',
+        onboardingComplete: false
+    };
+    saveAuthState();
+    setPendingAction('');
+    selectedLoginRole = null;
+    pendingAuthMessage = '';
+
+    params.delete('logout');
+    const nextQuery = params.toString();
+    const nextUrl = window.location.pathname + (nextQuery ? '?' + nextQuery : '') + window.location.hash;
+    window.history.replaceState({}, '', nextUrl);
 }
 
 function escapeHtml(value) {
@@ -1100,33 +1203,207 @@ function buildCalendar() {
     }
 }
 
+function timeToMinutes(value) {
+    const parts = value.split(':');
+    return Number(parts[0]) * 60 + Number(parts[1]);
+}
+
+function getCurrentSpecWeek() {
+    return SPEC_SCHEDULE_WEEKS[specCalendarOffset] || SPEC_SCHEDULE_WEEKS[0];
+}
+
+function getSelectedSpecVisit(week) {
+    const appointments = week.appointments || [];
+    if (!appointments.length) return null;
+    const match = appointments.find(function(appointment) {
+        return appointment.id === selectedSpecVisitId;
+    });
+    return match || appointments[0];
+}
+
+function getSpecAppointmentToneClass(tone) {
+    if (tone === 'mint') return 'is-mint';
+    if (tone === 'lavender') return 'is-lavender';
+    if (tone === 'peach') return 'is-peach';
+    return 'is-brand';
+}
+
+function renderSpecScheduleDetail(week, visit) {
+    const detail = document.getElementById('specSchedulerDetail');
+    if (!detail) return;
+
+    if (!visit) {
+        detail.innerHTML = '<div class="spec-scheduler-empty">Šai nedēļai nav ieplānotu mock-vizīšu.</div>';
+        return;
+    }
+
+    const day = week.days.find(function(item) {
+        return item.key === visit.day;
+    });
+
+    detail.innerHTML = '' +
+        '<div class="spec-scheduler-detail-card">' +
+            '<p class="spec-scheduler-detail-kicker">Izvēlētā vizīte</p>' +
+            '<h4 class="spec-scheduler-detail-title">' + escapeHtml(visit.summary) + '</h4>' +
+            '<div class="spec-scheduler-detail-meta">' +
+                '<div><span>Diena</span><strong>' + escapeHtml(day ? day.label : '') + '</strong></div>' +
+                '<div><span>Laiks</span><strong>' + escapeHtml(visit.start) + ' - ' + escapeHtml(visit.end) + '</strong></div>' +
+                '<div><span>Bērns</span><strong>' + escapeHtml(visit.child) + '</strong></div>' +
+                '<div><span>Apraksts</span><strong>' + escapeHtml(visit.meta) + '</strong></div>' +
+            '</div>' +
+            '<div class="spec-scheduler-person-card">' +
+                '<div class="spec-scheduler-person-avatar">' + escapeHtml(visit.child.charAt(0)) + '</div>' +
+                '<div>' +
+                    '<div class="spec-scheduler-person-name">' + escapeHtml(visit.child) + '</div>' +
+                    '<div class="spec-scheduler-person-copy">' + escapeHtml(visit.parent) + '</div>' +
+                '</div>' +
+            '</div>' +
+            '<div class="spec-scheduler-detail-list">' +
+                '<div><span>Formāts</span><strong>' + escapeHtml(visit.location) + '</strong></div>' +
+                '<div><span>Kontakts</span><strong>' + escapeHtml(visit.phone) + '</strong></div>' +
+                '<div><span>Piezīme</span><strong>' + escapeHtml(visit.note) + '</strong></div>' +
+            '</div>' +
+            '<div class="spec-scheduler-detail-actions">' +
+                '<button type="button" class="btn-cta px-4 py-3 rounded-xl font-bold text-sm">Atvērt vizīti</button>' +
+                '<button type="button" class="spec-scheduler-secondary-btn">Pārcelt</button>' +
+            '</div>' +
+        '</div>';
+}
+
 function buildSpecCalendar() {
-    const grid = document.getElementById('specCalendar');
-    if (!grid || grid.children.length > 0) return;
+    const board = document.getElementById('specSchedulerBoard');
+    const label = document.getElementById('specCalendarLabel');
+    const sublabel = document.getElementById('specCalendarSubLabel');
+    const prevBtn = document.getElementById('specCalendarPrev');
+    const nextBtn = document.getElementById('specCalendarNext');
+    if (!board) return;
 
-    for (let i = 1; i <= 31; i += 1) {
-        const day = new Date(2026, 2, i).getDay();
-        const isWeekend = day === 0 || day === 6;
-        const isPast = i < 17;
-        const hasAppt = [18, 19, 21, 23, 25, 26, 28].indexOf(i) !== -1;
-        let cls;
-        let text;
+    const week = getCurrentSpecWeek();
+    const totalSlots = (SPEC_SCHEDULE_END_MINUTES - SPEC_SCHEDULE_START_MINUTES) / SPEC_SCHEDULE_SLOT_MINUTES;
+    const boardHeight = totalSlots * SPEC_SCHEDULE_ROW_HEIGHT;
+    const selectedVisit = getSelectedSpecVisit(week);
+    const timeLabels = [];
 
-        if (isPast) {
-            cls = 'bg-gray-50 text-gray-300';
-            text = '';
-        } else if (isWeekend) {
-            cls = 'bg-gray-50 text-gray-300';
-            text = '';
-        } else if (hasAppt) {
-            cls = 'bg-brand-light text-brand';
-            text = 'Rezervets';
-        } else {
-            cls = 'bg-green-50 text-green-700 cursor-pointer hover:bg-green-100';
-            text = 'Brivs';
+    if (!selectedSpecVisitId && selectedVisit) {
+        selectedSpecVisitId = selectedVisit.id;
+    }
+
+    if (label) label.textContent = week.label;
+    if (sublabel) sublabel.textContent = week.sublabel;
+    if (prevBtn) prevBtn.disabled = specCalendarOffset <= 0;
+    if (nextBtn) nextBtn.disabled = specCalendarOffset >= SPEC_SCHEDULE_WEEKS.length - 1;
+
+    for (let minutes = SPEC_SCHEDULE_START_MINUTES; minutes <= SPEC_SCHEDULE_END_MINUTES; minutes += SPEC_SCHEDULE_SLOT_MINUTES) {
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        const labelText = String(hours).padStart(2, '0') + ':' + String(mins).padStart(2, '0');
+        timeLabels.push('<div class="spec-scheduler-time">' + labelText + '</div>');
+    }
+
+    board.innerHTML = '' +
+        '<div class="spec-scheduler-head">' +
+            '<div class="spec-scheduler-head-spacer"></div>' +
+            week.days.map(function(day) {
+                const isOff = week.offDays.indexOf(day.key) !== -1;
+                return '<div class="spec-scheduler-day-head' + (isOff ? ' is-off' : '') + '">' +
+                    '<span class="spec-scheduler-day-short">' + escapeHtml(day.short) + '</span>' +
+                    '<span class="spec-scheduler-day-label">' + escapeHtml(day.label) + '</span>' +
+                '</div>';
+            }).join('') +
+        '</div>' +
+        '<div class="spec-scheduler-grid-shell">' +
+            '<div class="spec-scheduler-times">' + timeLabels.join('') + '</div>' +
+            '<div class="spec-scheduler-columns">' +
+                week.days.map(function(day) {
+                    const appointments = week.appointments.filter(function(appointment) {
+                        return appointment.day === day.key;
+                    });
+                    const isOff = week.offDays.indexOf(day.key) !== -1;
+                    return '<div class="spec-scheduler-day-column' + (isOff ? ' is-off' : '') + '" style="height:' + boardHeight + 'px">' +
+                        '<div class="spec-scheduler-day-lines"></div>' +
+                        (isOff ? '<div class="spec-scheduler-day-off-label">Brīvdiena</div>' : '') +
+                        appointments.map(function(appointment) {
+                            const startMinutes = timeToMinutes(appointment.start) - SPEC_SCHEDULE_START_MINUTES;
+                            const endMinutes = timeToMinutes(appointment.end) - SPEC_SCHEDULE_START_MINUTES;
+                            const top = Math.max(0, (startMinutes / SPEC_SCHEDULE_SLOT_MINUTES) * SPEC_SCHEDULE_ROW_HEIGHT);
+                            const height = Math.max(50, ((endMinutes - startMinutes) / SPEC_SCHEDULE_SLOT_MINUTES) * SPEC_SCHEDULE_ROW_HEIGHT - 8);
+                            const isActive = appointment.id === selectedSpecVisitId;
+                            return '<button type="button" onclick="selectSpecVisit(\'' + escapeHtml(appointment.id) + '\')" class="spec-scheduler-appointment ' + getSpecAppointmentToneClass(appointment.tone) + (isActive ? ' is-active' : '') + '" style="top:' + top + 'px;height:' + height + 'px">' +
+                                '<span class="spec-scheduler-appointment-title">' + escapeHtml(appointment.summary) + '</span>' +
+                                '<span class="spec-scheduler-appointment-time">' + escapeHtml(appointment.start) + ' - ' + escapeHtml(appointment.end) + '</span>' +
+                                '<span class="spec-scheduler-appointment-child">' + escapeHtml(appointment.child) + '</span>' +
+                            '</button>';
+                        }).join('') +
+                    '</div>';
+                }).join('') +
+            '</div>' +
+        '</div>';
+
+    renderSpecScheduleDetail(week, selectedVisit);
+}
+
+function selectSpecVisit(visitId) {
+    selectedSpecVisitId = visitId;
+    buildSpecCalendar();
+}
+
+function changeSpecCalendarMonth(direction) {
+    const nextOffset = specCalendarOffset + direction;
+    if (nextOffset < 0 || nextOffset >= SPEC_SCHEDULE_WEEKS.length) {
+        return;
+    }
+    specCalendarOffset = nextOffset;
+    selectedSpecVisitId = null;
+    buildSpecCalendar();
+}
+
+function showSpecialistDashboardSection(section, event) {
+    const target = section === 'stats' ? 'stats' : 'calendar';
+    const statsSection = document.getElementById('specialistStatsSection');
+    const calendarSection = document.getElementById('specialistCalendarSection');
+
+    if (statsSection) {
+        statsSection.classList.toggle('hidden', target !== 'stats');
+    }
+    if (calendarSection) {
+        calendarSection.classList.toggle('hidden', target !== 'calendar');
+    }
+
+    document.querySelectorAll('.dashboard-subsection-btn[data-dashboard-view]').forEach(function(button) {
+        button.classList.toggle('is-active', button.dataset.dashboardView === target);
+    });
+
+    if (target === 'calendar') {
+        buildSpecCalendar();
+    }
+
+    if (event && event.currentTarget) {
+        event.currentTarget.blur();
+    }
+}
+
+function showParentDashboardSection(section, event) {
+    const target = section || 'summary';
+    const sectionMap = {
+        summary: document.getElementById('parentSummarySection'),
+        child: document.getElementById('parentChildSection'),
+        visits: document.getElementById('parentVisitsSection'),
+        specialists: document.getElementById('parentSpecialistsSection')
+    };
+
+    Object.keys(sectionMap).forEach(function(key) {
+        const panel = sectionMap[key];
+        if (panel) {
+            panel.classList.toggle('hidden', key !== target);
         }
+    });
 
-        grid.innerHTML += '<div class="p-2 rounded-xl text-center text-xs font-bold ' + cls + '"><div>' + i + '</div><div class="text-[9px] mt-0.5">' + text + '</div></div>';
+    document.querySelectorAll('.dashboard-subsection-btn[data-parent-dashboard-view]').forEach(function(button) {
+        button.classList.toggle('is-active', button.dataset.parentDashboardView === target);
+    });
+
+    if (event && event.currentTarget) {
+        event.currentTarget.blur();
     }
 }
 
@@ -1159,6 +1436,7 @@ function initDashboardPage() {
         if (subtitle) subtitle.textContent = 'Jūsu ģimenes pieraksti, speciālisti un iepriekšējās vizītes';
         if (parentView) parentView.classList.remove('hidden');
         if (specialistView) specialistView.classList.add('hidden');
+        showParentDashboardSection('summary');
         return;
     }
 
@@ -1167,6 +1445,7 @@ function initDashboardPage() {
     if (parentView) parentView.classList.add('hidden');
     if (specialistView) specialistView.classList.remove('hidden');
 
+    showSpecialistDashboardSection('calendar');
     buildSpecCalendar();
 
     if (authState.isLoggedIn && authState.role === 'specialist' && !authState.onboardingComplete) {
@@ -1181,7 +1460,7 @@ function initGlobalKeyboardHandlers() {
         if (event.key === 'Escape') {
             closeLoginDropdown();
             closeMobileNav();
-            ['authModal', 'profileModal', 'calendarModal', 'roleModal', 'onboardingModal'].forEach(function(id) {
+            ['authModal', 'profileModal', 'calendarModal', 'roleModal', 'onboardingModal', 'logoutModal'].forEach(function(id) {
                 const modal = document.getElementById(id);
                 if (modal && !modal.classList.contains('hidden')) {
                     closeModal(id);
@@ -1207,6 +1486,7 @@ function initGlobalKeyboardHandlers() {
 }
 
 function initSite() {
+    handleLogoutRequest();
     renderSiteShell();
     bindShellActions();
     applyTheme(localStorage.getItem(STORAGE_KEYS.theme) || 'default');
