@@ -116,6 +116,20 @@ function saveAuthState() {
     localStorage.setItem(STORAGE_KEYS.auth, JSON.stringify(authState));
 }
 
+function getMockUserName(role) {
+    return role === 'specialist' ? 'Vita' : 'Kārlis';
+}
+
+function syncMockUserName() {
+    if (!authState.isLoggedIn || !authState.role) return;
+    const expectedName = getMockUserName(authState.role);
+    const legacyNames = ['Ieva', 'Vita', 'Kārlis'];
+    if (!authState.userName || legacyNames.includes(authState.userName)) {
+        authState.userName = expectedName;
+        saveAuthState();
+    }
+}
+
 function getCurrentPage() {
     return document.body.dataset.page || 'home';
 }
@@ -523,7 +537,7 @@ function updateAuthUI() {
         loginBtn.classList.add('hidden');
         if (loginDropdown) loginDropdown.classList.add('hidden');
         userMenu.classList.remove('hidden');
-        userName.textContent = authState.userName || (authState.role === 'specialist' ? 'Ieva' : 'Vita');
+        userName.textContent = authState.userName || getMockUserName(authState.role);
         if (userRoleLabel) {
             userRoleLabel.textContent = authState.role === 'specialist' ? 'Speciālists' : 'Vecāks';
         }
@@ -643,7 +657,7 @@ function handlePendingAction() {
 function completeLogin(role) {
     authState.isLoggedIn = true;
     authState.role = role;
-    authState.userName = role === 'specialist' ? 'Ieva' : 'Vita';
+    authState.userName = getMockUserName(role);
     authState.onboardingComplete = true;
     saveAuthState();
 
@@ -1535,6 +1549,7 @@ function initGlobalKeyboardHandlers() {
 
 function initSite() {
     handleLogoutRequest();
+    syncMockUserName();
     renderSiteShell();
     bindShellActions();
     applyTheme(localStorage.getItem(STORAGE_KEYS.theme) || 'default');
