@@ -633,6 +633,23 @@ function requireLogin(modalToOpen, message) {
     openRoleSelection(modalToOpen, message || 'Lai turpinātu, lūdzu izvēlieties savu lomu.');
 }
 
+function requireParentLogin(modalToOpen, message) {
+    if (authState.isLoggedIn && authState.role === 'parent') {
+        if (modalToOpen) showModal(modalToOpen);
+        return;
+    }
+
+    pendingAuthMessage = message || 'Lai pieteiktu vizīti, lūdzu pieslēdzieties kā vecāks.';
+    setPendingAction(modalToOpen || '');
+    selectedLoginRole = 'parent';
+    updateAuthModalContent();
+    closeLoginDropdown();
+    closeUserDropdown();
+    closeMobileNav();
+    closeModal('roleModal');
+    showModal('authModal');
+}
+
 function doLogin(method) {
     closeModal('authModal');
     window.setTimeout(function() {
@@ -678,6 +695,7 @@ function completeLogin(role) {
     closeModal('authModal');
     closeModal('roleModal');
     updateAuthUI();
+    initCommunityPage();
     pendingAuthMessage = '';
     handlePendingAction();
 }
@@ -1000,12 +1018,12 @@ function openSpecialistProfile(index) {
 function startSpecialistBooking(index) {
     selectedSpecialistIndex = index;
     populateSelectedSpecialistUI();
-    requireLogin('calendarModal');
+    requireParentLogin('calendarModal', 'Lai pieteiktu vizīti, lūdzu pieslēdzieties kā vecāks.');
 }
 
 function bookSelectedSpecialist() {
     populateSelectedSpecialistUI();
-    requireLogin('calendarModal');
+    requireParentLogin('calendarModal', 'Lai pieteiktu vizīti, lūdzu pieslēdzieties kā vecāks.');
 }
 
 function renderCustomSelectTrigger(selectEl, value, label) {
@@ -1291,6 +1309,33 @@ function showGuide(type, event) {
 function initGuidePage() {
     if (!document.getElementById('sec-guide')) return;
     showGuide('concerns');
+}
+
+function initCommunityPage() {
+    const communitySection = document.getElementById('sec-community');
+    if (!communitySection) return;
+
+    if (!communitySection.dataset.originalContent) {
+        communitySection.dataset.originalContent = communitySection.innerHTML;
+    }
+
+    if (authState.isLoggedIn && authState.role === 'parent') {
+        if (communitySection.innerHTML !== communitySection.dataset.originalContent) {
+            communitySection.innerHTML = communitySection.dataset.originalContent;
+        }
+        return;
+    }
+
+    communitySection.innerHTML = '' +
+        '<div class="max-w-3xl mx-auto py-6 md:py-10 text-center">' +
+            '<div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-brand-light text-brand flex items-center justify-center text-2xl font-black">💬</div>' +
+            '<h2 class="text-2xl md:text-3xl font-black tracking-tight mb-3">Kopiena ir paredzēta vecākiem</h2>' +
+            '<p class="text-gray-500 text-base md:text-lg mb-8">Pieslēdzieties kā vecāks, lai uzdotu jautājumus, dalītos pieredzē un lasītu citu ģimeņu ierakstus.</p>' +
+            '<div class="flex flex-col sm:flex-row gap-3 justify-center">' +
+                '<button onclick="startDirectLogin(\'parent\')" class="btn-cta px-6 py-3 rounded-xl font-bold text-sm shadow">Pieteikties kā vecākam</button>' +
+                '<a href="' + ROUTES.home + '" class="px-6 py-3 rounded-xl font-bold text-sm border border-gray-200 text-gray-600 hover:border-brand hover:text-brand transition">Atgriezties sākumlapā</a>' +
+            '</div>' +
+        '</div>';
 }
 
 function buildCalendar() {
@@ -1608,6 +1653,7 @@ function initSite() {
     initGlobalKeyboardHandlers();
     initCustomSelects();
     initGuidePage();
+    initCommunityPage();
     buildCalendar();
     initDashboardPage();
     if (authState.isLoggedIn) {
