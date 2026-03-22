@@ -1695,14 +1695,23 @@
             color: var(--text-primary);
         }
         body.dark .catalog-trigger-value {
-            background: rgba(25,126,128,0.14);
-            border-color: rgba(25,126,128,0.22);
-            color: #8fd0d1;
+            background: rgba(25,126,128,0.08);
+            border-color: rgba(25,126,128,0.14);
+            color: #d7efef;
         }
         body.dark .catalog-trigger-value.is-default {
             background: #202727;
             border-color: #2b3737;
-            color: var(--text-secondary);
+            color: #d7e1e1;
+        }
+        body.dark .catalog-filter.filter-city .catalog-trigger-value.is-default,
+        body.dark .catalog-filter.filter-type .catalog-trigger-value.is-default,
+        body.dark .catalog-filter.filter-diagnosis .catalog-trigger-value.is-default,
+        body.dark .catalog-filter.filter-age .catalog-trigger-value.is-default,
+        body.dark .catalog-filter.filter-visit .catalog-trigger-value.is-default {
+            background: #202727;
+            border-color: #2b3737;
+            color: #d7e1e1;
         }
         @media (min-width: 1280px) {
             .catalog-layout {
@@ -2388,46 +2397,49 @@
         body.dark .site-nav .user-menu-trigger {
             background: rgba(25,126,128,0.12);
             border-color: rgba(92,130,132,0.34);
-            color: #8fd0d1;
+            color: var(--text-primary);
         }
         body.dark .site-nav .user-menu-trigger:hover {
             background: rgba(25,126,128,0.18);
             border-color: rgba(25,126,128,0.28);
         }
+        body.dark .site-nav #userMenu {
+            background: rgba(18,24,24,0.12);
+        }
         body.dark .site-nav .user-menu-trigger.is-parent {
-            background: rgba(56,189,248,0.12);
-            border-color: rgba(56,189,248,0.18);
-            color: #7dd3fc;
-        }
-        body.dark .site-nav .user-menu-trigger.is-parent:hover {
-            background: rgba(56,189,248,0.16);
-            border-color: rgba(56,189,248,0.24);
-        }
-        body.dark .site-nav .user-menu-trigger.is-specialist {
-            background: rgba(245,158,11,0.14);
-            border-color: rgba(245,158,11,0.2);
-            color: #fbbf24;
-        }
-        body.dark .site-nav .user-menu-trigger.is-specialist:hover {
-            background: rgba(245,158,11,0.18);
-            border-color: rgba(245,158,11,0.26);
-        }
-        body.dark .site-nav .user-menu-icon {
-            background: rgba(25,126,128,0.2);
-        }
-        body.dark .site-nav .user-menu-trigger.is-parent .user-menu-icon {
-            background: rgba(56,189,248,0.18);
-            color: #7dd3fc;
-        }
-        body.dark .site-nav .user-menu-trigger.is-specialist .user-menu-icon {
-            background: rgba(245,158,11,0.2);
-            color: #fbbf24;
-        }
-        body.dark .site-nav .user-menu-name {
+            background: rgba(56,189,248,0.07);
+            border-color: rgba(56,189,248,0.12);
             color: var(--text-primary);
         }
+        body.dark .site-nav .user-menu-trigger.is-parent:hover {
+            background: rgba(56,189,248,0.1);
+            border-color: rgba(56,189,248,0.16);
+        }
+        body.dark .site-nav .user-menu-trigger.is-specialist {
+            background: rgba(245,158,11,0.08);
+            border-color: rgba(245,158,11,0.13);
+            color: var(--text-primary);
+        }
+        body.dark .site-nav .user-menu-trigger.is-specialist:hover {
+            background: rgba(245,158,11,0.11);
+            border-color: rgba(245,158,11,0.17);
+        }
+        body.dark .site-nav .user-menu-icon {
+            background: rgba(25,126,128,0.14);
+        }
+        body.dark .site-nav .user-menu-trigger.is-parent .user-menu-icon {
+            background: rgba(56,189,248,0.12);
+            color: #9dcfe0;
+        }
+        body.dark .site-nav .user-menu-trigger.is-specialist .user-menu-icon {
+            background: rgba(245,158,11,0.12);
+            color: #d5b36a;
+        }
+        body.dark .site-nav .user-menu-name {
+            color: #f3f7f6;
+        }
         body.dark .site-nav .user-menu-role {
-            color: var(--text-muted);
+            color: #b8c9c8;
         }
         body.dark .site-nav .login-dropdown {
             border-color: var(--border-color);
