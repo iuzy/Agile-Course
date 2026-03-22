@@ -361,9 +361,12 @@ function renderSiteShell() {
                         <div class="grid gap-3">
                             <label class="grid gap-2">
                                 <span class="text-xs font-bold text-gray-500">Bērna profils</span>
-                                <select id="bookingChildProfile" aria-label="Bērna profils" onchange="setBookingChildProfile(this.value)" class="select-modern">
-                                </select>
-                            </label>
+                                <div id="bookingChildSelect" class="custom-select booking-child-select" data-booking-child-select>
+                                    <input type="hidden" id="bookingChildProfile" name="bookingChildProfile" value="child-emils">
+                                    <button type="button" class="select-trigger" aria-haspopup="listbox" aria-expanded="false">Izvēlieties bērna profilu</button>
+                                    <ul class="select-menu" role="listbox" aria-label="Bērna profils"></ul>
+                                </div>
+                            </label> 
                             <div id="bookingChildProfileSummary" class="booking-child-summary"></div>
                         </div>
                         <textarea placeholder="Galvenā grūtība vai jautājums (neobligāts)" aria-label="Galvenā grūtība vai jautājums" class="w-full mt-3 p-3 rounded-xl border text-sm outline-none focus:border-brand h-20 resize-none"></textarea>
@@ -1069,18 +1072,64 @@ function getSelectedBookingChild() {
     }) || PARENT_CHILD_PROFILES[0] || null;
 }
 
+function closeBookingChildSelect() {
+    const selectEl = document.getElementById('bookingChildSelect');
+    const trigger = selectEl ? selectEl.querySelector('.select-trigger') : null;
+    if (!selectEl || !trigger) return;
+    selectEl.classList.remove('open');
+    trigger.setAttribute('aria-expanded', 'false');
+}
+
+function initBookingChildSelect() {
+    const selectEl = document.getElementById('bookingChildSelect');
+    const trigger = selectEl ? selectEl.querySelector('.select-trigger') : null;
+    const menu = selectEl ? selectEl.querySelector('.select-menu') : null;
+
+    if (!selectEl || !trigger || !menu || selectEl.dataset.bound) return;
+
+    trigger.addEventListener('click', function(event) {
+        event.stopPropagation();
+        const willOpen = !selectEl.classList.contains('open');
+        closeBookingChildSelect();
+        if (willOpen) {
+            selectEl.classList.add('open');
+            trigger.setAttribute('aria-expanded', 'true');
+        }
+    });
+
+    menu.addEventListener('click', function(event) {
+        const option = event.target.closest('li[data-value]');
+        if (!option) return;
+        event.preventDefault();
+        event.stopPropagation();
+        setBookingChildProfile(option.dataset.value || '');
+    });
+
+    selectEl.dataset.bound = 'true';
+}
+
 function updateBookingChildProfileSummary() {
-    const childSelect = document.getElementById('bookingChildProfile');
+    const childInput = document.getElementById('bookingChildProfile');
+    const childSelect = document.getElementById('bookingChildSelect');
+    const trigger = childSelect ? childSelect.querySelector('.select-trigger') : null;
+    const menu = childSelect ? childSelect.querySelector('.select-menu') : null;
     const summary = document.getElementById('bookingChildProfileSummary');
     const child = getSelectedBookingChild();
 
-    if (childSelect) {
-        childSelect.innerHTML = PARENT_CHILD_PROFILES.map(function(profile) {
-            return '<option value="' + escapeHtml(profile.id) + '"' + (profile.id === selectedBookingChildId ? ' selected' : '') + '>' +
+    if (childInput) {
+        childInput.value = selectedBookingChildId;
+    }
+
+    if (menu) {
+        menu.innerHTML = PARENT_CHILD_PROFILES.map(function(profile) {
+            return '<li data-value="' + escapeHtml(profile.id) + '" role="option" aria-selected="' + (profile.id === selectedBookingChildId ? 'true' : 'false') + '">' +
                 escapeHtml(profile.name) + ' · ' + escapeHtml(profile.age) +
-            '</option>';
+            '</li>';
         }).join('');
-        childSelect.value = selectedBookingChildId;
+    }
+
+    if (trigger && child) {
+        trigger.textContent = child.name + ' · ' + child.age;
     }
 
     if (!summary || !child) return;
@@ -1097,6 +1146,9 @@ function updateBookingChildProfileSummary() {
 function setBookingChildProfile(childId) {
     selectedBookingChildId = childId;
     updateBookingChildProfileSummary();
+    window.setTimeout(function() {
+        closeBookingChildSelect();
+    }, 0);
 }
 
 function openSpecialistProfile(index) {
@@ -1937,6 +1989,9 @@ function initGlobalKeyboardHandlers() {
             closeLoginDropdown();
             closeUserDropdown();
         }
+        if (!event.target.closest('[data-booking-child-select]')) {
+            closeBookingChildSelect();
+        }
         if (!event.target.closest('.mobile-nav-toggle') && !event.target.closest('#mobileNavPanel')) {
             closeMobileNav();
         }
@@ -1961,6 +2016,7 @@ function initSite() {
     updateAuthUI();
     initBackToTop();
     initGlobalKeyboardHandlers();
+    initBookingChildSelect();
     initCustomSelects();
     initGuidePage();
     initCommunityPage();

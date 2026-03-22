@@ -269,6 +269,18 @@
         body.dark .custom-select .select-menu li:hover {
             background: rgba(25,126,128,0.2);
         }
+        .booking-child-select button.select-trigger {
+            border-radius: 1rem;
+            min-height: 3rem;
+        }
+        .booking-child-select .select-menu li[aria-selected="true"] {
+            background: rgba(225,243,241,0.95);
+            color: var(--brand);
+        }
+        body.dark .booking-child-select .select-menu li[aria-selected="true"] {
+            background: rgba(25,126,128,0.2);
+            color: #b8efdd;
+        }
         .dashboard-field {
             border: 1px solid var(--border-card);
             border-radius: 20px;
@@ -798,6 +810,41 @@
         .modal-card {
             max-height: calc(100vh - 2rem);
             overflow-y: auto;
+            overscroll-behavior: contain;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(44,55,55,0.24) transparent;
+            scrollbar-gutter: stable;
+        }
+        .modal-card::-webkit-scrollbar {
+            width: 10px;
+        }
+        .modal-card::-webkit-scrollbar-track {
+            background: transparent;
+            margin: 0.9rem 0;
+        }
+        .modal-card::-webkit-scrollbar-thumb {
+            background: rgba(44,55,55,0.2);
+            border: 2px solid transparent;
+            border-radius: 999px;
+            background-clip: padding-box;
+        }
+        .modal-card::-webkit-scrollbar-thumb:hover {
+            background: rgba(44,55,55,0.3);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+        body.dark .modal-card {
+            scrollbar-color: rgba(255,255,255,0.24) transparent;
+        }
+        body.dark .modal-card::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.18);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+        body.dark .modal-card::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.28);
+            border: 2px solid transparent;
+            background-clip: padding-box;
         }
         .spec-visit-modal-close {
             position: absolute;
