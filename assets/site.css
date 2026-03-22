@@ -1268,6 +1268,8 @@
             max-height: min(22rem, calc(100svh - 12rem));
             overflow-y: auto;
             overscroll-behavior: contain;
+            scrollbar-gutter: stable;
+            -webkit-overflow-scrolling: touch;
         }
         .catalog-filter.filter-type .custom-select .select-menu::-webkit-scrollbar,
         .catalog-filter.filter-diagnosis .custom-select .select-menu::-webkit-scrollbar {
@@ -1363,6 +1365,8 @@
                 grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
                 gap: 2rem;
                 align-items: start;
+                position: relative;
+                z-index: 1;
             }
             .catalog-header {
                 grid-template-columns: 1fr;
@@ -1371,6 +1375,7 @@
                 margin-bottom: 0;
                 position: sticky;
                 top: 6.5rem;
+                z-index: 6;
             }
             .catalog-toolbar {
                 grid-template-columns: 1fr;
@@ -1408,6 +1413,18 @@
             }
             .catalog-toolbar .custom-select button.select-trigger {
                 min-height: 56px;
+            }
+            .catalog-filter.filter-type .custom-select .select-menu,
+            .catalog-filter.filter-diagnosis .custom-select .select-menu {
+                max-height: min(16.5rem, calc(100vh - 17rem));
+                max-height: min(16.5rem, calc(100svh - 17rem));
+                padding: 0.25rem;
+            }
+            .catalog-filter.filter-type .custom-select .select-menu li,
+            .catalog-filter.filter-diagnosis .custom-select .select-menu li {
+                padding: 0.45rem 0.65rem;
+                border-radius: 12px;
+                font-size: 0.95rem;
             }
             .dashboard-booking-row {
                 grid-template-columns: 1fr;
@@ -1958,6 +1975,8 @@
             margin-top: auto;
             background: transparent !important;
             border-top: none !important;
+            position: relative;
+            z-index: 0;
         }
         footer[role="contentinfo"] > div {
             background: rgba(255,255,255,0.72);
