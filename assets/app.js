@@ -25,6 +25,29 @@ let specCalendarOffset = 1;
 let specCalendarDayIndex = 0;
 let specCalendarInitialized = false;
 let selectedSpecVisitId = null;
+let selectedBookingSlotId = '';
+let selectedBookingChildId = 'child-emils';
+
+const PARENT_CHILD_PROFILES = [
+    {
+        id: 'child-emils',
+        initials: 'EK',
+        name: 'Emīls Kalniņš',
+        age: '5 gadi',
+        diagnosis: 'AST',
+        primaryDoctor: 'Dr. Māra Vītola',
+        activePlan: '3 speciālisti'
+    },
+    {
+        id: 'child-lote',
+        initials: 'LK',
+        name: 'Lote Kalniņa',
+        age: '3 gadi',
+        diagnosis: 'Runas attīstības grūtības',
+        primaryDoctor: 'Anna Kalniņa',
+        activePlan: '1 speciālists'
+    }
+];
 
 const SPEC_SCHEDULE_WEEKS = [
     {
@@ -335,12 +358,17 @@ function renderSiteShell() {
                     </div>
                     <div class="bg-gray-50 rounded-xl p-4">
                         <p class="text-xs font-bold text-gray-500 mb-2">Pieteikuma forma</p>
-                        <div class="grid md:grid-cols-2 gap-3">
-                            <input type="text" placeholder="Bērna vārds" aria-label="Bērna vārds" class="p-3 rounded-xl border text-sm outline-none focus:border-brand">
-                            <input type="text" placeholder="Bērna vecums" aria-label="Bērna vecums" class="p-3 rounded-xl border text-sm outline-none focus:border-brand">
+                        <div class="grid gap-3">
+                            <label class="grid gap-2">
+                                <span class="text-xs font-bold text-gray-500">Bērna profils</span>
+                                <select id="bookingChildProfile" aria-label="Bērna profils" onchange="setBookingChildProfile(this.value)" class="select-modern">
+                                </select>
+                            </label>
+                            <div id="bookingChildProfileSummary" class="booking-child-summary"></div>
                         </div>
                         <textarea placeholder="Galvenā grūtība vai jautājums (neobligāts)" aria-label="Galvenā grūtība vai jautājums" class="w-full mt-3 p-3 rounded-xl border text-sm outline-none focus:border-brand h-20 resize-none"></textarea>
-                        <button onclick="alert('Vizīte pieteikta! Apstiprinājums nosūtīts uz jūsu e-pastu.'); closeModal('calendarModal')" class="w-full mt-3 btn-cta py-3 rounded-xl font-bold hover:opacity-90 transition shadow">Apstiprināt pierakstu</button>
+                        <p id="selectedBookingSlot" class="hidden mt-3 text-xs font-bold text-brand"></p>
+                        <button id="confirmBookingBtn" onclick="confirmBookingSelection()" class="w-full mt-3 btn-cta py-3 rounded-xl font-bold hover:opacity-90 transition shadow">Apstiprināt pierakstu</button>
                     </div>
                 </div>
             </div>
@@ -708,6 +736,20 @@ function completeLogin(role) {
     updateAuthUI();
     initCommunityPage();
     pendingAuthMessage = '';
+
+    const pendingAction = getPendingAction();
+    if (pendingAction) {
+        setPendingAction('');
+        if (document.getElementById(pendingAction)) {
+            showModal(pendingAction);
+        }
+        return;
+    }
+
+    if (getCurrentPage() === 'community' && role === 'parent') {
+        return;
+    }
+
     setPendingAction('');
     window.location.href = ROUTES['specialist-dashboard'];
 }
@@ -1021,6 +1063,42 @@ function populateSelectedSpecialistUI() {
     if (calendarSubtitle) calendarSubtitle.textContent = specialist.name + ' - ' + specialist.type + ', ' + specialist.city;
 }
 
+function getSelectedBookingChild() {
+    return PARENT_CHILD_PROFILES.find(function(child) {
+        return child.id === selectedBookingChildId;
+    }) || PARENT_CHILD_PROFILES[0] || null;
+}
+
+function updateBookingChildProfileSummary() {
+    const childSelect = document.getElementById('bookingChildProfile');
+    const summary = document.getElementById('bookingChildProfileSummary');
+    const child = getSelectedBookingChild();
+
+    if (childSelect) {
+        childSelect.innerHTML = PARENT_CHILD_PROFILES.map(function(profile) {
+            return '<option value="' + escapeHtml(profile.id) + '"' + (profile.id === selectedBookingChildId ? ' selected' : '') + '>' +
+                escapeHtml(profile.name) + ' · ' + escapeHtml(profile.age) +
+            '</option>';
+        }).join('');
+        childSelect.value = selectedBookingChildId;
+    }
+
+    if (!summary || !child) return;
+
+    summary.innerHTML = '' +
+        '<div class="booking-child-summary-avatar">' + escapeHtml(child.initials) + '</div>' +
+        '<div class="booking-child-summary-copy">' +
+            '<div class="booking-child-summary-name">' + escapeHtml(child.name) + '</div>' +
+            '<div class="booking-child-summary-meta">' + escapeHtml(child.age) + ' · ' + escapeHtml(child.diagnosis) + '</div>' +
+            '<div class="booking-child-summary-meta">Primārais speciālists: ' + escapeHtml(child.primaryDoctor) + ' · Aktīvs plāns: ' + escapeHtml(child.activePlan) + '</div>' +
+        '</div>';
+}
+
+function setBookingChildProfile(childId) {
+    selectedBookingChildId = childId;
+    updateBookingChildProfileSummary();
+}
+
 function openSpecialistProfile(index) {
     selectedSpecialistIndex = index;
     populateSelectedSpecialistUI();
@@ -1030,11 +1108,17 @@ function openSpecialistProfile(index) {
 function startSpecialistBooking(index) {
     selectedSpecialistIndex = index;
     populateSelectedSpecialistUI();
+    resetBookingSelection();
+    updateBookingChildProfileSummary();
+    buildCalendar();
     requireParentLogin('calendarModal', 'Lai pieteiktu vizīti, lūdzu pieslēdzieties kā vecāks.');
 }
 
 function bookSelectedSpecialist() {
     populateSelectedSpecialistUI();
+    resetBookingSelection();
+    updateBookingChildProfileSummary();
+    buildCalendar();
     requireParentLogin('calendarModal', 'Lai pieteiktu vizīti, lūdzu pieslēdzieties kā vecāks.');
 }
 
@@ -1347,37 +1431,142 @@ function initCommunityPage() {
                 '<button onclick="startDirectLogin(\'parent\')" class="btn-cta px-6 py-3 rounded-xl font-bold text-sm shadow">Pieteikties kā vecākam</button>' +
                 '<a href="' + ROUTES.home + '" class="px-6 py-3 rounded-xl font-bold text-sm border border-gray-200 text-gray-600 hover:border-brand hover:text-brand transition">Atgriezties sākumlapā</a>' +
             '</div>' +
-        '</div>';
+            '</div>';
+}
+
+function getBookingCalendarSlots() {
+    return [
+        { day: 17, weekday: 'Pr', time: '10:00', status: 'available' },
+        { day: 18, weekday: 'Ot', time: '11:30', status: 'available' },
+        { day: 19, weekday: 'Tr', time: '09:30', status: 'available' },
+        { day: 20, weekday: 'Ce', time: '14:00', status: 'full' },
+        { day: 21, weekday: 'Pk', time: '15:30', status: 'available' },
+        { day: 22, weekday: 'Se', time: '', status: 'weekend' },
+        { day: 23, weekday: 'Sv', time: '', status: 'weekend' },
+        { day: 24, weekday: 'Pr', time: '10:00', status: 'available' },
+        { day: 25, weekday: 'Ot', time: '13:00', status: 'available' },
+        { day: 26, weekday: 'Tr', time: '11:00', status: 'full' },
+        { day: 27, weekday: 'Ce', time: '16:00', status: 'available' },
+        { day: 28, weekday: 'Pk', time: '09:00', status: 'available' },
+        { day: 29, weekday: 'Se', time: '', status: 'weekend' },
+        { day: 30, weekday: 'Sv', time: '', status: 'weekend' },
+        { day: 31, weekday: 'Pr', time: '12:30', status: 'available' }
+    ].map(function(slot) {
+        return Object.assign({}, slot, {
+            id: 'booking-' + selectedSpecialistIndex + '-' + slot.day,
+            label: slot.day + '. marts, ' + slot.time
+        });
+    });
+}
+
+function getSelectedBookingSlot() {
+    return getBookingCalendarSlots().find(function(slot) {
+        return slot.id === selectedBookingSlotId;
+    }) || null;
+}
+
+function updateBookingSelectionUI() {
+    const selectedSlotText = document.getElementById('selectedBookingSlot');
+    const confirmButton = document.getElementById('confirmBookingBtn');
+    const selectedSlot = getSelectedBookingSlot();
+
+    document.querySelectorAll('[data-booking-slot]').forEach(function(button) {
+        const isSelected = button.getAttribute('data-booking-slot') === selectedBookingSlotId;
+        button.classList.toggle('is-selected', isSelected);
+        button.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+    });
+
+    if (selectedSlotText) {
+        if (selectedSlot) {
+            selectedSlotText.textContent = 'Izvēlētais laiks: ' + selectedSlot.label;
+            selectedSlotText.classList.remove('hidden');
+        } else {
+            selectedSlotText.textContent = '';
+            selectedSlotText.classList.add('hidden');
+        }
+    }
+
+    if (confirmButton) {
+        confirmButton.disabled = !selectedSlot;
+        confirmButton.classList.toggle('is-disabled', !selectedSlot);
+    }
+}
+
+function resetBookingSelection() {
+    selectedBookingSlotId = '';
+    updateBookingSelectionUI();
+}
+
+function selectBookingSlot(slotId) {
+    selectedBookingSlotId = slotId;
+    updateBookingSelectionUI();
+}
+
+function confirmBookingSelection() {
+    const selectedSlot = getSelectedBookingSlot();
+    const child = getSelectedBookingChild();
+    if (!selectedSlot || !child) return;
+
+    const specialist = getSelectedSpecialist();
+    const selectedSlotText = document.getElementById('selectedBookingSlot');
+
+    if (selectedSlotText) {
+        selectedSlotText.textContent = child.name + ' pieraksts pie ' + specialist.name + ' rezervēts: ' + selectedSlot.label;
+        selectedSlotText.classList.remove('hidden');
+    }
+
+    window.setTimeout(function() {
+        closeModal('calendarModal');
+        resetBookingSelection();
+    }, 650);
 }
 
 function buildCalendar() {
     const grid = document.getElementById('calendarGrid');
-    if (!grid || grid.children.length > 0) return;
+    if (!grid) return;
 
     const days = ['Pr', 'Ot', 'Tr', 'Ce', 'Pk', 'Se', 'Sv'];
+    const slots = getBookingCalendarSlots();
+    const items = [];
+
     days.forEach(function(day) {
-        grid.innerHTML += '<div class="text-center text-xs font-bold text-gray-300 py-1">' + day + '</div>';
+        items.push('<div class="booking-calendar-weekday">' + day + '</div>');
     });
 
-    for (let i = 17; i <= 31; i += 1) {
-        const isWeekend = (i - 17 + 1) % 7 >= 6;
-        const isFull = i % 4 === 0;
-        let cls;
-        let text;
-
-        if (isWeekend) {
-            cls = 'bg-gray-50 text-gray-200';
-            text = '-';
-        } else if (isFull) {
-            cls = 'bg-gray-50 text-gray-300';
-            text = 'Aiznemts';
-        } else {
-            cls = 'bg-green-50 text-green-700 hover:bg-green-600 hover:text-white cursor-pointer';
-            text = '10:00';
+    slots.forEach(function(slot) {
+        if (slot.status === 'weekend') {
+            items.push(
+                '<div class="booking-calendar-cell is-muted">' +
+                    '<div class="booking-calendar-date">' + slot.day + '. mar.</div>' +
+                    '<div class="booking-calendar-time">-</div>' +
+                '</div>'
+            );
+            return;
         }
 
-        grid.innerHTML += '<div class="p-2 rounded-xl text-center transition text-xs font-bold ' + cls + '"><div>' + i + '. mar.</div><div class="text-xs mt-0.5">' + text + '</div></div>';
-    }
+        if (slot.status === 'full') {
+            items.push(
+                '<div class="booking-calendar-cell is-full">' +
+                    '<div class="booking-calendar-date">' + slot.day + '. mar.</div>' +
+                    '<div class="booking-calendar-time">Aizņemts</div>' +
+                '</div>'
+            );
+            return;
+        }
+
+        items.push(
+            '<button type="button" class="booking-calendar-cell is-slot' + (slot.id === selectedBookingSlotId ? ' is-selected' : '') + '"' +
+                ' data-booking-slot="' + escapeHtml(slot.id) + '"' +
+                ' onclick="selectBookingSlot(\'' + escapeHtml(slot.id) + '\')"' +
+                ' aria-pressed="' + (slot.id === selectedBookingSlotId ? 'true' : 'false') + '">' +
+                '<div class="booking-calendar-date">' + slot.day + '. mar.</div>' +
+                '<div class="booking-calendar-time">' + escapeHtml(slot.time) + '</div>' +
+            '</button>'
+        );
+    });
+
+    grid.innerHTML = items.join('');
+    updateBookingSelectionUI();
 }
 
 function timeToMinutes(value) {
@@ -1776,6 +1965,7 @@ function initSite() {
     initGuidePage();
     initCommunityPage();
     buildCalendar();
+    updateBookingChildProfileSummary();
     initDashboardPage();
     if (authState.isLoggedIn) {
         handlePendingAction();

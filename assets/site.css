@@ -836,6 +836,125 @@
             overflow-x: auto;
             padding-bottom: 0.25rem;
         }
+        .booking-calendar-weekday {
+            text-align: center;
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            padding: 0.15rem 0;
+        }
+        .booking-calendar-cell {
+            min-height: 4.4rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(44,55,55,0.08);
+            background: rgba(255,255,255,0.92);
+            color: var(--text-primary);
+            padding: 0.7rem 0.5rem;
+            text-align: center;
+            display: grid;
+            align-content: center;
+            gap: 0.24rem;
+            transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+        }
+        button.booking-calendar-cell {
+            width: 100%;
+            cursor: pointer;
+        }
+        button.booking-calendar-cell:hover {
+            transform: translateY(-1px);
+            border-color: rgba(63,131,132,0.3);
+            background: rgba(240,249,247,0.96);
+        }
+        .booking-calendar-cell.is-selected {
+            border-color: rgba(63,131,132,0.5);
+            background: rgba(225,243,241,0.98);
+            box-shadow: 0 10px 24px rgba(63,131,132,0.14);
+            color: var(--brand);
+        }
+        .booking-calendar-cell.is-muted,
+        .booking-calendar-cell.is-full {
+            color: var(--text-muted);
+            background: rgba(247,244,239,0.72);
+        }
+        .booking-calendar-cell.is-muted {
+            border-style: dashed;
+        }
+        .booking-calendar-cell.is-full {
+            opacity: 0.78;
+        }
+        .booking-calendar-date {
+            font-size: 0.77rem;
+            font-weight: 800;
+        }
+        .booking-calendar-time {
+            font-size: 0.83rem;
+            font-weight: 700;
+        }
+        .booking-child-summary {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.9rem 1rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(44,55,55,0.08);
+            background: rgba(255,255,255,0.92);
+        }
+        .booking-child-summary-avatar {
+            width: 2.85rem;
+            height: 2.85rem;
+            border-radius: 0.95rem;
+            background: var(--brand-light);
+            color: var(--brand);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+        .booking-child-summary-copy {
+            min-width: 0;
+        }
+        .booking-child-summary-name {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+        .booking-child-summary-meta {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-top: 0.12rem;
+        }
+        #confirmBookingBtn.is-disabled,
+        #confirmBookingBtn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        body.dark .booking-calendar-cell {
+            background: rgba(22,28,29,0.92);
+            border-color: rgba(143,208,209,0.1);
+            color: var(--text-primary);
+        }
+        body.dark button.booking-calendar-cell:hover {
+            border-color: rgba(143,208,209,0.24);
+            background: rgba(25,37,38,0.96);
+        }
+        body.dark .booking-calendar-cell.is-selected {
+            background: rgba(20,46,43,0.96);
+            border-color: rgba(143,208,209,0.3);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+            color: #b8efdd;
+        }
+        body.dark .booking-calendar-cell.is-muted,
+        body.dark .booking-calendar-cell.is-full {
+            background: rgba(28,33,34,0.88);
+            color: var(--text-muted);
+        }
+        body.dark .booking-child-summary {
+            background: rgba(22,28,29,0.92);
+            border-color: rgba(143,208,209,0.1);
+        }
         .spec-scheduler-shell {
             display: grid;
             grid-template-columns: 1fr;
