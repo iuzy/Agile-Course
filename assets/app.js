@@ -1421,7 +1421,7 @@ function initializeSpecCalendarState() {
 }
 
 function isSpecMobileDayView() {
-    return window.innerWidth <= 767;
+    return window.innerWidth <= 1024;
 }
 
 function getCurrentSpecWeek() {

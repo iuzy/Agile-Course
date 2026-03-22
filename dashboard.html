@@ -229,10 +229,12 @@
                             <div class="spec-scheduler-main">
                                 <div class="spec-scheduler-toolbar">
                                     <div class="spec-scheduler-toolbar-left">
-                                        <div class="dashboard-calendar-nav">
-                                            <button type="button" id="specCalendarPrev" class="dashboard-calendar-nav-btn" onclick="changeSpecCalendarMonth(-1)" aria-label="Iepriekšējā nedēļa">←</button>
-                                            <button type="button" id="specCalendarToday" class="dashboard-calendar-nav-btn dashboard-calendar-nav-btn-wide" onclick="goToSpecCalendarToday()">Šodien</button>
-                                            <button type="button" id="specCalendarNext" class="dashboard-calendar-nav-btn" onclick="changeSpecCalendarMonth(1)" aria-label="Nākamā nedēļa">→</button>
+                                        <div class="dashboard-calendar-toolbar-actions">
+                                            <div class="dashboard-calendar-nav">
+                                                <button type="button" id="specCalendarPrev" class="dashboard-calendar-nav-btn" onclick="changeSpecCalendarMonth(-1)" aria-label="Iepriekšējā nedēļa">←</button>
+                                                <button type="button" id="specCalendarNext" class="dashboard-calendar-nav-btn" onclick="changeSpecCalendarMonth(1)" aria-label="Nākamā nedēļa">→</button>
+                                            </div>
+                                            <button type="button" id="specCalendarToday" class="dashboard-calendar-nav-btn dashboard-calendar-nav-btn-wide dashboard-calendar-today-btn" onclick="goToSpecCalendarToday()">Šodien</button>
                                         </div>
                                         <div>
                                             <h3 id="specCalendarLabel" class="font-black text-lg">Nedēļa</h3>

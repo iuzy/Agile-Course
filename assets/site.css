@@ -858,6 +858,12 @@
             gap: 0.85rem;
             min-width: 0;
         }
+        .dashboard-calendar-toolbar-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            flex-shrink: 0;
+        }
         .spec-scheduler-view-pill {
             display: inline-flex;
             align-items: center;
@@ -1084,9 +1090,17 @@
             background: rgba(249,247,243,0.9);
             padding: 1rem;
         }
-        @media (max-width: 767px) {
+        @media (max-width: 1024px) {
             .dashboard-calendar-shell {
                 overflow-x: visible;
+            }
+            .spec-scheduler-toolbar-left {
+                flex-wrap: wrap;
+                align-items: flex-start;
+            }
+            .dashboard-calendar-toolbar-actions {
+                width: 100%;
+                justify-content: space-between;
             }
             .spec-scheduler-board,
             .spec-scheduler-board.is-day-view {
@@ -1257,6 +1271,10 @@
             min-width: 4.9rem;
             padding: 0 0.9rem;
             font-size: 0.8rem;
+        }
+        .dashboard-calendar-today-btn {
+            border-radius: 0.9rem;
+            background: rgba(249,247,243,0.98);
         }
         .dashboard-calendar-nav-btn:hover:not(:disabled) {
             border-color: rgba(44,55,55,0.18);
