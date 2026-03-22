@@ -22,6 +22,8 @@ const SPEC_SCHEDULE_END_MINUTES = 18 * 60;
 const SPEC_SCHEDULE_SLOT_MINUTES = 30;
 const SPEC_SCHEDULE_ROW_HEIGHT = 38;
 let specCalendarOffset = 1;
+let specCalendarDayIndex = 0;
+let specCalendarInitialized = false;
 let selectedSpecVisitId = null;
 
 const SPEC_SCHEDULE_WEEKS = [
@@ -29,30 +31,35 @@ const SPEC_SCHEDULE_WEEKS = [
         label: '16. marts - 20. marts',
         sublabel: 'Speciālista darba grafiks · 2026',
         days: [
-            { key: 'mon', short: 'Pr', label: '16. marts' },
-            { key: 'tue', short: 'Ot', label: '17. marts' },
-            { key: 'wed', short: 'Tr', label: '18. marts' },
-            { key: 'thu', short: 'Ce', label: '19. marts' },
-            { key: 'fri', short: 'Pk', label: '20. marts' }
+            { key: 'mon', short: 'Pirmdiena', label: '16. marts', date: '2026-03-16' },
+            { key: 'tue', short: 'Otrdiena', label: '17. marts', date: '2026-03-17' },
+            { key: 'wed', short: 'Trešdiena', label: '18. marts', date: '2026-03-18' },
+            { key: 'thu', short: 'Ceturtdiena', label: '19. marts', date: '2026-03-19' },
+            { key: 'fri', short: 'Piektdiena', label: '20. marts', date: '2026-03-20' },
+            { key: 'sat', short: 'Sestdiena', label: '21. marts', date: '2026-03-21' },
+            { key: 'sun', short: 'Svētdiena', label: '22. marts', date: '2026-03-22' }
         ],
         offDays: ['fri'],
         appointments: [
             { id: 'wk1-1', day: 'mon', start: '08:30', end: '09:15', child: 'Marta R.', meta: '6 gadi · AST', parent: 'Ilze R.', location: 'Rīga / klātienē', phone: '+371 26544321', summary: 'ABA konsultācija', note: 'Jāturpina komunikācijas uzdevumi.', tone: 'brand' },
             { id: 'wk1-2', day: 'mon', start: '10:00', end: '10:45', child: 'Sofija K.', meta: '5 gadi · AST', parent: 'Liene K.', location: 'Tiešsaistē', phone: '+371 27833419', summary: 'Vecāku koučings', note: 'Pārrunāt mājas rutīnu.', tone: 'mint' },
             { id: 'wk1-3', day: 'wed', start: '09:00', end: '09:45', child: 'Mārtiņš K.', meta: '5 gadi · AST', parent: 'Agnese K.', location: 'Rīga / klātienē', phone: '+371 29118874', summary: 'ABA sesija', note: 'Darbs pie sociālajām prasmēm.', tone: 'brand' },
-            { id: 'wk1-4', day: 'wed', start: '14:00', end: '14:45', child: 'Anna L.', meta: '7 gadi · UDHS', parent: 'Dace L.', location: 'Tiešsaistē', phone: '+371 26770014', summary: 'Uzvedības konsultācija', note: 'Atgriezeniskā saite skolai.', tone: 'lavender' },
-            { id: 'wk1-5', day: 'thu', start: '10:00', end: '10:30', child: 'Emīls B.', meta: '3 gadi · Runas aizture', parent: 'Zane B.', location: 'Rīga / klātienē', phone: '+371 29651234', summary: 'Īsā kontroles vizīte', note: 'Novērtēt progresu pirms nākamā plāna.', tone: 'peach' }
+            { id: 'wk1-4', day: 'wed', start: '14:00', end: '14:45', child: 'Anna L.', meta: '7 gadi · UDHS', parent: 'Dace L.', location: 'Tiešsaistē', phone: '+371 26770014', summary: 'Uzvedības konsultācija', note: 'Ģimene neieradās uz plānoto attālināto konsultāciju.', tone: 'lavender', status: 'no-show' },
+            { id: 'wk1-5', day: 'thu', start: '10:00', end: '10:30', child: 'Emīls B.', meta: '3 gadi · Runas aizture', parent: 'Zane B.', location: 'Rīga / klātienē', phone: '+371 29651234', summary: 'Īsā kontroles vizīte', note: 'Vizīte tika atcelta iepriekšējā dienā.', tone: 'peach', status: 'cancelled' },
+            { id: 'wk1-6', day: 'sat', start: '09:30', end: '10:15', child: 'Elza V.', meta: '4 gadi · AST', parent: 'Ieva V.', location: 'Tiešsaistē', phone: '+371 26440122', summary: 'Ģimenes konsultācija', note: 'Brīvdienu laiks vecāku sarunai.', tone: 'mint' }
         ]
     },
     {
         label: '23. marts - 27. marts',
         sublabel: 'Speciālista darba grafiks · 2026',
         days: [
-            { key: 'mon', short: 'Pr', label: '23. marts' },
-            { key: 'tue', short: 'Ot', label: '24. marts' },
-            { key: 'wed', short: 'Tr', label: '25. marts' },
-            { key: 'thu', short: 'Ce', label: '26. marts' },
-            { key: 'fri', short: 'Pk', label: '27. marts' }
+            { key: 'mon', short: 'Pirmdiena', label: '23. marts', date: '2026-03-23' },
+            { key: 'tue', short: 'Otrdiena', label: '24. marts', date: '2026-03-24' },
+            { key: 'wed', short: 'Trešdiena', label: '25. marts', date: '2026-03-25' },
+            { key: 'thu', short: 'Ceturtdiena', label: '26. marts', date: '2026-03-26' },
+            { key: 'fri', short: 'Piektdiena', label: '27. marts', date: '2026-03-27' },
+            { key: 'sat', short: 'Sestdiena', label: '28. marts', date: '2026-03-28' },
+            { key: 'sun', short: 'Svētdiena', label: '29. marts', date: '2026-03-29' }
         ],
         offDays: [],
         appointments: [
@@ -61,18 +68,21 @@ const SPEC_SCHEDULE_WEEKS = [
             { id: 'wk2-3', day: 'tue', start: '09:30', end: '10:15', child: 'Elīna Z.', meta: '6 gadi · AST', parent: 'Inese Z.', location: 'Rīga / klātienē', phone: '+371 28661122', summary: 'Sociālo prasmju nodarbība', note: 'Darbs pāru uzdevumos.', tone: 'lavender' },
             { id: 'wk2-4', day: 'wed', start: '13:00', end: '13:45', child: 'Rūdolfs V.', meta: '8 gadi · UDHS', parent: 'Kaspars V.', location: 'Rīga / klātienē', phone: '+371 26319955', summary: 'Uzvedības sesija', note: 'Fokuss uz impulsu kontroli.', tone: 'brand' },
             { id: 'wk2-5', day: 'thu', start: '15:00', end: '15:45', child: 'Paula C.', meta: '6 gadi · AST', parent: 'Aija C.', location: 'Tiešsaistē', phone: '+371 29884400', summary: 'Vecāku atbalsta zvans', note: 'Pārrunāt nedēļas progresu.', tone: 'peach' },
-            { id: 'wk2-6', day: 'fri', start: '10:30', end: '11:15', child: 'Marks J.', meta: '4 gadi · Sensorās grūtības', parent: 'Signe J.', location: 'Rīga / klātienē', phone: '+371 22331144', summary: 'Novērtēšanas sesija', note: 'Sagatavot ieteikumus ergoterapijai.', tone: 'mint' }
+            { id: 'wk2-6', day: 'fri', start: '10:30', end: '11:15', child: 'Marks J.', meta: '4 gadi · Sensorās grūtības', parent: 'Signe J.', location: 'Rīga / klātienē', phone: '+371 22331144', summary: 'Novērtēšanas sesija', note: 'Sagatavot ieteikumus ergoterapijai.', tone: 'mint' },
+            { id: 'wk2-7', day: 'sat', start: '11:00', end: '11:45', child: 'Tīna O.', meta: '7 gadi · UDHS', parent: 'Mārtiņš O.', location: 'Rīga / klātienē', phone: '+371 26881152', summary: 'Sestdienas konsultācija', note: 'Ērtāks laiks ģimenei ārpus skolas dienām.', tone: 'brand' }
         ]
     },
     {
         label: '30. marts - 3. aprīlis',
         sublabel: 'Speciālista darba grafiks · 2026',
         days: [
-            { key: 'mon', short: 'Pr', label: '30. marts' },
-            { key: 'tue', short: 'Ot', label: '31. marts' },
-            { key: 'wed', short: 'Tr', label: '1. aprīlis' },
-            { key: 'thu', short: 'Ce', label: '2. aprīlis' },
-            { key: 'fri', short: 'Pk', label: '3. aprīlis' }
+            { key: 'mon', short: 'Pirmdiena', label: '30. marts', date: '2026-03-30' },
+            { key: 'tue', short: 'Otrdiena', label: '31. marts', date: '2026-03-31' },
+            { key: 'wed', short: 'Trešdiena', label: '1. aprīlis', date: '2026-04-01' },
+            { key: 'thu', short: 'Ceturtdiena', label: '2. aprīlis', date: '2026-04-02' },
+            { key: 'fri', short: 'Piektdiena', label: '3. aprīlis', date: '2026-04-03' },
+            { key: 'sat', short: 'Sestdiena', label: '4. aprīlis', date: '2026-04-04' },
+            { key: 'sun', short: 'Svētdiena', label: '5. aprīlis', date: '2026-04-05' }
         ],
         offDays: ['wed'],
         appointments: [
@@ -80,7 +90,8 @@ const SPEC_SCHEDULE_WEEKS = [
             { id: 'wk3-2', day: 'tue', start: '10:00', end: '10:45', child: 'Toms D.', meta: '10 gadi · UDHS', parent: 'Laura D.', location: 'Rīga / klātienē', phone: '+371 22117745', summary: 'Uzvedības sesija', note: 'Skolas adaptācijas jautājumi.', tone: 'brand' },
             { id: 'wk3-3', day: 'thu', start: '08:30', end: '09:15', child: 'Sofija P.', meta: '4 gadi · Komunikācijas grūtības', parent: 'Rūta P.', location: 'Rīga / klātienē', phone: '+371 29220051', summary: 'Novērtējuma atkārtota vizīte', note: 'Atjaunot terapijas mērķus.', tone: 'peach' },
             { id: 'wk3-4', day: 'thu', start: '13:30', end: '14:15', child: 'Eva G.', meta: '3 gadi · Runas attīstība', parent: 'Māra G.', location: 'Tiešsaistē', phone: '+371 25550088', summary: 'Vecāku konsultācija', note: 'Apspriest logopēda ieteikumus.', tone: 'mint' },
-            { id: 'wk3-5', day: 'fri', start: '11:00', end: '11:45', child: 'Rihards S.', meta: '8 gadi · UDHS', parent: 'Lelde S.', location: 'Rīga / klātienē', phone: '+371 26781200', summary: 'Kontroles vizīte', note: 'Jāpārrunā fokusa vingrinājumi.', tone: 'brand' }
+            { id: 'wk3-5', day: 'fri', start: '11:00', end: '11:45', child: 'Rihards S.', meta: '8 gadi · UDHS', parent: 'Lelde S.', location: 'Rīga / klātienē', phone: '+371 26781200', summary: 'Kontroles vizīte', note: 'Jāpārrunā fokusa vingrinājumi.', tone: 'brand' },
+            { id: 'wk3-6', day: 'sun', start: '10:30', end: '11:15', child: 'Noa K.', meta: '6 gadi · AST', parent: 'Kristīne K.', location: 'Tiešsaistē', phone: '+371 27004411', summary: 'Svētdienas atbalsta zvans', note: 'Īsa attālināta pārbaude pirms jaunās nedēļas.', tone: 'lavender' }
         ]
     }
 ];
@@ -336,7 +347,7 @@ function renderSiteShell() {
 
             <div id="specVisitModal" class="fixed inset-0 modal-bg hidden z-[100] flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-label="Vizītes detaļas">
                 <div class="modal-card modal-card-md bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full relative shadow-2xl fade-in">
-                    <button onclick="closeModal('specVisitModal')" class="absolute top-4 right-5 text-2xl text-gray-300 hover:text-gray-600 transition" aria-label="Aizvērt">✕</button>
+                    <button onclick="closeModal('specVisitModal')" class="spec-visit-modal-close" aria-label="Aizvērt">✕</button>
                     <div id="specVisitModalContent"></div>
                 </div>
             </div>
@@ -697,7 +708,8 @@ function completeLogin(role) {
     updateAuthUI();
     initCommunityPage();
     pendingAuthMessage = '';
-    handlePendingAction();
+    setPendingAction('');
+    window.location.href = ROUTES['specialist-dashboard'];
 }
 
 function processOnboarding() {
@@ -1373,6 +1385,45 @@ function timeToMinutes(value) {
     return Number(parts[0]) * 60 + Number(parts[1]);
 }
 
+function getLocalIsoDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return year + '-' + month + '-' + day;
+}
+
+function syncSpecCalendarToToday() {
+    const todayIso = getLocalIsoDate(new Date());
+    let found = false;
+
+    SPEC_SCHEDULE_WEEKS.forEach(function(week, weekIndex) {
+        week.days.forEach(function(day, dayIndex) {
+            if (!found && day.date === todayIso) {
+                specCalendarOffset = weekIndex;
+                specCalendarDayIndex = dayIndex;
+                found = true;
+            }
+        });
+    });
+
+    if (!found) {
+        specCalendarOffset = Math.min(1, SPEC_SCHEDULE_WEEKS.length - 1);
+        specCalendarDayIndex = 0;
+    }
+
+    return found;
+}
+
+function initializeSpecCalendarState() {
+    if (specCalendarInitialized) return;
+    specCalendarInitialized = true;
+    syncSpecCalendarToToday();
+}
+
+function isSpecMobileDayView() {
+    return window.innerWidth <= 767;
+}
+
 function getCurrentSpecWeek() {
     return SPEC_SCHEDULE_WEEKS[specCalendarOffset] || SPEC_SCHEDULE_WEEKS[0];
 }
@@ -1386,22 +1437,36 @@ function getSelectedSpecVisit(week) {
     return match || appointments[0];
 }
 
-function getSpecAppointmentToneClass(tone) {
-    if (tone === 'mint') return 'is-mint';
-    if (tone === 'lavender') return 'is-lavender';
-    if (tone === 'peach') return 'is-peach';
-    return 'is-brand';
+function getSpecAppointmentStatusMeta(day, appointment) {
+    const explicitStatus = String(appointment.status || '').toLowerCase();
+    if (explicitStatus === 'cancelled') {
+        return { className: 'is-cancelled', label: 'Atcelta' };
+    }
+    if (explicitStatus === 'no-show') {
+        return { className: 'is-no-show', label: 'Neierašanās' };
+    }
+
+    if (day && day.date) {
+        const todayIso = getLocalIsoDate(new Date());
+        if (day.date < todayIso) {
+            return { className: 'is-past', label: 'Pagājusi' };
+        }
+    }
+
+    return { className: 'is-scheduled', label: 'Ieplānota' };
 }
 
 function getSpecVisitModalContent(week, visit) {
     const day = week.days.find(function(item) {
         return item.key === visit.day;
     });
+    const statusMeta = getSpecAppointmentStatusMeta(day, visit);
 
     return '' +
         '<div class="spec-scheduler-detail-card">' +
             '<p class="spec-scheduler-detail-kicker">Izvēlētā vizīte</p>' +
             '<h4 class="spec-scheduler-detail-title">' + escapeHtml(visit.summary) + '</h4>' +
+            '<p class="spec-scheduler-detail-status ' + escapeHtml(statusMeta.className) + '">' + escapeHtml(statusMeta.label) + '</p>' +
             '<p class="spec-scheduler-detail-summary">' + escapeHtml(visit.note) + '</p>' +
             '<div class="spec-scheduler-detail-meta">' +
                 '<div><span>Diena</span><strong>' + escapeHtml(day ? day.label : '') + '</strong></div>' +
@@ -1448,17 +1513,39 @@ function buildSpecCalendar() {
     const sublabel = document.getElementById('specCalendarSubLabel');
     const prevBtn = document.getElementById('specCalendarPrev');
     const nextBtn = document.getElementById('specCalendarNext');
+    const todayBtn = document.getElementById('specCalendarToday');
     if (!board) return;
 
+    initializeSpecCalendarState();
     const week = getCurrentSpecWeek();
+    const isMobile = isSpecMobileDayView();
+    const currentDay = week.days[specCalendarDayIndex] || week.days[0];
+    const visibleDays = isMobile && currentDay ? [currentDay] : week.days;
+    const todayIso = getLocalIsoDate(new Date());
     const totalSlots = (SPEC_SCHEDULE_END_MINUTES - SPEC_SCHEDULE_START_MINUTES) / SPEC_SCHEDULE_SLOT_MINUTES;
     const boardHeight = totalSlots * SPEC_SCHEDULE_ROW_HEIGHT;
     const timeLabels = [];
 
-    if (label) label.textContent = week.label;
-    if (sublabel) sublabel.textContent = week.sublabel;
-    if (prevBtn) prevBtn.disabled = specCalendarOffset <= 0;
-    if (nextBtn) nextBtn.disabled = specCalendarOffset >= SPEC_SCHEDULE_WEEKS.length - 1;
+    if (label) label.textContent = isMobile && currentDay ? currentDay.short : week.label;
+    if (sublabel) sublabel.textContent = isMobile && currentDay ? currentDay.label + ' · Dienas skats' : week.sublabel;
+    if (prevBtn) {
+        prevBtn.disabled = isMobile
+            ? (specCalendarOffset <= 0 && specCalendarDayIndex <= 0)
+            : specCalendarOffset <= 0;
+        prevBtn.setAttribute('aria-label', isMobile ? 'Iepriekšējā diena' : 'Iepriekšējā nedēļa');
+    }
+    if (nextBtn) {
+        nextBtn.disabled = isMobile
+            ? (specCalendarOffset >= SPEC_SCHEDULE_WEEKS.length - 1 && specCalendarDayIndex >= week.days.length - 1)
+            : specCalendarOffset >= SPEC_SCHEDULE_WEEKS.length - 1;
+        nextBtn.setAttribute('aria-label', isMobile ? 'Nākamā diena' : 'Nākamā nedēļa');
+    }
+    if (todayBtn) {
+        const isOnToday = !!currentDay && currentDay.date === todayIso;
+        todayBtn.disabled = isOnToday;
+        todayBtn.setAttribute('aria-label', isMobile ? 'Atgriezties uz šodienu' : 'Atgriezties uz šīs nedēļas skatu');
+    }
+    board.classList.toggle('is-day-view', isMobile);
 
     for (let minutes = SPEC_SCHEDULE_START_MINUTES; minutes <= SPEC_SCHEDULE_END_MINUTES; minutes += SPEC_SCHEDULE_SLOT_MINUTES) {
         const hours = Math.floor(minutes / 60);
@@ -1470,9 +1557,11 @@ function buildSpecCalendar() {
     board.innerHTML = '' +
         '<div class="spec-scheduler-head">' +
             '<div class="spec-scheduler-head-spacer"></div>' +
-            week.days.map(function(day) {
+            visibleDays.map(function(day) {
                 const isOff = week.offDays.indexOf(day.key) !== -1;
-                return '<div class="spec-scheduler-day-head' + (isOff ? ' is-off' : '') + '">' +
+                const isWeekend = day.key === 'sat' || day.key === 'sun';
+                const isToday = day.date === todayIso;
+                return '<div class="spec-scheduler-day-head' + (isOff ? ' is-off' : '') + (isWeekend ? ' is-weekend' : '') + (isToday ? ' is-today' : '') + '">' +
                     '<span class="spec-scheduler-day-short">' + escapeHtml(day.short) + '</span>' +
                     '<span class="spec-scheduler-day-label">' + escapeHtml(day.label) + '</span>' +
                 '</div>';
@@ -1481,14 +1570,16 @@ function buildSpecCalendar() {
         '<div class="spec-scheduler-grid-shell">' +
             '<div class="spec-scheduler-times">' + timeLabels.join('') + '</div>' +
             '<div class="spec-scheduler-columns">' +
-                week.days.map(function(day) {
+                visibleDays.map(function(day) {
                     const appointments = week.appointments.filter(function(appointment) {
                         return appointment.day === day.key;
                     });
                     const isOff = week.offDays.indexOf(day.key) !== -1;
-                    return '<div class="spec-scheduler-day-column' + (isOff ? ' is-off' : '') + '" style="height:' + boardHeight + 'px">' +
+                    const isWeekend = day.key === 'sat' || day.key === 'sun';
+                    const isToday = day.date === todayIso;
+                    return '<div class="spec-scheduler-day-column' + (isOff ? ' is-off' : '') + (isWeekend ? ' is-weekend' : '') + (isToday ? ' is-today' : '') + '" style="height:' + boardHeight + 'px">' +
                         '<div class="spec-scheduler-day-lines"></div>' +
-                        (isOff ? '<div class="spec-scheduler-day-off-label">Brīvdiena</div>' : '') +
+                        (isOff ? '<div class="spec-scheduler-day-off-label">Nav pieejams</div>' : '') +
                         appointments.map(function(appointment) {
                             const startMinutes = timeToMinutes(appointment.start) - SPEC_SCHEDULE_START_MINUTES;
                             const endMinutes = timeToMinutes(appointment.end) - SPEC_SCHEDULE_START_MINUTES;
@@ -1496,7 +1587,8 @@ function buildSpecCalendar() {
                             const height = Math.max(50, ((endMinutes - startMinutes) / SPEC_SCHEDULE_SLOT_MINUTES) * SPEC_SCHEDULE_ROW_HEIGHT - 8);
                             const isActive = appointment.id === selectedSpecVisitId;
                             const sizeClass = height <= 54 ? ' is-tight' : (height <= 68 ? ' is-compact' : '');
-                            return '<button type="button" onclick="openSpecVisitModal(\'' + escapeHtml(appointment.id) + '\')" class="spec-scheduler-appointment ' + getSpecAppointmentToneClass(appointment.tone) + sizeClass + (isActive ? ' is-active' : '') + '" style="top:' + top + 'px;height:' + height + 'px">' +
+                            const statusMeta = getSpecAppointmentStatusMeta(day, appointment);
+                            return '<button type="button" onclick="openSpecVisitModal(\'' + escapeHtml(appointment.id) + '\')" class="spec-scheduler-appointment ' + statusMeta.className + sizeClass + (isActive ? ' is-active' : '') + '" style="top:' + top + 'px;height:' + height + 'px">' +
                                 '<span class="spec-scheduler-appointment-time">' + escapeHtml(appointment.start) + ' - ' + escapeHtml(appointment.end) + '</span>' +
                                 '<span class="spec-scheduler-appointment-title">' + escapeHtml(appointment.summary) + '</span>' +
                                 '<span class="spec-scheduler-appointment-child">' + escapeHtml(appointment.child) + '</span>' +
@@ -1509,11 +1601,37 @@ function buildSpecCalendar() {
 }
 
 function changeSpecCalendarMonth(direction) {
-    const nextOffset = specCalendarOffset + direction;
-    if (nextOffset < 0 || nextOffset >= SPEC_SCHEDULE_WEEKS.length) {
-        return;
+    initializeSpecCalendarState();
+
+    if (isSpecMobileDayView()) {
+        const currentWeek = getCurrentSpecWeek();
+        const nextDayIndex = specCalendarDayIndex + direction;
+
+        if (nextDayIndex >= 0 && nextDayIndex < currentWeek.days.length) {
+            specCalendarDayIndex = nextDayIndex;
+        } else {
+            const nextOffset = specCalendarOffset + direction;
+            if (nextOffset < 0 || nextOffset >= SPEC_SCHEDULE_WEEKS.length) {
+                return;
+            }
+            specCalendarOffset = nextOffset;
+            specCalendarDayIndex = direction > 0 ? 0 : getCurrentSpecWeek().days.length - 1;
+        }
+    } else {
+        const nextOffset = specCalendarOffset + direction;
+        if (nextOffset < 0 || nextOffset >= SPEC_SCHEDULE_WEEKS.length) {
+            return;
+        }
+        specCalendarOffset = nextOffset;
+        specCalendarDayIndex = Math.min(specCalendarDayIndex, getCurrentSpecWeek().days.length - 1);
     }
-    specCalendarOffset = nextOffset;
+
+    selectedSpecVisitId = null;
+    buildSpecCalendar();
+}
+
+function goToSpecCalendarToday() {
+    syncSpecCalendarToToday();
     selectedSpecVisitId = null;
     buildSpecCalendar();
 }

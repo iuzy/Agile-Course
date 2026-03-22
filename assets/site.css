@@ -642,7 +642,25 @@
             border-color: var(--border-color);
         }
         body.dark .spec-scheduler-day-column.is-off {
-            background: rgba(31,38,39,0.92);
+            background: rgba(55,37,42,0.92);
+            border-color: rgba(151,99,116,0.28);
+        }
+        body.dark .spec-scheduler-day-head.is-off {
+            background: rgba(58,38,44,0.94);
+            border-color: rgba(151,99,116,0.28);
+        }
+        body.dark .spec-scheduler-day-head.is-weekend {
+            background: rgba(30,37,39,0.9);
+        }
+        body.dark .spec-scheduler-day-head.is-today {
+            border-color: rgba(143,208,209,0.52);
+            box-shadow: 0 0 0 3px rgba(143,208,209,0.1);
+        }
+        body.dark .spec-scheduler-day-column.is-weekend {
+            background: rgba(27,35,36,0.9);
+        }
+        body.dark .spec-scheduler-day-column.is-today {
+            border-color: rgba(143,208,209,0.34);
         }
         body.dark .spec-scheduler-head-spacer {
             border-color: var(--border-color);
@@ -684,34 +702,55 @@
         }
         body.dark .spec-scheduler-appointment {
             border-color: rgba(83,100,101,0.28);
+            border-left-color: rgba(95,158,137,0.52);
             box-shadow: none;
         }
         body.dark .spec-scheduler-appointment.is-active {
-            border-color: rgba(143,208,209,0.22);
+            border-color: rgba(122,190,166,0.28);
             box-shadow: 0 10px 24px rgba(3,8,9,0.2);
         }
-        body.dark .spec-scheduler-appointment.is-brand,
-        body.dark .spec-scheduler-appointment.is-mint,
-        body.dark .spec-scheduler-appointment.is-lavender,
-        body.dark .spec-scheduler-appointment.is-peach {
+        body.dark .spec-scheduler-appointment.is-scheduled,
+        body.dark .spec-scheduler-appointment.is-past,
+        body.dark .spec-scheduler-appointment.is-cancelled,
+        body.dark .spec-scheduler-appointment.is-no-show {
             background: rgba(31,38,39,0.94);
             color: var(--text-primary);
         }
-        body.dark .spec-scheduler-appointment.is-brand {
-            border-left-color: rgba(143,208,209,0.62);
+        body.dark .spec-scheduler-appointment.is-scheduled {
+            border-left-color: rgba(120,189,164,0.6);
         }
-        body.dark .spec-scheduler-appointment.is-mint {
-            border-left-color: rgba(158,230,200,0.58);
+        body.dark .spec-scheduler-appointment.is-past {
+            background: rgba(34,40,41,0.9);
+            border-left-color: rgba(127,141,143,0.48);
+            color: var(--text-secondary);
         }
-        body.dark .spec-scheduler-appointment.is-lavender {
-            border-left-color: rgba(211,200,255,0.58);
+        body.dark .spec-scheduler-appointment.is-cancelled {
+            background: rgba(51,45,30,0.94);
+            border-left-color: rgba(230,186,85,0.68);
         }
-        body.dark .spec-scheduler-appointment.is-peach {
-            border-left-color: rgba(255,199,158,0.6);
+        body.dark .spec-scheduler-appointment.is-no-show {
+            background: rgba(56,37,39,0.94);
+            border-left-color: rgba(228,112,112,0.72);
         }
         body.dark .spec-scheduler-detail-summary,
         body.dark .spec-scheduler-detail-section-label {
             color: var(--text-secondary);
+        }
+        body.dark .spec-scheduler-detail-status.is-scheduled {
+            background: rgba(120,189,164,0.16);
+            color: #9fdbc4;
+        }
+        body.dark .spec-scheduler-detail-status.is-past {
+            background: rgba(127,141,143,0.16);
+            color: #b4c0c1;
+        }
+        body.dark .spec-scheduler-detail-status.is-cancelled {
+            background: rgba(230,186,85,0.16);
+            color: #f2cd79;
+        }
+        body.dark .spec-scheduler-detail-status.is-no-show {
+            background: rgba(228,112,112,0.16);
+            color: #f2a1a1;
         }
         body.dark .dashboard-calendar-day {
             background: var(--bg-card);
@@ -760,6 +799,38 @@
             max-height: calc(100vh - 2rem);
             overflow-y: auto;
         }
+        .spec-visit-modal-close {
+            position: absolute;
+            top: 0.95rem;
+            right: 0.95rem;
+            width: 2.1rem;
+            height: 2.1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            border: 1px solid rgba(44,55,55,0.1);
+            background: rgba(249,247,243,0.94);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1;
+            transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+        }
+        .spec-visit-modal-close:hover {
+            background: rgba(255,255,255,0.98);
+            border-color: rgba(44,55,55,0.16);
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+        body.dark .spec-visit-modal-close {
+            background: rgba(31,38,39,0.94);
+            border-color: var(--border-color);
+            color: var(--text-secondary);
+        }
+        body.dark .spec-visit-modal-close:hover {
+            color: var(--text-primary);
+            border-color: rgba(143,208,209,0.22);
+        }
         .modal-calendar-shell,
         .dashboard-calendar-shell {
             overflow-x: auto;
@@ -800,19 +871,19 @@
             color: var(--text-secondary);
         }
         .spec-scheduler-board {
-            min-width: 50rem;
+            min-width: 64rem;
         }
         .spec-scheduler-head {
             display: grid;
-            grid-template-columns: 4.25rem repeat(5, minmax(0, 1fr));
-            gap: 0.55rem;
+            grid-template-columns: 4.25rem repeat(7, minmax(0, 1fr));
+            gap: 0.45rem;
             margin-bottom: 0.6rem;
         }
         .spec-scheduler-head-spacer {
             border-right: 1px solid rgba(44,55,55,0.08);
         }
         .spec-scheduler-day-head {
-            padding: 0.65rem 0.75rem;
+            padding: 0.65rem 0.6rem;
             border-radius: 0.9rem;
             background: rgba(249,247,243,0.84);
             border: 1px solid rgba(44,55,55,0.08);
@@ -821,17 +892,27 @@
             gap: 0.18rem;
         }
         .spec-scheduler-day-head.is-off {
-            opacity: 0.7;
+            opacity: 1;
+            background: rgba(250,238,241,0.9);
+            border-color: rgba(196,126,145,0.18);
+        }
+        .spec-scheduler-day-head.is-weekend {
+            background: rgba(244,240,234,0.94);
+            border-color: rgba(44,55,55,0.1);
+        }
+        .spec-scheduler-day-head.is-today {
+            border: 2px solid rgba(25,126,128,0.48);
+            box-shadow: 0 0 0 3px rgba(25,126,128,0.08);
         }
         .spec-scheduler-day-short {
-            font-size: 0.7rem;
+            font-size: 0.62rem;
             font-weight: 800;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
+            letter-spacing: 0.02em;
             color: var(--text-muted);
+            line-height: 1.15;
         }
         .spec-scheduler-day-label {
-            font-size: 0.86rem;
+            font-size: 0.8rem;
             font-weight: 800;
             color: var(--text-primary);
         }
@@ -853,8 +934,8 @@
         }
         .spec-scheduler-columns {
             display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
-            gap: 0.55rem;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 0.45rem;
         }
         .spec-scheduler-day-column {
             position: relative;
@@ -864,7 +945,14 @@
             overflow: hidden;
         }
         .spec-scheduler-day-column.is-off {
-            background: rgba(246,243,238,0.9);
+            background: rgba(250,238,241,0.92);
+            border-color: rgba(196,126,145,0.18);
+        }
+        .spec-scheduler-day-column.is-weekend {
+            background: rgba(251,248,244,0.92);
+        }
+        .spec-scheduler-day-column.is-today {
+            border: 2px solid rgba(25,126,128,0.3);
         }
         .spec-scheduler-day-lines {
             position: absolute;
@@ -885,7 +973,7 @@
             z-index: 2;
             font-size: 0.72rem;
             font-weight: 800;
-            color: var(--text-muted);
+            color: #a05a71;
         }
         .spec-scheduler-appointment {
             position: absolute;
@@ -896,6 +984,7 @@
             padding: 0.58rem 0.68rem 0.6rem;
             border: 1px solid rgba(44,55,55,0.08);
             border-left-width: 4px;
+            border-left-color: rgba(73,146,118,0.42);
             text-align: left;
             box-shadow: 0 4px 10px rgba(64,49,34,0.05);
             transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
@@ -905,27 +994,32 @@
             transform: translateY(-1px);
         }
         .spec-scheduler-appointment.is-active {
-            border-color: rgba(44,55,55,0.16);
+            border-color: rgba(73,146,118,0.24);
             box-shadow: 0 10px 22px rgba(64,49,34,0.1);
         }
-        .spec-scheduler-appointment.is-brand,
-        .spec-scheduler-appointment.is-mint,
-        .spec-scheduler-appointment.is-lavender,
-        .spec-scheduler-appointment.is-peach {
+        .spec-scheduler-appointment.is-scheduled,
+        .spec-scheduler-appointment.is-past,
+        .spec-scheduler-appointment.is-cancelled,
+        .spec-scheduler-appointment.is-no-show {
             background: rgba(250,249,247,0.96);
             color: var(--text-primary);
         }
-        .spec-scheduler-appointment.is-brand {
-            border-left-color: rgba(25,126,128,0.62);
+        .spec-scheduler-appointment.is-scheduled {
+            border-left-color: rgba(73,146,118,0.42);
         }
-        .spec-scheduler-appointment.is-mint {
-            border-left-color: rgba(34,135,98,0.58);
+        .spec-scheduler-appointment.is-past {
+            background: rgba(246,245,242,0.94);
+            border-left-color: rgba(141,149,149,0.42);
+            color: var(--text-secondary);
+            box-shadow: none;
         }
-        .spec-scheduler-appointment.is-lavender {
-            border-left-color: rgba(107,89,179,0.56);
+        .spec-scheduler-appointment.is-cancelled {
+            background: rgba(253,248,233,0.98);
+            border-left-color: rgba(217,170,67,0.62);
         }
-        .spec-scheduler-appointment.is-peach {
-            border-left-color: rgba(194,109,57,0.58);
+        .spec-scheduler-appointment.is-no-show {
+            background: rgba(252,241,241,0.98);
+            border-left-color: rgba(205,96,96,0.64);
         }
         .spec-scheduler-appointment-title {
             display: block;
@@ -990,6 +1084,30 @@
             background: rgba(249,247,243,0.9);
             padding: 1rem;
         }
+        @media (max-width: 767px) {
+            .dashboard-calendar-shell {
+                overflow-x: visible;
+            }
+            .spec-scheduler-board,
+            .spec-scheduler-board.is-day-view {
+                min-width: 0;
+            }
+            .spec-scheduler-board.is-day-view .spec-scheduler-head {
+                grid-template-columns: 4.25rem minmax(0, 1fr);
+            }
+            .spec-scheduler-board.is-day-view .spec-scheduler-columns {
+                grid-template-columns: minmax(0, 1fr);
+            }
+            .spec-scheduler-board.is-day-view .spec-scheduler-day-head {
+                padding: 0.75rem 0.8rem;
+            }
+            .spec-scheduler-board.is-day-view .spec-scheduler-day-short {
+                font-size: 0.74rem;
+            }
+            .spec-scheduler-board.is-day-view .spec-scheduler-day-label {
+                font-size: 0.96rem;
+            }
+        }
         .spec-scheduler-detail-kicker {
             font-size: 0.72rem;
             font-weight: 800;
@@ -1002,7 +1120,33 @@
             font-size: 1.05rem;
             font-weight: 900;
             color: var(--text-primary);
-            margin-bottom: 0.55rem;
+            margin-bottom: 0.35rem;
+        }
+        .spec-scheduler-detail-status {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 0.7rem;
+            padding: 0.24rem 0.62rem;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+        .spec-scheduler-detail-status.is-scheduled {
+            background: rgba(73,146,118,0.1);
+            color: #3f7f68;
+        }
+        .spec-scheduler-detail-status.is-past {
+            background: rgba(141,149,149,0.12);
+            color: #6f7a7a;
+        }
+        .spec-scheduler-detail-status.is-cancelled {
+            background: rgba(217,170,67,0.14);
+            color: #a67819;
+        }
+        .spec-scheduler-detail-status.is-no-show {
+            background: rgba(205,96,96,0.14);
+            color: #b04a4a;
         }
         .spec-scheduler-detail-summary {
             font-size: 0.84rem;
@@ -1107,6 +1251,12 @@
             font-weight: 800;
             line-height: 1;
             transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+        }
+        .dashboard-calendar-nav-btn-wide {
+            width: auto;
+            min-width: 4.9rem;
+            padding: 0 0.9rem;
+            font-size: 0.8rem;
         }
         .dashboard-calendar-nav-btn:hover:not(:disabled) {
             border-color: rgba(44,55,55,0.18);

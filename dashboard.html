@@ -231,6 +231,7 @@
                                     <div class="spec-scheduler-toolbar-left">
                                         <div class="dashboard-calendar-nav">
                                             <button type="button" id="specCalendarPrev" class="dashboard-calendar-nav-btn" onclick="changeSpecCalendarMonth(-1)" aria-label="Iepriekšējā nedēļa">←</button>
+                                            <button type="button" id="specCalendarToday" class="dashboard-calendar-nav-btn dashboard-calendar-nav-btn-wide" onclick="goToSpecCalendarToday()">Šodien</button>
                                             <button type="button" id="specCalendarNext" class="dashboard-calendar-nav-btn" onclick="changeSpecCalendarMonth(1)" aria-label="Nākamā nedēļa">→</button>
                                         </div>
                                         <div>
@@ -238,7 +239,6 @@
                                             <p id="specCalendarSubLabel" class="text-sm text-gray-400 mt-0.5">Speciālista darba grafiks</p>
                                         </div>
                                     </div>
-                                    <div class="spec-scheduler-view-pill">Nedēļas skats</div>
                                 </div>
 
                                 <div class="dashboard-calendar-shell">
