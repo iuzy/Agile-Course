@@ -1526,8 +1526,8 @@ function buildSpecCalendar() {
     const boardHeight = totalSlots * SPEC_SCHEDULE_ROW_HEIGHT;
     const timeLabels = [];
 
-    if (label) label.textContent = isMobile && currentDay ? currentDay.short : week.label;
-    if (sublabel) sublabel.textContent = isMobile && currentDay ? currentDay.label : week.sublabel;
+    if (label) label.textContent = isMobile && currentDay ? currentDay.short : 'Speciālista darba grafiks';
+    if (sublabel) sublabel.textContent = isMobile && currentDay ? currentDay.label : 'Vizītes un pieejamība';
     if (prevBtn) {
         prevBtn.disabled = isMobile
             ? (specCalendarOffset <= 0 && specCalendarDayIndex <= 0)

@@ -864,6 +864,9 @@
             gap: 0.55rem;
             flex-shrink: 0;
         }
+        .spec-scheduler-toolbar-copy {
+            min-width: 0;
+        }
         .spec-scheduler-view-pill {
             display: inline-flex;
             align-items: center;
@@ -1095,12 +1098,20 @@
                 overflow-x: visible;
             }
             .spec-scheduler-toolbar-left {
-                flex-wrap: wrap;
-                align-items: flex-start;
+                width: 100%;
+                flex-wrap: nowrap;
+                align-items: center;
+                justify-content: space-between;
             }
             .dashboard-calendar-toolbar-actions {
                 width: 100%;
+                flex-direction: row;
+                align-items: center;
                 justify-content: space-between;
+                gap: 0.75rem;
+            }
+            .spec-scheduler-toolbar-copy {
+                display: none;
             }
             .spec-scheduler-board,
             .spec-scheduler-board.is-day-view {
