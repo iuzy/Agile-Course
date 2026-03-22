@@ -1053,7 +1053,41 @@ function resetHomeFilters() {
     });
 }
 
-function applyFilters() {
+function triggerSpecialistResultsFeedback(visibleCards) {
+    const countEl = document.getElementById('specialistCount');
+    const listEl = document.getElementById('specialistList');
+
+    if (countEl) {
+        countEl.classList.remove('is-updating');
+        void countEl.offsetWidth;
+        countEl.classList.add('is-updating');
+        window.setTimeout(function() {
+            countEl.classList.remove('is-updating');
+        }, 420);
+    }
+
+    if (listEl) {
+        listEl.classList.remove('is-filter-refresh');
+        void listEl.offsetWidth;
+        listEl.classList.add('is-filter-refresh');
+        window.setTimeout(function() {
+            listEl.classList.remove('is-filter-refresh');
+        }, 320);
+    }
+
+    visibleCards.slice(0, 8).forEach(function(card, index) {
+        card.classList.remove('is-filter-refresh');
+        card.style.animationDelay = (index * 45) + 'ms';
+        void card.offsetWidth;
+        card.classList.add('is-filter-refresh');
+        window.setTimeout(function() {
+            card.classList.remove('is-filter-refresh');
+            card.style.animationDelay = '';
+        }, 500 + (index * 45));
+    });
+}
+
+function applyFilters(shouldAnimate) {
     const cards = document.querySelectorAll('.specialist-card');
     if (!cards.length) return;
 
@@ -1065,6 +1099,7 @@ function applyFilters() {
     const countEl = document.getElementById('specialistCount');
     const emptyStateEl = document.getElementById('specialistEmptyState');
     let visibleCount = 0;
+    const visibleCards = [];
 
     cards.forEach(function(card) {
         const diagnoses = (card.dataset.diagnoses || '').split('|').filter(Boolean);
@@ -1079,6 +1114,7 @@ function applyFilters() {
         if (cityMatch && typeMatch && diagMatch && ageMatch && visitMatch) {
             card.classList.remove('hidden');
             visibleCount += 1;
+            visibleCards.push(card);
         } else {
             card.classList.add('hidden');
         }
@@ -1090,6 +1126,10 @@ function applyFilters() {
     if (emptyStateEl) {
         emptyStateEl.classList.toggle('hidden', visibleCount !== 0);
     }
+
+    if (shouldAnimate) {
+        triggerSpecialistResultsFeedback(visibleCards);
+    }
 }
 
 function clearCatalogFilters() {
@@ -1100,7 +1140,7 @@ function clearCatalogFilters() {
         const filterCard = sel.closest('.catalog-filter');
         if (filterCard) filterCard.classList.remove('is-open');
     });
-    applyFilters();
+    applyFilters(true);
 }
 
 function applySpecialistQueryParams() {
@@ -1112,7 +1152,7 @@ function applySpecialistQueryParams() {
 
     if (city && filterCitySelect) setCustomSelectValue(filterCitySelect, city, city);
     if (type && filterTypeSelect) setCustomSelectValue(filterTypeSelect, type, type);
-    applyFilters();
+    applyFilters(false);
 }
 
 function goToSpecialists() {
@@ -1208,7 +1248,7 @@ function initCustomSelects() {
                 const filterCard = sel.closest('.catalog-filter');
                 if (filterCard) filterCard.classList.remove('is-open');
                 if (hidden.name === 'filterCity' || hidden.name === 'filterType' || hidden.name === 'filterDiag' || hidden.name === 'filterAge' || hidden.name === 'filterVisit') {
-                    applyFilters();
+                    applyFilters(true);
                 }
             });
         });
@@ -1222,7 +1262,7 @@ function initCustomSelects() {
     if (getCurrentPage() === 'specialists') {
         applySpecialistQueryParams();
     } else {
-        applyFilters();
+        applyFilters(false);
     }
 }
 

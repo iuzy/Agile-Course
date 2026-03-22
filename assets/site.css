@@ -1919,6 +1919,31 @@
             border: 1px solid rgba(233,219,207,0.9) !important;
             background: rgba(255,255,255,0.86);
             box-shadow: 0 14px 36px rgba(64,49,34,0.06);
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, opacity 0.22s ease;
+        }
+        #specialistCount {
+            transition: color 0.22s ease, transform 0.22s ease, opacity 0.22s ease;
+            transform-origin: left center;
+        }
+        #specialistCount.is-updating {
+            color: var(--brand) !important;
+            transform: translateY(-1px);
+        }
+        #specialistList.is-filter-refresh .specialist-card:not(.hidden) {
+            border-color: rgba(25,126,128,0.18) !important;
+        }
+        .specialist-card.is-filter-refresh {
+            animation: specialistCardRefresh 0.42s ease both;
+        }
+        @keyframes specialistCardRefresh {
+            0% {
+                opacity: 0.76;
+                transform: translateY(8px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         .specialist-card-main {
             min-width: 0;
@@ -2222,6 +2247,12 @@
             border-color: var(--border-color) !important;
             background: rgba(29,42,44,0.84) !important;
             box-shadow: 0 14px 34px rgba(3,8,9,0.16) !important;
+        }
+        body.dark #specialistCount.is-updating {
+            color: #8fd0d1 !important;
+        }
+        body.dark #specialistList.is-filter-refresh .specialist-card:not(.hidden) {
+            border-color: rgba(143,208,209,0.26) !important;
         }
         body.dark .feature-kicker,
         body.dark .guide-index,
