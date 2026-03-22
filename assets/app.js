@@ -1421,7 +1421,7 @@ function initializeSpecCalendarState() {
 }
 
 function isSpecMobileDayView() {
-    return window.innerWidth <= 1024;
+    return window.innerWidth <= 767;
 }
 
 function getCurrentSpecWeek() {
@@ -1756,6 +1756,9 @@ function initGlobalKeyboardHandlers() {
     window.addEventListener('resize', function() {
         if (window.innerWidth >= 768) {
             closeMobileNav();
+        }
+        if (document.getElementById('specSchedulerBoard')) {
+            buildSpecCalendar();
         }
     });
 }

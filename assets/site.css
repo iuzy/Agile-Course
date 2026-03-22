@@ -1090,7 +1090,7 @@
             background: rgba(249,247,243,0.9);
             padding: 1rem;
         }
-        @media (max-width: 1024px) {
+        @media (max-width: 767px) {
             .dashboard-calendar-shell {
                 overflow-x: visible;
             }
