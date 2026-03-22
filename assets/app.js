@@ -1527,7 +1527,7 @@ function buildSpecCalendar() {
     const timeLabels = [];
 
     if (label) label.textContent = isMobile && currentDay ? currentDay.short : week.label;
-    if (sublabel) sublabel.textContent = isMobile && currentDay ? currentDay.label + ' · Dienas skats' : week.sublabel;
+    if (sublabel) sublabel.textContent = isMobile && currentDay ? currentDay.label : week.sublabel;
     if (prevBtn) {
         prevBtn.disabled = isMobile
             ? (specCalendarOffset <= 0 && specCalendarDayIndex <= 0)
